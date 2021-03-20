@@ -1,6 +1,8 @@
 import { Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
 
 const BlogLayout = ({ children }) => {
+  const { logIn } = useAuth()
   return (
     <>
       <h1>
@@ -17,6 +19,9 @@ const BlogLayout = ({ children }) => {
           <li>
             <Link to={routes.posts()}>Posts</Link>
           </li>
+          <li>
+            <button onClick={logIn}>Log In</button>
+          </li>
         </ul>
       </nav>
       <main>{children}</main>
@@ -25,12 +30,3 @@ const BlogLayout = ({ children }) => {
 }
 
 export default BlogLayout
-
-// const BlogLayout = ({ children }) => {
-//   return (
-//     <>
-//       {children}
-//       <h1>xxx</h1>
-//     </>
-//   )
-// }
