@@ -5,17 +5,52 @@ import {
   Submit,
   FieldError,
   Label,
+  FormError,
 } from '@redwoodjs/forms'
 import BlogLayout from 'src/layouts/BlogLayout'
+import { useMutation } from '@redwoodjs/web'
+import { toast, Toaster } from '@redwoodjs/web/toast'
+import { useForm } from 'react-hook-form'
+
+const CREATE_CONTACT = gql`
+  mutation CreateContactMutation($input: CreateContactInput!) {
+    createContact(input: $input) {
+      id
+    }
+  }
+`
 
 const ContactPage = () => {
-  const onSubmit = (data) => {
+  const formMethods = useForm({ mode: 'onBlur' })
+
+  const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
+    onComplete: () => {
+      formMethods.reset()
+    },
+  })
+
+  const onSubmit = async (data) => {
+    try {
+      await create({ variables: { input: data } })
+      toast.success('success!!!')
+    } catch (error) {
+      console.log(error)
+    }
     console.log(data)
   }
 
   return (
     <BlogLayout>
-      <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
+      <Toaster timeout={2000} />
+      <Form
+        onSubmit={onSubmit}
+        validation={{ mode: 'onBlur' }}
+        formMethods={formMethods}
+      >
+        <FormError
+          error={error}
+          wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
+        />
         <Label name="name" errorClassName="error">
           Name
         </Label>
@@ -52,7 +87,7 @@ const ContactPage = () => {
         />
         <FieldError name="message" className="error" />
 
-        <Submit>Save</Submit>
+        <Submit disabled={loading}>Save</Submit>
       </Form>
     </BlogLayout>
   )
