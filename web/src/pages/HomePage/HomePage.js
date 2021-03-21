@@ -15,6 +15,8 @@ const HomePage = () => {
     localStorage.removeItem('user')
   }
 
+  console.log(currentUser)
+
   return (
     <>
       <BlogLayout
