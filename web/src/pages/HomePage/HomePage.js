@@ -1,6 +1,6 @@
 import BlogLayout from '../../layouts/BlogLayout'
 import { useAuth } from '@redwoodjs/auth'
-// import BlogPostsCell from 'src/components/BlogPostsCell'
+// import BlogPostsCell from '../../resource/background.mp4'
 
 const HomePage = () => {
   const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
@@ -15,7 +15,7 @@ const HomePage = () => {
       ></BlogLayout>
       <div id="container relative">
         <video autoPlay="true" loop playsInline muted id="video">
-          <source src="src/resource/background.mp4" type="video/mp4" />
+          <source src="../../resource/background.mp4" type="video/mp4" />
         </video>
         <button
           onClick={logIn}
