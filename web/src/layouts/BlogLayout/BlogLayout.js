@@ -1,8 +1,14 @@
 import { Link, routes } from '@redwoodjs/router'
 import { useAuth } from '@redwoodjs/auth'
 
-const BlogLayout = ({ children }) => {
-  const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+const BlogLayout = ({
+  children,
+  logIn,
+  logOut,
+  isAuthenticated,
+  currentUser,
+}) => {
+  // const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
 
   return (
     <>
@@ -49,7 +55,7 @@ const BlogLayout = ({ children }) => {
                 {isAuthenticated ? 'Log Out' : 'Log In'}
               </button>
             </li>
-            {isAuthenticated && (
+            {isAuthenticated && currentUser?.email && (
               <li className="text-center w-6 h-6 bg-green-500 rounded-full border border-gray-100 shadow-sm">
                 {currentUser?.email?.toString()?.toUpperCase()?.slice(0, 2)}
               </li>
