@@ -1,10 +1,10 @@
 import { Link, routes } from '@redwoodjs/router'
-import { useAuth } from '@redwoodjs/auth'
+// import { useAuth } from '@redwoodjs/auth'
 
 const BlogLayout = ({
   children,
-  logIn,
-  logOut,
+  logInRevised,
+  logOutRevised,
   isAuthenticated,
   currentUser,
 }) => {
@@ -50,7 +50,7 @@ const BlogLayout = ({
             <li>
               <button
                 className="hover:text-gray-300 transition duration-100"
-                onClick={isAuthenticated ? logOut : logIn}
+                onClick={isAuthenticated ? logOutRevised : logInRevised}
               >
                 {isAuthenticated ? 'Log Out' : 'Log In'}
               </button>

@@ -4,12 +4,22 @@ import { useAuth } from '@redwoodjs/auth'
 
 const HomePage = () => {
   const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
-  console.log(currentUser)
+
+  const logInRevised = () => {
+    logIn()
+    localStorage.setItem('user', currentUser?.email)
+  }
+
+  const logOutRevised = () => {
+    logOut()
+    localStorage.removeItem('user')
+  }
+
   return (
     <>
       <BlogLayout
-        logIn={logIn}
-        logOut={logOut}
+        logInRevised={logInRevised}
+        logOutRevised={logOutRevised}
         isAuthenticated={isAuthenticated}
         currentUser={currentUser}
         className="z-10"
