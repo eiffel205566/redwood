@@ -15,7 +15,11 @@ const HomePage = () => {
       ></BlogLayout>
       <div id="container relative">
         <video autoPlay="true" loop playsInline muted id="video">
+<<<<<<< HEAD
           <source src="../../resource/background.mp4" type="video/mp4" />
+=======
+          <source src="/src/resource/background.mp4" type="video/mp4" />
+>>>>>>> 63471085210bf05f50a842e57562558d411ee9c3
         </video>
         <button
           onClick={logIn}
