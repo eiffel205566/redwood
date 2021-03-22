@@ -25,7 +25,6 @@ model Contact {
 
 model Expense {
   id     Int    @id @default(autoincrement())
-  name   String
   amount String
   type   String
   user   String

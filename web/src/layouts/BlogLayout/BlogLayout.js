@@ -32,22 +32,6 @@ const BlogLayout = ({
               </Link>
             </li>
             <li>
-              <Link
-                className="hover:text-gray-300 transition duration-100"
-                to={routes.contact()}
-              >
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="hover:text-gray-300 transition duration-100"
-                to={routes.posts()}
-              >
-                Posts
-              </Link>
-            </li>
-            <li>
               <button
                 className="hover:text-gray-300 transition duration-100"
                 onClick={isAuthenticated ? logOutRevised : logInRevised}

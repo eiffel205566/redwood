@@ -1,6 +1,6 @@
 import BlogLayout from '../../layouts/BlogLayout'
 import { useAuth } from '@redwoodjs/auth'
-// import BlogPostsCell from '../../resource/background.mp4'
+import ExpenseEntry from 'src/components/ExpenseEntry/ExpenseEntry'
 
 const HomePage = () => {
   const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
@@ -43,6 +43,7 @@ const HomePage = () => {
           </button>
         </div>
       )}
+      <ExpenseEntry currentUser={currentUser} />
     </>
   )
 }

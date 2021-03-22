@@ -4,7 +4,7 @@ import { UserInputError } from '@redwoodjs/api'
 export const expenses = ({ input }) => {
   return db.expense.findMany({
     where: {
-      user: input.user,
+      user: input?.user,
     },
   })
 }

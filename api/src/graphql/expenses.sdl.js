@@ -1,25 +1,26 @@
 export const schema = gql`
   type Expense {
     id: Int!
-    name: String!
     amount: String!
     type: String!
-    user: String!
+    user: String
   }
 
   type Query {
-    expenses: [Expense!]!
+    expenses(input: QueryExpenseInput!): [Expense!]!
   }
 
-  input CreateExpenseInput {
-    name: String!
-    amount: String!
-    type: String!
+  input QueryExpenseInput {
     user: String!
   }
 
+  input CreateExpenseInput {
+    amount: String!
+    type: String!
+    user: String
+  }
+
   input UpdateExpenseInput {
-    name: String
     amount: String
     type: String
   }
