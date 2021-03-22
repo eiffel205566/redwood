@@ -5,8 +5,8 @@ const AboutPage = () => {
   const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
   return (
     <BlogLayout
-      logIn={logInRevised}
-      logOut={logOutRevised}
+      logIn={logIn}
+      logOut={logOut}
       isAuthenticated={isAuthenticated}
       currentUser={currentUser}
       className="z-10"
