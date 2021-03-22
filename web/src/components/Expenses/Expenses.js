@@ -1,7 +1,7 @@
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 import { Link, routes } from '@redwoodjs/router'
-
+import { useAuth } from '@redwoodjs/auth'
 import { QUERY } from 'src/components/ExpensesCell'
 
 const DELETE_EXPENSE_MUTATION = gql`
@@ -39,6 +39,8 @@ const checkboxInputTag = (checked) => {
 }
 
 const ExpensesList = ({ expenses }) => {
+  const { currentUser } = useAuth()
+  const { email } = currentUser || { email: 'fakeuser.expinsight@gmail.com' }
   const [deleteExpense] = useMutation(DELETE_EXPENSE_MUTATION, {
     onCompleted: () => {
       toast.success('Expense deleted')
@@ -69,40 +71,42 @@ const ExpensesList = ({ expenses }) => {
           </tr>
         </thead>
         <tbody>
-          {expenses.map((expense) => (
-            <tr key={expense.id}>
-              <td>{truncate(expense.id)}</td>
-              <td>{truncate(expense.amount)}</td>
-              <td>{truncate(expense.type)}</td>
-              <td>{truncate(expense.user)}</td>
-              <td>
-                <nav className="rw-table-actions">
-                  <Link
-                    to={routes.expense({ id: expense.id })}
-                    title={'Show expense ' + expense.id + ' detail'}
-                    className="rw-button rw-button-small"
-                  >
-                    Show
-                  </Link>
-                  <Link
-                    to={routes.editExpense({ id: expense.id })}
-                    title={'Edit expense ' + expense.id}
-                    className="rw-button rw-button-small rw-button-blue"
-                  >
-                    Edit
-                  </Link>
-                  <a
-                    href="#"
-                    title={'Delete expense ' + expense.id}
-                    className="rw-button rw-button-small rw-button-red"
-                    onClick={() => onDeleteClick(expense.id)}
-                  >
-                    Delete
-                  </a>
-                </nav>
-              </td>
-            </tr>
-          ))}
+          {expenses
+            .filter((expense) => expense.user === email)
+            .map((expense) => (
+              <tr key={expense.id}>
+                <td>{truncate(expense.id)}</td>
+                <td>{truncate(expense.amount)}</td>
+                <td>{truncate(expense.type)}</td>
+                <td>{truncate(expense.user)}</td>
+                <td>
+                  <nav className="rw-table-actions">
+                    <Link
+                      to={routes.expense({ id: expense.id })}
+                      title={'Show expense ' + expense.id + ' detail'}
+                      className="rw-button rw-button-small"
+                    >
+                      Show
+                    </Link>
+                    <Link
+                      to={routes.editExpense({ id: expense.id })}
+                      title={'Edit expense ' + expense.id}
+                      className="rw-button rw-button-small rw-button-blue"
+                    >
+                      Edit
+                    </Link>
+                    <a
+                      href="#"
+                      title={'Delete expense ' + expense.id}
+                      className="rw-button rw-button-small rw-button-red"
+                      onClick={() => onDeleteClick(expense.id)}
+                    >
+                      Delete
+                    </a>
+                  </nav>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

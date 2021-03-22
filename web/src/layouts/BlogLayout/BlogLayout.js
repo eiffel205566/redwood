@@ -25,15 +25,23 @@ const BlogLayout = ({
           <ul className="flex justify-end space-x-2">
             <li>
               <Link
-                className="hover:text-gray-300 transition duration-100"
+                className="hover:text-gray-300 transition duration-100 mx-5"
                 to={routes.about()}
               >
                 About
               </Link>
             </li>
             <li>
+              <Link
+                className="hover:text-gray-300 transition duration-100 mx-5"
+                to={routes.expenses()}
+              >
+                Enter New
+              </Link>
+            </li>
+            <li>
               <button
-                className="hover:text-gray-300 transition duration-100"
+                className="hover:text-gray-300 transition duration-100 mx-5"
                 onClick={isAuthenticated ? logOutRevised : logInRevised}
               >
                 {isAuthenticated ? 'Log Out' : 'Log In'}

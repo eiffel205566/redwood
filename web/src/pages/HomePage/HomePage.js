@@ -1,9 +1,36 @@
 import BlogLayout from '../../layouts/BlogLayout'
 import { useAuth } from '@redwoodjs/auth'
-import ExpenseEntry from 'src/components/ExpenseEntry/ExpenseEntry'
+import ExpensesCell from 'src/components/ExpensesCell'
+import { useQuery } from '@redwoodjs/web'
+import { useEffect, useState } from 'react'
+const QUERY = gql`
+  query EXPENSES {
+    expenses {
+      id
+      amount
+      type
+      user
+    }
+  }
+`
 
 const HomePage = () => {
+  const { data } = useQuery(QUERY)
+  const [expenses, setExpenses] = useState({
+    expenses: [],
+  })
+
+  useEffect(() => {
+    setExpenses((currState) => {
+      return { ...currState, expenses: data?.expenses }
+    })
+  }, [data])
+
+  // console.log(expenses?.expenses)
+
   const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+
+  const { email } = currentUser || { email: 'fakeuser.expinsight@gmail.com' }
 
   const logInRevised = () => {
     logIn()
@@ -14,9 +41,6 @@ const HomePage = () => {
     logOut()
     localStorage.removeItem('user')
   }
-
-  console.log(currentUser)
-
   return (
     <>
       <BlogLayout
