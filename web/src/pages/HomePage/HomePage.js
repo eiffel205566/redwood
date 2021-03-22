@@ -96,7 +96,7 @@ const HomePage = () => {
         currentUser={currentUser}
         className="z-10"
       ></BlogLayout>
-      {!isAuthenticated || currentUser?.email || (
+      {isAuthenticated || currentUser?.email || (
         <div id="container relative">
           <video autoPlay="true" loop playsInline muted id="video">
             <source
@@ -113,7 +113,7 @@ const HomePage = () => {
           </button>
         </div>
       )}
-      {expenses?.expenses && (
+      {isAuthenticated && currentUser?.email && expenses?.expenses && (
         <Bar
           className="mx-10"
           data={graphData}
