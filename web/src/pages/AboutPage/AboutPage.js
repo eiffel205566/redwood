@@ -1,9 +1,16 @@
 import BlogLayout from 'src/layouts/BlogLayout/BlogLayout'
 import { Calculator, Money } from 'src/components/Misc/svg'
-
+import { useAuth } from '@redwoodjs/auth'
 const AboutPage = () => {
+  const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
   return (
-    <BlogLayout>
+    <BlogLayout
+      logIn={logInRevised}
+      logOut={logOutRevised}
+      isAuthenticated={isAuthenticated}
+      currentUser={currentUser}
+      className="z-10"
+    >
       <div className="p-20">
         <div>
           <p className="font-light font-bold text-gray-500">
@@ -22,7 +29,7 @@ const AboutPage = () => {
           </p>
         </div>
       </div>
-    </BlogLayout>
+    <BlogLayout/>
   )
 }
 
