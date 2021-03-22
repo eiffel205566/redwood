@@ -31,14 +31,16 @@ const BlogLayout = ({
                 About
               </Link>
             </li>
-            <li>
-              <Link
-                className="hover:text-gray-300 transition duration-100 mx-5"
-                to={routes.expenses()}
-              >
-                Enter New
-              </Link>
-            </li>
+            {isAuthenticated && (
+              <li>
+                <Link
+                  className="hover:text-gray-300 transition duration-100 mx-5"
+                  to={routes.expenses()}
+                >
+                  Enter New
+                </Link>
+              </li>
+            )}
             <li>
               <button
                 className="hover:text-gray-300 transition duration-100 mx-5"
