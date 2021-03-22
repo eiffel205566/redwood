@@ -6,6 +6,7 @@ import {
   FieldError,
   Label,
   FormError,
+  NumberField,
 } from '@redwoodjs/forms'
 import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
@@ -44,6 +45,7 @@ const ExpenseEntry = ({ currentUser }) => {
     <>
       <Toaster timeout={2000} />
       <Form
+        className="p-5 text-gray-500"
         onSubmit={onSubmit}
         validation={{ mode: 'onBlur' }}
         formMethods={formMethods}
@@ -65,7 +67,7 @@ const ExpenseEntry = ({ currentUser }) => {
         <Label name="amount" errorClassName="error">
           Amount
         </Label>
-        <TextAreaField
+        <TextField
           name="amount"
           validation={{ required: true }}
           errorClassName="error"
