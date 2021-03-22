@@ -3,31 +3,29 @@ export const schema = gql`
     id: Int!
     amount: String!
     type: String!
-    user: String
+    user: String!
   }
 
   type Query {
-    expenses(input: QueryExpenseInput!): [Expense!]!
-  }
-
-  input QueryExpenseInput {
-    user: String!
+    expenses: [Expense!]!
+    expense(id: Int!): Expense
   }
 
   input CreateExpenseInput {
     amount: String!
     type: String!
-    user: String
+    user: String!
   }
 
   input UpdateExpenseInput {
     amount: String
     type: String
+    user: String
   }
 
   type Mutation {
     createExpense(input: CreateExpenseInput!): Expense!
-    updateExpense(id: Int!, input: UpdateExpenseInput): Expense!
+    updateExpense(id: Int!, input: UpdateExpenseInput!): Expense!
     deleteExpense(id: Int!): Expense!
   }
 `

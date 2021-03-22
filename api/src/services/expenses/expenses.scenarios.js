@@ -1,6 +1,6 @@
 export const standard = defineScenario({
   expense: {
-    one: { name: 'String', type: 'String', user: 'String' },
-    two: { name: 'String', type: 'String', user: 'String' },
+    one: { amount: 'String', type: 'String', user: 'String' },
+    two: { amount: 'String', type: 'String', user: 'String' },
   },
 })

@@ -45,7 +45,7 @@ const ExpenseEntry = ({ currentUser }) => {
     <>
       <Toaster timeout={2000} />
       <Form
-        className="p-5 text-gray-500"
+        className="p-5 text-gray-500 border"
         onSubmit={onSubmit}
         validation={{ mode: 'onBlur' }}
         formMethods={formMethods}

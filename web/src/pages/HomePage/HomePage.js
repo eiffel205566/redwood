@@ -26,7 +26,7 @@ const HomePage = () => {
         currentUser={currentUser}
         className="z-10"
       ></BlogLayout>
-      {!isAuthenticated || currentUser?.email || (
+      {isAuthenticated || currentUser?.email || (
         <div id="container relative">
           <video autoPlay="true" loop playsInline muted id="video">
             <source
@@ -42,9 +42,6 @@ const HomePage = () => {
             Log In Here...
           </button>
         </div>
-      )}
-      {isAuthenticated && currentUser?.email && (
-        <ExpenseEntry currentUser={currentUser} />
       )}
     </>
   )
