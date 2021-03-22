@@ -4,13 +4,14 @@ import { useAuth } from '@redwoodjs/auth'
 const AboutPage = () => {
   const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
   return (
-    <BlogLayout
-      logIn={logIn}
-      logOut={logOut}
-      isAuthenticated={isAuthenticated}
-      currentUser={currentUser}
-      className="z-10"
-    >
+    <>
+      <BlogLayout
+        logInRevised={logIn}
+        logOutRevised={logOut}
+        isAuthenticated={isAuthenticated}
+        currentUser={currentUser}
+        className="z-10"
+      ></BlogLayout>
       <div className="p-20">
         <div>
           <p className="font-light font-bold text-gray-500">
@@ -29,7 +30,7 @@ const AboutPage = () => {
           </p>
         </div>
       </div>
-    <BlogLayout/>
+    </>
   )
 }
 
