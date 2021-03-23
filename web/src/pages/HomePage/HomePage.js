@@ -1,7 +1,8 @@
 import BlogLayout from '../../layouts/BlogLayout'
-import { Bar } from 'react-chartjs-2'
+import { Bar, Doughnut } from 'react-chartjs-2'
 import { useAuth } from '@redwoodjs/auth'
 import ExpensesCell from 'src/components/ExpensesCell'
+import { Summary } from 'src/components/Misc/Summary'
 import { useQuery } from '@redwoodjs/web'
 import { useEffect, useState } from 'react'
 const QUERY = gql`
@@ -17,6 +18,20 @@ const QUERY = gql`
 
 const HomePage = () => {
   const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+  // const { logIn, logOut } = useAuth()
+  // const currentUser = {
+  //   app_metadata: {
+  //     provider: 'email',
+  //   },
+  //   email: 'fakeuser2.expinsight@gmail.com',
+  //   exp: 1616348450,
+  //   sub: '3cff8205-96d0-464a-a6c2-31043649f687',
+  //   user_metadata: {
+  //     full_name: 'Fake User',
+  //   },
+  //   roles: [],
+  // }
+  // const isAuthenticated = true
 
   const { email } = currentUser || { email: 'fakeuser.expinsight@gmail.com' }
 
@@ -33,6 +48,28 @@ const HomePage = () => {
   const [expenses, setExpenses] = useState({
     expenses: [],
   })
+
+  const [chartType, setChartType] = useState({
+    type: 'bar',
+  })
+
+  const onSetChartType = () => {
+    if (chartType.type === 'bar') {
+      setChartType((currState) => {
+        return {
+          ...currState,
+          type: 'donut',
+        }
+      })
+    } else {
+      setChartType((currState) => {
+        return {
+          ...currState,
+          type: 'bar',
+        }
+      })
+    }
+  }
 
   useEffect(() => {
     setExpenses((currState) => {
@@ -59,12 +96,12 @@ const HomePage = () => {
     expensesList.forEach((expense) => {
       chartData[expense.type] += +expense?.amount || 0
     })
-    console.log(chartData)
+    // console.log(expenses)
     graphData = {
       labels,
       datasets: [
         {
-          label: 'Sample Chart',
+          label: 'Your Spending',
           data: Object.values(chartData),
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
@@ -74,19 +111,13 @@ const HomePage = () => {
             'rgba(153, 102, 255, 0.2)',
             'rgba(255, 159, 64, 0.2)',
           ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-          ],
+          borderColor: [],
           borderWidth: 1,
         },
       ],
     }
   }
+
   return (
     <>
       <BlogLayout
@@ -114,13 +145,34 @@ const HomePage = () => {
         </div>
       )}
       {isAuthenticated && currentUser?.email && expenses?.expenses && (
-        <Bar
-          className="mx-10"
-          data={graphData}
-          width={300}
-          height={300}
-          options={{ maintainAspectRatio: false }}
-        />
+        <div className="m-20">
+          <button
+            onClick={onSetChartType}
+            className="inline m-auto bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          >
+            {chartType.type === 'bar' ? 'Donut Chart' : 'Bar Chart'}
+          </button>
+          {chartType.type === 'bar' ? (
+            <Bar
+              data={graphData}
+              width={250}
+              height={250}
+              options={{ maintainAspectRatio: false }}
+            />
+          ) : (
+            <Doughnut
+              data={graphData}
+              width={250}
+              height={250}
+              options={{ maintainAspectRatio: false }}
+            />
+          )}
+        </div>
+      )}
+      {chartData?.length ? (
+        <Summary expenses={Object.entries(chartData)} />
+      ) : (
+        <Summary labels={labels} chartData={chartData} />
       )}
     </>
   )
