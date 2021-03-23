@@ -41,3 +41,11 @@ input.error, textarea.error {
 #video + button {
   transform: translate(-50%, -50%);
 }
+
+canvas {
+  margin: auto;
+}
+
+.chart-container {
+  height: 40vh;
+}

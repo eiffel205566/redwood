@@ -144,7 +144,7 @@ const HomePage = () => {
         </div>
       )}
       {isAuthenticated && currentUser?.email && expenses?.expenses && (
-        <div className="m-20">
+        <div className="m-20 chart-container">
           <button
             onClick={onSetChartType}
             className="inline m-auto bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
@@ -154,8 +154,6 @@ const HomePage = () => {
           {chartType.type === 'bar' ? (
             <Bar
               data={graphData}
-              width={250}
-              height={250}
               options={{
                 maintainAspectRatio: false,
                 scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
@@ -164,8 +162,8 @@ const HomePage = () => {
           ) : (
             <Doughnut
               data={graphData}
-              width={250}
-              height={250}
+              width={1000}
+              height={400}
               options={{
                 maintainAspectRatio: false,
               }}

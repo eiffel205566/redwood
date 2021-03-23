@@ -50,8 +50,10 @@ const BlogLayout = ({
               </button>
             </li>
             {isAuthenticated && currentUser?.email && (
-              <li className="text-center w-6 h-6 bg-green-500 rounded-full border border-gray-100 shadow-sm">
-                {currentUser?.email?.toString()?.toUpperCase()?.slice(0, 2)}
+              <li className="text-sm text-center w-6 h-6 bg-green-500 rounded-full border border-gray-100 shadow-sm">
+                <span>
+                  {currentUser?.email?.toString()?.toUpperCase()?.slice(0, 2)}
+                </span>
               </li>
             )}
           </ul>
