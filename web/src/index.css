@@ -37,3 +37,7 @@ input.error, textarea.error {
   top: 0;
   left: 0;
 }
+
+#video + button {
+  transform: translate(-50%, -50%);
+}

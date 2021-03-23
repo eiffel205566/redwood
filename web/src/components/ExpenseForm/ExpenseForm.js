@@ -5,6 +5,7 @@ import {
   Label,
   TextField,
   Submit,
+  NumberField,
 } from '@redwoodjs/forms'
 import { useAuth } from '@redwoodjs/auth'
 
@@ -34,7 +35,7 @@ const ExpenseForm = (props) => {
         >
           Amount
         </Label>
-        <TextField
+        <NumberField
           name="amount"
           defaultValue={props.expense?.amount}
           className="rw-input"
