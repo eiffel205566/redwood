@@ -39,7 +39,13 @@ const ExpenseForm = (props) => {
           defaultValue={props.expense?.amount}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
+          validation={{
+            required: true,
+            pattern: {
+              value: /^\d*\.?\d?\d?$/,
+              message: 'Please enter valid amount',
+            },
+          }}
         />
         <FieldError name="amount" className="rw-field-error" />
         <Label
