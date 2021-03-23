@@ -137,7 +137,7 @@ const HomePage = () => {
           </video>
           <button
             onClick={logIn}
-            className="text-4xl absolute z-10 text-white hover:text-gray-500 transition duration-100 inset-1/2"
+            className="inline-block text-center text-4xl absolute top-1/2 left-1/2 z-10 text-white hover:text-gray-500 transition duration-100 p-5 border border-gray-500 rounded"
             id="btn"
           >
             Log In Here...
@@ -169,11 +169,14 @@ const HomePage = () => {
           )}
         </div>
       )}
-      {chartData?.length ? (
-        <Summary expenses={Object.entries(chartData)} />
-      ) : (
-        <Summary labels={labels} chartData={chartData} />
-      )}
+      {isAuthenticated &&
+        currentUser?.email &&
+        expenses?.expenses &&
+        (chartData?.length ? (
+          <Summary expenses={Object.entries(chartData)} />
+        ) : (
+          <Summary labels={labels} chartData={chartData} />
+        ))}
     </>
   )
 }
