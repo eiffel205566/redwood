@@ -27,7 +27,9 @@ export const Summary = (props) => {
             arrChartData.map((expense, index) => (
               <tr key={index}>
                 <td style={{ textAlign: 'center' }}>{expense[0]}</td>
-                <td style={{ textAlign: 'center' }}>{expense[1]}</td>
+                <td style={{ textAlign: 'center' }}>
+                  {Math.round(expense[1])}
+                </td>
                 <>&nbsp;</>
               </tr>
             ))}

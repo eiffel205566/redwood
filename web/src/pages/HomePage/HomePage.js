@@ -1,7 +1,6 @@
 import BlogLayout from '../../layouts/BlogLayout'
 import { Bar, Doughnut } from 'react-chartjs-2'
 import { useAuth } from '@redwoodjs/auth'
-import ExpensesCell from 'src/components/ExpensesCell'
 import { Summary } from 'src/components/Misc/Summary'
 import { useQuery } from '@redwoodjs/web'
 import { useEffect, useState } from 'react'
