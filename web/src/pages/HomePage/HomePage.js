@@ -156,7 +156,10 @@ const HomePage = () => {
               data={graphData}
               width={250}
               height={250}
-              options={{ maintainAspectRatio: false }}
+              options={{
+                maintainAspectRatio: false,
+                scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
+              }}
             />
           ) : (
             <Doughnut
@@ -165,7 +168,6 @@ const HomePage = () => {
               height={250}
               options={{
                 maintainAspectRatio: false,
-                scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
               }}
             />
           )}
