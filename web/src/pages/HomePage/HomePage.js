@@ -4,6 +4,7 @@ import { useAuth } from '@redwoodjs/auth'
 import { Summary } from 'src/components/Misc/Summary'
 import { useQuery } from '@redwoodjs/web'
 import { useEffect, useState } from 'react'
+import { ChevronRight } from 'src/components/Misc/svg'
 const QUERY = gql`
   query EXPENSES {
     expenses {
@@ -136,10 +137,12 @@ const HomePage = () => {
           </video>
           <button
             onClick={logIn}
-            className="inline-block text-center text-4xl absolute top-1/2 left-1/2 z-10 text-white hover:text-gray-500 transition duration-100 p-5 border border-gray-500 rounded"
+            className="inline-block text-center relative text-4xl left-1/2 z-10 text-white hover:text-gray-500 transition duration-100 p-5 border border-gray-500 hover:border-gray-300 rounded"
             id="btn"
           >
-            Log In Here...
+            <ChevronRight className="h-10 w-10 inline chevronright" />
+
+            <span className="disappear">Log In Here...</span>
           </button>
         </div>
       )}

@@ -49,3 +49,28 @@ canvas {
 .chart-container {
   height: 40vh;
 }
+
+#btn:hover span {
+  color: transparent;
+}
+
+#btn {
+  position: relative;
+  top: 45vh;
+  transform: translateY(-50%);
+}
+
+.chevronright {
+  position: absolute;
+  color: transparent
+}
+
+@keyframes moveRight {
+  from {left: 0px; opacity: 0}
+  to {left: 80%; opacity: 1}
+}
+
+#btn:hover .chevronright:nth-child(1) {
+  color: #808080;
+  animation: moveRight 1s infinite;
+}
