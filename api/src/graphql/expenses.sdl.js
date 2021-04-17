@@ -9,6 +9,7 @@ export const schema = gql`
   type Query {
     expenses: [Expense!]!
     expense(id: Int!): Expense
+    myExpenses(input: String!): [Expense!]!
   }
 
   input CreateExpenseInput {

@@ -30,3 +30,9 @@ export const deleteExpense = ({ id }) => {
     where: { id },
   })
 }
+
+export const myExpenses = ({ input }) => {
+  return db.expense.findMany({
+    where: { user: input },
+  })
+}

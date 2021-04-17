@@ -5,10 +5,14 @@ export const schema = gql`
     email: String!
     message: String!
     createdAt: DateTime!
+    likes: [String!]!
   }
 
   type Query {
     contacts: [Contact!]!
+    myContacts(email: String!): [Contact!]!
+    searchMessage(message: String): [Contact!]!
+    oneContact(input: OneContactInput!): Contact
   }
 
   input CreateContactInput {
@@ -27,8 +31,18 @@ export const schema = gql`
     id: Int!
   }
 
+  input OneContactInput {
+    id: Int!
+  }
+
+  input LikeContactInput {
+    id: Int!
+    email: String!
+  }
+
   type Mutation {
     createContact(input: CreateContactInput!): Contact
     deleteContact(input: DeleteContactInput!): Contact
+    likeContact(input: LikeContactInput): Contact
   }
 `

@@ -16,24 +16,41 @@ const QUERY = gql`
   }
 `
 
+const MYQUERY = gql`
+  query MYEXPENSES($input: String!) {
+    myExpenses(input: $input) {
+      id
+      amount
+      type
+      user
+    }
+  }
+`
+
 const HomePage = () => {
-  const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
-  // const { logIn, logOut } = useAuth()
-  // const currentUser = {
-  //   app_metadata: {
-  //     provider: 'email',
-  //   },
-  //   email: 'fakeuser2.expinsight@gmail.com',
-  //   exp: 1616348450,
-  //   sub: '3cff8205-96d0-464a-a6c2-31043649f687',
-  //   user_metadata: {
-  //     full_name: 'Fake User',
-  //   },
-  //   roles: [],
-  // }
-  // const isAuthenticated = true
+  // const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+
+  const { logIn, logOut } = useAuth()
+  const currentUser = {
+    app_metadata: {
+      provider: 'email',
+    },
+    email: 'fakeuser2.expinsight@gmail.com',
+    exp: 1616348450,
+    sub: '3cff8205-96d0-464a-a6c2-31043649f687',
+    user_metadata: {
+      full_name: 'Fake User',
+    },
+    roles: [],
+  }
+  const isAuthenticated = true
 
   const { email } = currentUser || { email: 'fakeuser.expinsight@gmail.com' }
+
+  //*--
+  // const testdata = useQuery(MYQUERY, { variables: { input: email } })
+  // console.log(testdata)
+  //*--
 
   const logInRevised = () => {
     logIn()
@@ -44,7 +61,8 @@ const HomePage = () => {
     logOut()
     localStorage.removeItem('user')
   }
-  const { data } = useQuery(QUERY)
+  // const { data } = useQuery(QUERY)
+  const { data } = useQuery(MYQUERY, { variables: { input: email } })
   const [expenses, setExpenses] = useState({
     expenses: [],
   })
@@ -73,7 +91,7 @@ const HomePage = () => {
 
   useEffect(() => {
     setExpenses((currState) => {
-      return { ...currState, expenses: data?.expenses }
+      return { ...currState, expenses: data?.myExpenses }
     })
   }, [data])
 
