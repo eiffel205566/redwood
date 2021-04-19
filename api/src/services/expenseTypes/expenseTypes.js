@@ -4,6 +4,17 @@ export const expenseTypes = () => {
   return db.expenseType.findMany()
 }
 
+export const userTypes = ({ user }) => {
+  return db.expenseType.findMany({
+    where: {
+      user,
+    },
+    orderBy: {
+      id: 'asc',
+    },
+  })
+}
+
 export const createExpenseType = ({ input }) => {
   return db.expenseType.create({
     data: input,

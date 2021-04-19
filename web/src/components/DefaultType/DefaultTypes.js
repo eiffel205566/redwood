@@ -7,7 +7,7 @@ import { defaultIcons } from 'src/components/DefaultType/Static'
 const DefaultTypes = ({ setIconType, currentType, id }) => {
   // console.log(setIconType)
   return (
-    <div className="col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 overflow-scroll m-h-96">
+    <div className="col-span-1 sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 overflow-y-scroll m-h-96">
       {defaultIcons.map(([icon, description], index) => (
         <SingleType
           icon={icon}

@@ -8,6 +8,11 @@ export const schema = gql`
 
   type Query {
     expenseTypes: [ExpenseType!]!
+    userTypes(input: QueryExpensesTypeInput!): [ExpenseType!]!
+  }
+
+  input QueryExpensesTypeInput {
+    user: String!
   }
 
   input CreateExpenseTypeInput {
