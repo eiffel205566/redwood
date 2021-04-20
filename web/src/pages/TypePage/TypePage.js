@@ -1,5 +1,5 @@
 import { Link, routes } from '@redwoodjs/router'
-import React from 'react'
+import React, { Fragment } from 'react'
 import BlogLayout from '../../layouts/BlogLayout'
 import { Spin } from 'src/components/Misc/svg'
 import { useEffect, useState } from 'react'
@@ -7,6 +7,7 @@ import { iconTypes } from 'src/components/DefaultType/Static'
 import { useQuery } from '@redwoodjs/web'
 import { WrappedUserTypes } from 'src/components/DefaultType/UserTypes'
 import DefaultForm from 'src/components/DefaultType/DefaultForm'
+import Error from 'src/components/Error/Error'
 
 import { CREATE_TYPE, ALL_USER_ICONS } from 'src/components/Misc/Queries'
 
@@ -47,6 +48,16 @@ const TypePage = () => {
     fetchPolicy: 'network-only',
   })
   const { userTypes: expenseTypes } = data || { userTypes: null }
+
+  const [typePageErrorState, setTypePageErrorState] = useState({
+    errorState: false,
+  })
+  const { errorState } = typePageErrorState
+
+  const [typePageFormDesc, setTypePageFormDesc] = useState({
+    typePageDescription: '',
+  })
+
   //--
 
   //lifecycle: onmount
@@ -65,30 +76,39 @@ const TypePage = () => {
   //--
 
   return (
-    <BlogLayout>
-      {/*
+    <Fragment>
+      {errorState && (
+        <Error
+          setIconType={setIconType}
+          setTypePageErrorState={setTypePageErrorState}
+          setTypePageFormDesc={setTypePageFormDesc}
+        />
+      )}
+      <BlogLayout className="z-10">
+        <WrappedUserTypes
+          id={id}
+          userTypes={userTypes}
+          iconTypes={iconTypes}
+          setIconType={setIconType}
+          allUserLoading={allUserLoading}
+        />
 
-      */}
-      <WrappedUserTypes
-        id={id}
-        userTypes={userTypes}
-        iconTypes={iconTypes}
-        setIconType={setIconType}
-        allUserLoading={allUserLoading}
-      />
-
-      {/*
-       */}
-      <DefaultForm
-        currentType={currentType}
-        id={id}
-        currentName={currentName}
-        iconTypes={iconTypes}
-        setIconType={setIconType}
-        user={user}
-        userTypes={userTypes}
-      />
-    </BlogLayout>
+        {/*
+         */}
+        <DefaultForm
+          currentType={currentType}
+          id={id}
+          currentName={currentName}
+          iconTypes={iconTypes}
+          setIconType={setIconType}
+          user={user}
+          userTypes={userTypes}
+          setTypePageErrorState={setTypePageErrorState}
+          typePageFormDesc={typePageFormDesc}
+          setTypePageFormDesc={setTypePageFormDesc}
+        />
+      </BlogLayout>
+    </Fragment>
   )
 }
 

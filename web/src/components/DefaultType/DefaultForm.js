@@ -28,8 +28,22 @@ const DefaultForm = ({
   setIconType,
   user,
   userTypes,
+  setTypePageErrorState,
+  typePageFormDesc,
+  setTypePageFormDesc,
 }) => {
   const formMethods = useForm({ mode: 'onBlur' })
+  const { typePageDescription } = typePageFormDesc
+
+  //form onChange
+  const onChange = (e) => {
+    setTypePageFormDesc((state) => {
+      return {
+        ...state,
+        typePageDescription: e.target.value,
+      }
+    })
+  }
 
   //delete user type
   const [deleteType, { loading: deleteTypeLoading }] = useMutation(
@@ -68,6 +82,12 @@ const DefaultForm = ({
       })
     } catch (err) {
       console.log(err)
+      setTypePageErrorState((state) => {
+        return {
+          ...state,
+          errorState: true,
+        }
+      })
     }
   }
 
@@ -124,10 +144,17 @@ const DefaultForm = ({
         })
       } catch (error) {
         console.log(error)
+        setTypePageErrorState((state) => {
+          return {
+            ...state,
+            errorState: true,
+          }
+        })
       }
     } else {
       //create new type, no id
       try {
+        if (!currentType) throw new Error('Pick A Icon')
         await createType({
           variables: {
             input: {
@@ -148,7 +175,13 @@ const DefaultForm = ({
           },
         })
       } catch (error) {
-        console.log(error)
+        console.log(error.message)
+        setTypePageErrorState((state) => {
+          return {
+            ...state,
+            errorState: true,
+          }
+        })
       }
     }
   }
@@ -210,6 +243,8 @@ const DefaultForm = ({
             errorClassName="error rounded p-1 min-w-full max-w-full"
             className="border border-gray-500 rounded p-1 min-w-full max-w-full text-xs sm:text-sm md:text-base"
             placeholder={currentName ? currentName : currentType}
+            onChange={onChange}
+            value={typePageDescription}
           />
           {currentType ? (
             <FieldError
@@ -242,7 +277,9 @@ const DefaultForm = ({
                 disabled={deleteTypeLoading}
                 className="bg-gray-400 hover:bg-red-700 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base"
               >
-                {deleteTypeLoading ? 'Please Wait' : 'Delete'}
+                {createTypeLoading || updateTypeLoading || deleteTypeLoading
+                  ? 'Please Wait'
+                  : 'Delete'}
               </button>
             )}
           </div>
