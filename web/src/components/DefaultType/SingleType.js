@@ -1,5 +1,4 @@
 import React from 'react'
-import { Delete } from 'src/components/Misc/svg'
 
 const SingleType = ({
   icon,
@@ -14,7 +13,7 @@ const SingleType = ({
   return (
     <div key={index} className={parentClass}>
       {React.createElement(icon, {
-        className: iconClass,
+        className: iconClass + ' hover:bg-gray-300',
         onClick: setIconType
           ? (e) => {
               e.stopPropagation()

@@ -31,6 +31,7 @@ const DefaultForm = ({
   setTypePageErrorState,
   typePageFormDesc,
   setTypePageFormDesc,
+  setNeedConfirm,
 }) => {
   const formMethods = useForm({ mode: 'onBlur' })
   const { typePageDescription } = typePageFormDesc
@@ -45,54 +46,16 @@ const DefaultForm = ({
     })
   }
 
-  //delete user type
-  const [deleteType, { loading: deleteTypeLoading }] = useMutation(
-    DELETE_TYPE,
-    {
-      onCompleted: () => {
-        setIconType((state) => {
-          return { ...state, currentType: '', id: null, currentName: '' }
-        })
-        formMethods.reset()
-        formMethods.clearErrors()
-      },
-    }
-  )
+  //delete user type moved to confirmation
 
   const onDelete = async () => {
-    try {
-      await deleteType({
-        variables: {
-          input: {
-            id,
-          },
-        },
-        update: (cache, { data }) => {
-          const {
-            deleteExpenseType: { id },
-          } = data
-          cache.writeQuery({
-            query: ALL_USER_ICONS,
-            variables: { input: { user } },
-            data: {
-              userTypes: [...userTypes.filter((type) => type.id !== id)],
-            },
-          })
-        },
-      })
-    } catch (err) {
-      console.log(err)
-      setTypePageErrorState((state) => {
-        return {
-          ...state,
-          errorState: true,
-        }
-      })
-    }
+    setNeedConfirm((state) => {
+      return { ...state, confirmNeeded: true }
+    })
   }
 
   //create new user type
-  const [createType, { loading: createTypeLoading, error }] = useMutation(
+  const [createType, { loading: createTypeLoading }] = useMutation(
     CREATE_TYPE,
     {
       onCompleted: () => {
@@ -106,10 +69,9 @@ const DefaultForm = ({
   )
 
   const onSubmit = async (data) => {
-    //update, id is present
+    //update, when id (in state) is present
     if (id) {
       try {
-        // console.log({ id, ...data })
         await updateType({
           variables: {
             input: {
@@ -141,6 +103,10 @@ const DefaultForm = ({
               },
             })
           },
+        })
+        //clear input field
+        setTypePageFormDesc((state) => {
+          return { ...state, typePageDescription: '' }
         })
       } catch (error) {
         console.log(error)
@@ -174,12 +140,16 @@ const DefaultForm = ({
             })
           },
         })
+        setTypePageFormDesc((state) => {
+          return { ...state, typePageDescription: '' }
+        })
       } catch (error) {
         console.log(error.message)
         setTypePageErrorState((state) => {
           return {
             ...state,
             errorState: true,
+            errorMessage: 'Please select an icon',
           }
         })
       }
@@ -202,9 +172,16 @@ const DefaultForm = ({
   //--
 
   //Cancel button && reset state
-  const onClick = () => {
+  const onClick = (e) => {
+    e.preventDefault()
     setIconType((state) => {
       return { ...state, currentType: '', id: null, currentName: '' }
+    })
+    setTypePageErrorState((state) => {
+      return { ...state, errorState: false, errorMessage: null }
+    })
+    setTypePageFormDesc((state) => {
+      return { ...state, typePageDescription: '' }
     })
     formMethods.reset()
     formMethods.clearErrors()
@@ -256,17 +233,16 @@ const DefaultForm = ({
           <div className="mt-5 flex flex-col">
             <Submit
               className="bg-gray-400 hover:bg-green-300 text-gray py-2 sm:px-4 rounded w-28 mt-5 min-w-full max-w-full text-xs sm:text-sm md:text-base"
-              disabled={
-                createTypeLoading || updateTypeLoading || deleteTypeLoading
-              }
+              disabled={createTypeLoading || updateTypeLoading}
             >
-              {createTypeLoading || updateTypeLoading || deleteTypeLoading
+              {createTypeLoading || updateTypeLoading
                 ? 'Please Wait'
                 : 'Submit'}
             </Submit>
 
             <button
               onClick={onClick}
+              disabled={createTypeLoading || updateTypeLoading}
               className="bg-gray-400 hover:bg-red-300 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base"
             >
               Cancel
@@ -274,10 +250,10 @@ const DefaultForm = ({
             {currentName && (
               <button
                 onClick={onDelete}
-                disabled={deleteTypeLoading}
+                disabled={createTypeLoading || updateTypeLoading}
                 className="bg-gray-400 hover:bg-red-700 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base"
               >
-                {createTypeLoading || updateTypeLoading || deleteTypeLoading
+                {createTypeLoading || updateTypeLoading
                   ? 'Please Wait'
                   : 'Delete'}
               </button>

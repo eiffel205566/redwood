@@ -10,6 +10,7 @@ import DefaultForm from 'src/components/DefaultType/DefaultForm'
 import Error from 'src/components/Error/Error'
 
 import { CREATE_TYPE, ALL_USER_ICONS } from 'src/components/Misc/Queries'
+import Confirmation from 'src/components/Confirmation/Confirmation'
 
 const TypePage = () => {
   //--
@@ -31,6 +32,7 @@ const TypePage = () => {
   //--
 
   //hooks
+  //focused iconed type
   const [iconType, setIconType] = useState({
     currentType: '',
     id: null,
@@ -38,26 +40,36 @@ const TypePage = () => {
   })
   const { currentType, id, currentName } = iconType
 
+  //query results of all icon types for the logged in user
   const [types, setTypes] = useState({
     userTypes: null,
   })
   const { userTypes } = types
 
+  //gql query
   const { data, loading: allUserLoading } = useQuery(ALL_USER_ICONS, {
     variables: { input: { user } },
     fetchPolicy: 'network-only',
   })
   const { userTypes: expenseTypes } = data || { userTypes: null }
 
+  //error state for Type Page component
   const [typePageErrorState, setTypePageErrorState] = useState({
     errorState: false,
+    errorMessage: null,
   })
   const { errorState } = typePageErrorState
 
+  //state for updating input field
   const [typePageFormDesc, setTypePageFormDesc] = useState({
     typePageDescription: '',
   })
 
+  //state for displaying confirmation component
+  const [needConfirm, setNeedConfirm] = useState({
+    confirmNeeded: false,
+  })
+  const { confirmNeeded } = needConfirm
   //--
 
   //lifecycle: onmount
@@ -82,9 +94,25 @@ const TypePage = () => {
           setIconType={setIconType}
           setTypePageErrorState={setTypePageErrorState}
           setTypePageFormDesc={setTypePageFormDesc}
+          typePageErrorState={typePageErrorState}
         />
       )}
-      <BlogLayout className="z-10">
+
+      {!errorState && confirmNeeded && (
+        <Confirmation
+          setTypePageFormDesc={setTypePageFormDesc}
+          currentName={currentName}
+          setTypePageErrorState={setTypePageErrorState}
+          setIconType={setIconType}
+          setNeedConfirm={setNeedConfirm}
+          id={id}
+          user={user}
+          userTypes={userTypes}
+        />
+      )}
+
+      <div className="absolute overflow-y-hidden bg-gray-500 -z-10 min-h-screen w-full"></div>
+      <BlogLayout>
         <WrappedUserTypes
           id={id}
           userTypes={userTypes}
@@ -106,6 +134,7 @@ const TypePage = () => {
           setTypePageErrorState={setTypePageErrorState}
           typePageFormDesc={typePageFormDesc}
           setTypePageFormDesc={setTypePageFormDesc}
+          setNeedConfirm={setNeedConfirm}
         />
       </BlogLayout>
     </Fragment>
