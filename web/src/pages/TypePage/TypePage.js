@@ -1,6 +1,8 @@
 import { Link, routes } from '@redwoodjs/router'
 import React, { Fragment } from 'react'
-import BlogLayout from '../../layouts/BlogLayout'
+// import BlogLayout from '../../layouts/BlogLayout'
+import TypeLayout from '../../layouts/TypeLayout'
+import SideBar from '../../components/SideBar/SideBar'
 import { Spin } from 'src/components/Misc/svg'
 import { useEffect, useState } from 'react'
 import { iconTypes } from 'src/components/DefaultType/Static'
@@ -70,6 +72,12 @@ const TypePage = () => {
     confirmNeeded: false,
   })
   const { confirmNeeded } = needConfirm
+
+  //side bar state
+  const [showSidebar, setShowSideBar] = useState({
+    sideBarShowed: false,
+  })
+  const { sideBarShowed } = showSidebar
   //--
 
   //lifecycle: onmount
@@ -110,33 +118,60 @@ const TypePage = () => {
           userTypes={userTypes}
         />
       )}
-
-      <div className="absolute overflow-y-hidden bg-gray-500 -z-10 min-h-screen w-full"></div>
-      <BlogLayout>
-        <WrappedUserTypes
-          id={id}
-          userTypes={userTypes}
-          iconTypes={iconTypes}
-          setIconType={setIconType}
-          allUserLoading={allUserLoading}
-        />
-
-        {/*
-         */}
-        <DefaultForm
-          currentType={currentType}
-          id={id}
-          currentName={currentName}
-          iconTypes={iconTypes}
-          setIconType={setIconType}
-          user={user}
-          userTypes={userTypes}
-          setTypePageErrorState={setTypePageErrorState}
-          typePageFormDesc={typePageFormDesc}
-          setTypePageFormDesc={setTypePageFormDesc}
-          setNeedConfirm={setNeedConfirm}
-        />
-      </BlogLayout>
+      {sideBarShowed && (
+        <aside className="absolute min-h-screen w-0 md:w-40 bg-gray-900">
+          <SideBar className="w-0 md:w-40" />
+        </aside>
+      )}
+      {/*
+      <div className="absolute overflow-y-hidden bg-gray-900 -z-10 min-h-screen w-full"></div>
+    */}
+      <TypeLayout setShowSideBar={setShowSideBar}>
+        <div className="flex">
+          {/*
+           */}
+          {sideBarShowed && <div className="w-0 md:w-40 -z-10"></div>}
+          {/*
+            // try to cheese with overlay sidebar
+            {sideBarShowed && (
+              <div className="md:hidden">
+                <Confirmation
+                  setTypePageFormDesc={setTypePageFormDesc}
+                  currentName={currentName}
+                  setTypePageErrorState={setTypePageErrorState}
+                  setIconType={setIconType}
+                  setNeedConfirm={setNeedConfirm}
+                  id={id}
+                  user={user}
+                  userTypes={userTypes}
+                />
+              </div>
+            )}
+          */}
+          <div className="w-full">
+            <WrappedUserTypes
+              id={id}
+              userTypes={userTypes}
+              iconTypes={iconTypes}
+              setIconType={setIconType}
+              allUserLoading={allUserLoading}
+            />
+            <DefaultForm
+              currentType={currentType}
+              id={id}
+              currentName={currentName}
+              iconTypes={iconTypes}
+              setIconType={setIconType}
+              user={user}
+              userTypes={userTypes}
+              setTypePageErrorState={setTypePageErrorState}
+              typePageFormDesc={typePageFormDesc}
+              setTypePageFormDesc={setTypePageFormDesc}
+              setNeedConfirm={setNeedConfirm}
+            />
+          </div>
+        </div>
+      </TypeLayout>
     </Fragment>
   )
 }

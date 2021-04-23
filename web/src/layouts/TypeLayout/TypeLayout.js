@@ -1,21 +1,41 @@
 import { Link, routes } from '@redwoodjs/router'
+import { Dots } from '../../components/Misc/svg'
 // import { useAuth } from '@redwoodjs/auth'
 
-const BlogLayout = ({
+const TypeLayout = ({
   children,
   logInRevised,
   logOutRevised,
   isAuthenticated,
   currentUser,
+  setShowSideBar,
 }) => {
   // const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
 
+  const onClick = (e) => {
+    e.preventDefault()
+
+    setShowSideBar((state) => {
+      return {
+        ...state,
+        sideBarShowed: !state.sideBarShowed,
+      }
+    })
+  }
+
   return (
     <>
+      {/*
+
+      */}
+      <div className="absolute overflow-y-hidden bg-gray-700 -z-10 min-h-screen w-full"></div>
       <header className="relative flex justify-between items-center py-4 px-8 bg-gray-500 text-white">
-        <h1 className="text-3xl font-semibold tracking-tight">
+        <h1 className="flex text-3xl font-semibold tracking-tight">
+          <button className="hover:text-gray-300" onClick={onClick}>
+            <Dots />
+          </button>
           <Link
-            className="hover:text-gray-300 transition duration-100"
+            className="hover:text-gray-300 transition duration-100 px-2"
             to={routes.home()}
           >
             Exp Insight
@@ -64,4 +84,4 @@ const BlogLayout = ({
   )
 }
 
-export default BlogLayout
+export default TypeLayout

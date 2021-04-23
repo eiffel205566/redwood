@@ -188,7 +188,7 @@ const DefaultForm = ({
   }
 
   return (
-    <div className="m-5 sm:m-10 md:m-20 h-96 bg-gray-200 border border-transparent rounded-xl p-1 grid grid-cols-2 sm:grid-cols-3 overflow-hidden">
+    <div className="m-5 sm:m-10 h-96 bg-gray-200 border border-transparent rounded-xl p-1 grid grid-cols-2 sm:grid-cols-3 overflow-hidden">
       <div className="flex flex-col">
         {currentType ? (
           React.createElement(iconTypes[currentType], {

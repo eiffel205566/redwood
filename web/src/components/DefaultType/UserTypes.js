@@ -28,7 +28,7 @@ export const Wrapper = (Component) => {
   return ({ ...props }) => {
     const { userTypes, allUserLoading } = props
     return (
-      <div className="m-5 sm:m-10 md:m-20 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-gray-200 overflow-scroll max-h-72 p-1 rounded-xl z-10">
+      <div className="m-5 sm:m-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-gray-200 overflow-scroll max-h-72 p-1 border rounded z-10">
         {allUserLoading ? (
           <Spin className="w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 text-gray-500 animate-spin m-auto" />
         ) : (
