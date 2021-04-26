@@ -2,6 +2,7 @@ import { Link, routes } from '@redwoodjs/router'
 import React, { Fragment } from 'react'
 // import BlogLayout from '../../layouts/BlogLayout'
 import TypeLayout from '../../layouts/TypeLayout'
+import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
 import SideBar from '../../components/SideBar/SideBar'
 import { Spin } from 'src/components/Misc/svg'
 import { useEffect, useState } from 'react'
@@ -118,15 +119,22 @@ const TypePage = () => {
           userTypes={userTypes}
         />
       )}
+
       {sideBarShowed && (
-        <aside className="absolute min-h-screen w-0 md:w-40 bg-gray-900">
-          <SideBar className="w-0 md:w-40" />
+        <aside className="absolute min-h-screen w-40 bg-gray-900">
+          <SideBar className="w-40" />
         </aside>
       )}
       {/*
-      <div className="absolute overflow-y-hidden bg-gray-900 -z-10 min-h-screen w-full"></div>
-    */}
-      <TypeLayout setShowSideBar={setShowSideBar}>
+
+
+        {sideBarShowed && (
+          <aside className="absolute min-h-screen w-0 md:w-40 bg-gray-900">
+            <SideBar className="w-40 md:w-40 fixed" />
+          </aside>
+        )}
+      */}
+      <TypeLayout setShowSideBar={setShowSideBar} showSidebar={showSidebar}>
         <div className="flex">
           {/*
            */}

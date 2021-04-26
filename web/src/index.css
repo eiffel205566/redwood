@@ -74,3 +74,21 @@ canvas {
   color: #808080;
   animation: moveRight 1s infinite;
 }
+
+/* #money:hover {
+  transition: all ease-in-out 0.6s;
+  transform: rotateY(180deg);
+  color: gold;
+  cursor: pointer
+} */
+
+#money {
+  transition: all 0.6s;
+  color: gold;
+  animation: spinning 1s infinite;
+}
+
+@keyframes spinning {
+  from {transform: rotateY(0deg)}
+  to {transform: rotateY(360deg)}
+}

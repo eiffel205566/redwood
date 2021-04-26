@@ -14,7 +14,7 @@ const Confirmation = ({
   userTypes,
 }) => {
   //delete user type
-  const [deleteType] = useMutation(DELETE_TYPE, {
+  const [deleteType, { loading }] = useMutation(DELETE_TYPE, {
     onCompleted: () => {
       setIconType((state) => {
         return { ...state, currentType: '', id: null, currentName: '' }
@@ -92,7 +92,10 @@ const Confirmation = ({
         <div className="text-center flex-grow w-28 mt-2 min-w-full max-w-full text-sm sm:text-base">
           {`Delete ${currentName} ?`}
         </div>
-        <Submit className="bg-gray-400 hover:bg-green-300 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base">
+        <Submit
+          disabled={loading}
+          className="bg-gray-400 hover:bg-green-300 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base"
+        >
           Confirm
         </Submit>
         <button

@@ -9,8 +9,10 @@ const TypeLayout = ({
   isAuthenticated,
   currentUser,
   setShowSideBar,
+  showSidebar,
 }) => {
   // const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+  const { sideBarShowed } = showSidebar
 
   const onClick = (e) => {
     e.preventDefault()
@@ -31,11 +33,20 @@ const TypeLayout = ({
       <div className="absolute overflow-y-hidden bg-gray-700 -z-10 min-h-screen w-full"></div>
       <header className="relative flex justify-between items-center py-4 px-8 bg-gray-500 text-white">
         <h1 className="flex text-3xl font-semibold tracking-tight">
-          <button className="hover:text-gray-300" onClick={onClick}>
-            <Dots />
-          </button>
+          <div
+            className="border border-transparent hover:text-gray-300 cursor-pointer"
+            onClick={onClick}
+          >
+            <Dots
+              className={
+                sideBarShowed
+                  ? 'h-full w-6 transition duration-500 ease-in-out transform'
+                  : 'h-full w-6 transition duration-500 ease-in-out transform rotate-90'
+              }
+            />
+          </div>
           <Link
-            className="hover:text-gray-300 transition duration-100 px-2"
+            className="hover:text-gray-300 transition duration-100 px-2 text-base md:text-xl"
             to={routes.home()}
           >
             Exp Insight
@@ -45,25 +56,15 @@ const TypeLayout = ({
           <ul className="flex justify-end space-x-2">
             <li>
               <Link
-                className="hover:text-gray-300 transition duration-100 mx-5"
+                className="hover:text-gray-300 transition duration-100 mx-5 text-sm md:text-xl"
                 to={routes.about()}
               >
                 About
               </Link>
             </li>
-            {isAuthenticated && (
-              <li>
-                <Link
-                  className="hover:text-gray-300 transition duration-100 mx-5"
-                  to={routes.expenses()}
-                >
-                  Enter New
-                </Link>
-              </li>
-            )}
             <li>
               <button
-                className="hover:text-gray-300 transition duration-100 mx-5"
+                className="hover:text-gray-300 transition duration-100 mx-5 text-sm md:text-xl"
                 onClick={isAuthenticated ? logOutRevised : logInRevised}
               >
                 {isAuthenticated ? 'Log Out' : 'Log In'}

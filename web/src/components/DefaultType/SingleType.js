@@ -11,7 +11,7 @@ const SingleType = ({
   const { setIconType, id, newName, currentName } = rest || {}
 
   return (
-    <div key={index} className={parentClass}>
+    <div key={index} className={parentClass + 'z-1'}>
       {React.createElement(icon, {
         className: iconClass + ' hover:bg-gray-300',
         onClick: setIconType

@@ -1,4 +1,5 @@
 import { Router, Route, Private } from '@redwoodjs/router'
+import TestPage from './pages/TestPage/TestPage'
 
 const Routes = () => {
   return (
@@ -11,6 +12,7 @@ const Routes = () => {
         <Route path="/expenses" page={ExpensesPage} name="expenses" />
       </Private>
 
+      <Route path="/test" page={TestPage} name="test" />
       <Route path="/about" page={AboutPage} name="about" />
       <Route path="/contacts" page={ContactPage} name="contact" />
       <Route path="/" page={HomePage} name="home" />
