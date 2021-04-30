@@ -1,7 +1,8 @@
 import { Link, routes } from '@redwoodjs/router'
 import React, { Fragment } from 'react'
+import { useAuth } from '@redwoodjs/auth'
 // import BlogLayout from '../../layouts/BlogLayout'
-import TypeLayout from '../../layouts/TypeLayout'
+// import TypeLayout from '../../layouts/TypeLayout'
 import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
 import SideBar from '../../components/SideBar/SideBar'
 import { Spin } from 'src/components/Misc/svg'
@@ -17,6 +18,7 @@ import Confirmation from 'src/components/Confirmation/Confirmation'
 
 const TypePage = () => {
   //--
+  const { logIn, logOut } = useAuth()
   const currentUser = {
     app_metadata: {
       provider: 'email',
@@ -75,7 +77,7 @@ const TypePage = () => {
   const { confirmNeeded } = needConfirm
 
   //side bar state
-  const [showSidebar, setShowSideBar] = useState({
+  const [showSidebar, setShowSidebar] = useState({
     sideBarShowed: false,
   })
   const { sideBarShowed } = showSidebar
@@ -120,25 +122,28 @@ const TypePage = () => {
         />
       )}
 
-      {sideBarShowed && (
-        <aside className="absolute min-h-screen w-40 bg-gray-900">
-          <SideBar className="w-40" />
-        </aside>
-      )}
       {/*
-
-
         {sideBarShowed && (
-          <aside className="absolute min-h-screen w-0 md:w-40 bg-gray-900">
-            <SideBar className="w-40 md:w-40 fixed" />
+          <aside className="absolute min-h-screen w-40 bg-gray-900">
+            <SideBar className="w-40" />
           </aside>
         )}
       */}
-      <TypeLayout setShowSideBar={setShowSideBar} showSidebar={showSidebar}>
-        <div className="flex">
+      <CommonLayout
+        setShowSidebar={setShowSidebar}
+        showSidebar={showSidebar}
+        logIn={logIn}
+        logOut={logOut}
+        isAuthenticated={isAuthenticated}
+      >
+        <div
+          className={`${
+            sideBarShowed ? 'ml-0 sm:ml-40 xl:ml-0' : 'ml-0'
+          } transition-all duration-500 ease-in-out flex`}
+        >
           {/*
+            {sideBarShowed && <div className="w-0 md:w-40 -z-10"></div>}
            */}
-          {sideBarShowed && <div className="w-0 md:w-40 -z-10"></div>}
           {/*
             // try to cheese with overlay sidebar
             {sideBarShowed && (
@@ -179,7 +184,7 @@ const TypePage = () => {
             />
           </div>
         </div>
-      </TypeLayout>
+      </CommonLayout>
     </Fragment>
   )
 }

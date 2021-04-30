@@ -8,10 +8,10 @@ const Routes = () => {
       <Private unauthenticated="home">
         <Route path="/expenses/new" page={NewExpensePage} name="newExpense" />
         <Route path="/expenses/{id:Int}/edit" page={EditExpensePage} name="editExpense" />
-        <Route path="/expenses/{id:Int}" page={ExpensePage} name="expense" />
-        <Route path="/expenses" page={ExpensesPage} name="expenses" />
       </Private>
 
+      <Route path="/expenses/{id:Int}" page={ExpensePage} name="expense" />
+      <Route path="/expenses" page={ExpensesPage} name="expenses" />
       <Route path="/test" page={TestPage} name="test" />
       <Route path="/about" page={AboutPage} name="about" />
       <Route path="/contacts" page={ContactPage} name="contact" />

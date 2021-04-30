@@ -4,7 +4,7 @@ export const expenseTypes = () => {
   return db.expenseType.findMany()
 }
 
-export const userTypes = ({ user }) => {
+export const userTypes = ({ input: { user } }) => {
   return db.expenseType.findMany({
     where: {
       user,

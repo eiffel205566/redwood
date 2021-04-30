@@ -8,12 +8,15 @@ const SingleType = ({
   iconClass,
   ...rest
 }) => {
-  const { setIconType, id, newName, currentName } = rest || {}
+  const { setIconType, id, newName, currentName, noHoverNeeded, textColor } =
+    rest || {}
 
   return (
     <div key={index} className={parentClass + 'z-1'}>
       {React.createElement(icon, {
-        className: iconClass + ' hover:bg-gray-300',
+        className: noHoverNeeded
+          ? iconClass
+          : iconClass + ' hover:bg-gray-300 cursor-pointer',
         onClick: setIconType
           ? (e) => {
               e.stopPropagation()
@@ -26,11 +29,13 @@ const SingleType = ({
                 }
               })
             }
-          : () => {
-              console.log('haha')
-            },
+          : () => {},
       })}
-      <p className="mx-1 text-xs sm:text-sm md:text-base text-center">
+      <p
+        className={`${
+          textColor ? textColor : ''
+        } mx-1 text-xs sm:text-sm md:text-base text-center`}
+      >
         {newName ? newName : description}
       </p>
     </div>

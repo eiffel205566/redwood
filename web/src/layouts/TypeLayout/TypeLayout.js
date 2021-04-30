@@ -8,7 +8,7 @@ const TypeLayout = ({
   logOutRevised,
   isAuthenticated,
   currentUser,
-  setShowSideBar,
+  setShowSidebar,
   showSidebar,
 }) => {
   // const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
@@ -17,7 +17,7 @@ const TypeLayout = ({
   const onClick = (e) => {
     e.preventDefault()
 
-    setShowSideBar((state) => {
+    setShowSidebar((state) => {
       return {
         ...state,
         sideBarShowed: !state.sideBarShowed,

@@ -84,7 +84,7 @@ const Confirmation = ({
   }
 
   return (
-    <div className="background bg-gray-100 absolute min-h-full min-w-full z-10 bg-opacity-50">
+    <div className="background bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50">
       <Form
         onSubmit={onDelete}
         className="flex flex-col justify-end p-2 border rounded-lg h-40 w-60 absolute background bg-gray-300 inset-1/2 transform -translate-x-1/2 -translate-y-full"

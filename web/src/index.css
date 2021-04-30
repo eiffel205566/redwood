@@ -92,3 +92,15 @@ canvas {
   from {transform: rotateY(0deg)}
   to {transform: rotateY(360deg)}
 }
+
+.love {
+  font-family: 'Bilbo', cursive;
+}
+
+.carousel {
+  width: 260px;
+}
+
+.allTags {
+  width: 9999px;
+}

@@ -3,8 +3,8 @@ import { Link, routes } from '@redwoodjs/router'
 import Expenses from 'src/components/Expenses'
 
 export const QUERY = gql`
-  query EXPENSES {
-    expenses {
+  query EXPENSES($input: String!) {
+    myExpenses(input: $input) {
       id
       amount
       type
@@ -26,6 +26,20 @@ export const Empty = () => {
   )
 }
 
-export const Success = ({ expenses }) => {
-  return <Expenses expenses={expenses} />
+export const beforeQuery = (props) => {
+  return {
+    variables: props,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-first',
+  }
+}
+
+export const Success = ({ myExpenses, tagEditState, setTagEditState }) => {
+  return (
+    <Expenses
+      myExpenses={myExpenses}
+      tagEditState={tagEditState}
+      setTagEditState={setTagEditState}
+    />
+  )
 }
