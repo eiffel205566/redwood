@@ -1,8 +1,9 @@
 import React, { Fragment, useState } from 'react'
 import SingleType from 'src/components/DefaultType/SingleType'
-import { Edit, Plus, Check } from 'src/components/Misc/svg'
+import { Edit, Plus, Check, Left, Right } from 'src/components/Misc/svg'
 import { Form, TextField, Submit, Label } from '@redwoodjs/forms'
 import { truncate } from '../Misc/UtilityFunc'
+import Carousel from './Carousel'
 
 const SingleExpense = ({
   singleExpense,
@@ -18,6 +19,28 @@ const SingleExpense = ({
         ...state,
         id,
         editState: true,
+      }
+    })
+  }
+
+  const [translateDistance, setTranslateDistance] = useState({
+    translateX: false,
+  })
+
+  const onHandleTranslateLeft = () => {
+    setTranslateDistance((state) => {
+      return {
+        ...state,
+        translateX: true,
+      }
+    })
+  }
+
+  const onHandleTranslateRight = () => {
+    setTranslateDistance((state) => {
+      return {
+        ...state,
+        translateX: false,
       }
     })
   }
@@ -63,28 +86,23 @@ const SingleExpense = ({
           <Tag setTagEditState={setTagEditState} />
         ) : null}
 
-        <div className="carousel h-full bg-gray-600 overflow-hidden">
-          <ul className="allTags pl-1 text-xs sm:text-sm md:text-base h-full bg-gray-600">
-            <li className="inline-block h-full">
-              <Tag content={'mess around'} />
-            </li>
-            <li className="inline-block h-full">
-              <Tag content={'Fun'} />
-            </li>
-            <li className="inline-block h-full">
-              <Tag content={'hang out'} />
-            </li>
-            <li className="inline-block h-full">
-              <Tag content={'hang out'} />
-            </li>
-          </ul>
-        </div>
+        <Wrapper>
+          <Left
+            onClick={onHandleTranslateLeft}
+            className="h-5 w-5 md:h-6 md:w-6 hover:text-gray-300 cursor-pointer"
+          />
+        </Wrapper>
+
+        <Carousel translateDistance={translateDistance} />
         {/*
-            <Tag content={'hang out'} />
-            <Tag content={'Fun'} />
-          <Tag content={'cuddle'} />
-          <Tag content={'streaming'} />
-         */}
+
+          */}
+        <Wrapper>
+          <Right
+            onClick={onHandleTranslateRight}
+            className="h-5 w-5 md:h-6 md:w-6 hover:text-gray-300 cursor-pointer"
+          />
+        </Wrapper>
       </div>
 
       {timeTag(new Date())}

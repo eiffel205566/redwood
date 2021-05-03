@@ -25,17 +25,32 @@ model Contact {
 }
 
 model Expense {
-  id     Int    @id @default(autoincrement())
-  amount String
-  type   String
-  user   String
+  id            Int         @id @default(autoincrement())
+  amount        String
+  user          String
+  createdAt     DateTime    @default(now())
+  expenseType   ExpenseType @relation(fields: [expenseTypeId], references: [id])
+  expenseTypeId Int
+  tags          Tag[]
 }
 
 model ExpenseType {
-  id          Int    @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   description String
   newName     String
   user        String
+  tags        Tag[]
+  expenses    Expense[]
 
   @@unique([description, newName, user])
+}
+
+model Tag {
+  id            Int         @id @default(autoincrement())
+  tagName       String
+  expenseType   ExpenseType @relation(fields: [expenseTypeId], references: [id])
+  expenseTypeId Int
+  expenses      Expense[]
+
+  @@unique([tagName, expenseTypeId])
 }

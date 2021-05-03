@@ -4,6 +4,8 @@ export const schema = gql`
     description: String!
     newName: String!
     user: String!
+    expenses: [Expense!]!
+    tags: [Tag!]!
   }
 
   type Query {
@@ -17,8 +19,6 @@ export const schema = gql`
 
   input CreateExpenseTypeInput {
     description: String!
-    newName: String!
-    user: String!
   }
 
   input UpdateExpenseTypeInput {

@@ -1,7 +1,12 @@
 import { db } from 'src/lib/db'
 
 export const expenseTypes = () => {
-  return db.expenseType.findMany()
+  return db.expenseType.findMany({
+    include: {
+      expenses: true,
+      tags: true,
+    },
+  })
 }
 
 export const userTypes = ({ input: { user } }) => {

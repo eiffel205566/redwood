@@ -2,8 +2,10 @@ export const schema = gql`
   type Expense {
     id: Int!
     amount: String!
-    type: String!
     user: String!
+    createdAt: Date!
+    expenseType: ExpenseType!
+    tags: [Tag!]!
   }
 
   type Query {
@@ -14,8 +16,12 @@ export const schema = gql`
 
   input CreateExpenseInput {
     amount: String!
-    type: String!
     user: String!
+    expenseType: ExpenseTypeWhereUniqueInput!
+  }
+
+  input ExpenseTypeWhereUniqueInput {
+    id: Int!
   }
 
   input UpdateExpenseInput {
