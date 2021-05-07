@@ -56,7 +56,7 @@ const ExpensesList = ({ myExpenses, tagEditState, setTagEditState }) => {
   }
 
   return (
-    <div className="w-full mt-5 flex flex-col justify-center">
+    <div className="w-full mt-5 flex flex-col justify-center select-none">
       <h1 className="text-white text-xl">{timeTag(new Date())}</h1>
       {myExpenses.map((singleExpense) => {
         return (

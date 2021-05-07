@@ -98,9 +98,15 @@ canvas {
 }
 
 .carousel {
-  width: 260px;
+  width: 385px;
 }
 
 .allTags {
   width: 9999px;
+}
+
+@media (max-width: 640px) {
+  .carousel {
+    width: 68px;
+  }
 }

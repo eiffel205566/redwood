@@ -25,14 +25,27 @@ export const schema = gql`
   }
 
   input UpdateExpenseInput {
-    amount: String
-    type: String
-    user: String
+    id: Int!
+    tags: TagsWhereUniqueInput
   }
 
+  input TagsWhereUniqueInput {
+    ids: [Int]!
+  }
+
+  input ConnectTagsToExpenseInput {
+    id: Int!
+    tags: TagsWhereUniqueInput!
+  }
+
+  input AddTagInput {
+    id: Int!
+    tag: Int!
+  }
   type Mutation {
     createExpense(input: CreateExpenseInput!): Expense!
-    updateExpense(id: Int!, input: UpdateExpenseInput!): Expense!
     deleteExpense(id: Int!): Expense!
+    connectTagsToExpense(input: ConnectTagsToExpenseInput!): Expense!
+    addTag(input: AddTagInput!): Expense!
   }
 `

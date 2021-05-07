@@ -1,9 +1,31 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import SingleType from 'src/components/DefaultType/SingleType'
 import { Edit, Plus, Check, Left, Right } from 'src/components/Misc/svg'
 import { Form, TextField, Submit, Label } from '@redwoodjs/forms'
 import { truncate } from '../Misc/UtilityFunc'
 import Carousel from './Carousel'
+import { toast } from '@redwoodjs/web/toast'
+import { useMutation } from '@redwoodjs/web'
+
+const ADD_TAGS_TO_ONE_EXPENSE = gql`
+  mutation addTagsToOneExpense($input: ConnectTagsToExpenseInput!) {
+    connectTagsToExpense(input: $input) {
+      id
+      user
+      amount
+    }
+  }
+`
+
+const ONE_EXPENSE_QUERY = gql`
+  query oneExpenseQuery($id: Int!) {
+    expense(id: $id) {
+      tags {
+        id
+      }
+    }
+  }
+`
 
 const SingleExpense = ({
   singleExpense,
@@ -11,7 +33,32 @@ const SingleExpense = ({
   tagEditState,
   setTagEditState,
 }) => {
-  const { id, amount, type } = singleExpense
+  const { id, amount, createdAt, expenseType, tags } = singleExpense
+
+  const {
+    id: expenseTypeId,
+    description,
+    newName,
+    tags: expenseTypTags,
+  } = expenseType
+
+  // -- store chosenTags in SingleExpense
+  const tagIds = tags.map((tag) => tag.id)
+  const [chosenTags, setChosenTags] = useState({
+    chosenTagIds: [...tagIds],
+  })
+
+  //onmount store selected tags in state
+  useEffect(() => {
+    setChosenTags((state) => {
+      return {
+        ...state,
+        chosenTagIds: [...tagIds],
+      }
+    })
+  }, [tags])
+  // --
+
   const onHandleAddTagClick = (e) => {
     e.preventDefault()
     setTagEditState((state) => {
@@ -23,15 +70,20 @@ const SingleExpense = ({
     })
   }
 
+  //state for carousel movement horizontally
   const [translateDistance, setTranslateDistance] = useState({
-    translateX: false,
+    maxTranslateX: expenseTypTags.length ? expenseTypTags.length - 1 : 0,
+    currentTranslateX: 0,
   })
 
   const onHandleTranslateLeft = () => {
     setTranslateDistance((state) => {
       return {
         ...state,
-        translateX: true,
+        currentTranslateX:
+          state.currentTranslateX === 0
+            ? state.currentTranslateX
+            : --state.currentTranslateX,
       }
     })
   }
@@ -40,10 +92,65 @@ const SingleExpense = ({
     setTranslateDistance((state) => {
       return {
         ...state,
-        translateX: false,
+        currentTranslateX:
+          state.currentTranslateX === state.maxTranslateX
+            ? state.maxTranslateX
+            : ++state.currentTranslateX,
       }
     })
   }
+
+  const onHandleSubmitTagChang = async () => {
+    // console.log(chosenTags.chosenTagIds)
+    try {
+      const input = { id, tags: { ids: [...chosenTags.chosenTagIds] } }
+      await connectTagsToExpense({
+        variables: {
+          input: input,
+        },
+        update: (cache, { id }) => {
+          cache.writeQuery({
+            query: ONE_EXPENSE_QUERY,
+            variables: { id },
+            data: {
+              expense: {
+                tags: [{ id: 5 }],
+              },
+            },
+          })
+        },
+      })
+
+      setTagEditState((state) => {
+        return {
+          ...state,
+          id: null,
+          editState: false,
+          newTagState: false,
+        }
+      })
+      toast.success('success!!!')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //handle change made to chosen tags
+  const [
+    connectTagsToExpense,
+    { loading: connectTagsToExpenseLoading, error: connectTagsToExpenseError },
+  ] = useMutation(ADD_TAGS_TO_ONE_EXPENSE, {
+    onCompleted: () => {
+      setTagEditState((state) => {
+        return {
+          ...state,
+          id: null,
+          editState: false,
+          newTagState: false,
+        }
+      })
+    },
+  })
 
   return (
     <div className="singleExpense flex w-full h-12 bg-sideDark text-white my-1">
@@ -53,13 +160,15 @@ const SingleExpense = ({
         </Wrapper>
 
         <Wrapper>
-          <span>$15.12</span>
+          <span>{`$${amount}`}</span>
         </Wrapper>
 
         <Wrapper>
           <SingleType
-            icon={iconTypes['CREDIT_CARD']}
-            newName={'default'}
+            icon={
+              description ? iconTypes[description] : iconTypes['CREDIT_CARD']
+            }
+            newName={newName ? newName : 'default'}
             parentClass="w-max"
             iconClass="mx-auto h-6 w-6 text-displayOnly"
             noHoverNeeded={true}
@@ -77,14 +186,23 @@ const SingleExpense = ({
         >
           <Plus className="h-5 w-5 md:h-6 md:w-6" />
         </Wrapper>
+
         {id === tagEditState.id ? (
-          <Wrapper className="hover:text-green-300 cursor-pointer">
+          <Wrapper
+            onClick={onHandleSubmitTagChang}
+            className="hover:text-green-300 cursor-pointer"
+          >
             <Check className="h-5 w-5 md:h-6 md:w-6" />
           </Wrapper>
         ) : null}
-        {id === tagEditState.id ? (
-          <Tag setTagEditState={setTagEditState} />
-        ) : null}
+
+        {/*
+          // new form for creating a tag
+
+          {id === tagEditState.id ? (
+            <Tag setTagEditState={setTagEditState} />
+          ) : null}
+        */}
 
         <Wrapper>
           <Left
@@ -93,7 +211,16 @@ const SingleExpense = ({
           />
         </Wrapper>
 
-        <Carousel translateDistance={translateDistance} />
+        <Carousel
+          translateDistance={translateDistance}
+          expenseTypTags={expenseTypTags}
+          tags={tags}
+          id={id}
+          setTagEditState={setTagEditState}
+          tagEditState={tagEditState}
+          chosenTags={chosenTags}
+          setChosenTags={setChosenTags}
+        />
         {/*
 
           */}
@@ -105,7 +232,7 @@ const SingleExpense = ({
         </Wrapper>
       </div>
 
-      {timeTag(new Date())}
+      {timeTag(new Date(createdAt))}
     </div>
   )
 }

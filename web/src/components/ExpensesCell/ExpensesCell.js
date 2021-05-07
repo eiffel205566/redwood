@@ -7,8 +7,20 @@ export const QUERY = gql`
     myExpenses(input: $input) {
       id
       amount
-      type
-      user
+      createdAt
+      expenseType {
+        id
+        user
+        description
+        newName
+        tags {
+          id
+          tagName
+        }
+      }
+      tags {
+        id
+      }
     }
   }
 `
