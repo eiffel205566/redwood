@@ -1,8 +1,12 @@
 import ExpensesLayout from 'src/layouts/ExpensesLayout'
 import ExpensesCell from 'src/components/ExpensesCell'
 import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 import { toast, Toaster } from '@redwoodjs/web/toast'
+import NewExpense from 'src/components/Expenses/NewExpense'
+import { USER_TYPES_QUERY } from './UserTypesTagsQuery'
+import { useQuery } from '@redwoodjs/web'
+import { iconTypes } from 'src/components/DefaultType/Static'
 
 const ExpensesPage = () => {
   //side bar state
@@ -11,6 +15,7 @@ const ExpensesPage = () => {
   })
   //--
 
+  // fake user
   const currentUser = {
     app_metadata: {
       provider: 'email',
@@ -25,22 +30,61 @@ const ExpensesPage = () => {
   }
   const isAuthenticated = true
   const { email: user } = currentUser
+  //--
 
+  //state to handle tag edit state
   const [tagEditState, setTagEditState] = useState({
     id: null,
     editState: false,
     newTagState: false,
   })
 
+  //have to save expenseType and tags in state in Page
+  const [newExpenseState, setNewExpenseState] = useState({
+    id: null,
+    types: null,
+    tags: null,
+  })
+
+  //USER_TYPES_QUERY
+  //Make User Types Query onMount and store in staet
+  const { data } = useQuery(USER_TYPES_QUERY, {
+    variables: { input: { user } },
+  })
+  const { userTypes } = data || {}
+
+  useEffect(() => {
+    setNewExpenseState((state) => {
+      return {
+        ...state,
+        types: data ? [...userTypes] : null,
+      }
+    })
+  }, [data, userTypes])
+
   return (
-    <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>
-      <Toaster timeout={2000} />
-      <ExpensesCell
-        input={user}
-        tagEditState={tagEditState}
-        setTagEditState={setTagEditState}
-      />
-    </CommonLayout>
+    <Fragment>
+      {tagEditState.newTagState ? (
+        <NewExpense
+          user={user}
+          setTagEditState={setTagEditState}
+          userTypes={userTypes}
+          iconTypes={iconTypes}
+          setNewExpenseState={setNewExpenseState}
+          newExpenseState={newExpenseState}
+        />
+      ) : null}
+      <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>
+        <Toaster timeout={2000} />
+        <ExpensesCell
+          input={user}
+          tagEditState={tagEditState}
+          setTagEditState={setTagEditState}
+          user={user}
+          setNewExpenseState={setNewExpenseState}
+        />
+      </CommonLayout>
+    </Fragment>
   )
 }
 

@@ -5,6 +5,7 @@ import { useAuth } from '@redwoodjs/auth'
 import { QUERY } from 'src/components/ExpensesCell'
 import SingleExpense from './SingleExpense'
 import { iconTypes } from 'src/components/DefaultType/Static'
+import { Plus } from '../Misc/svg'
 
 const DELETE_EXPENSE_MUTATION = gql`
   mutation DeleteExpenseMutation($id: Int!) {
@@ -28,7 +29,7 @@ const jsonTruncate = (obj) => {
   return truncate(JSON.stringify(obj, null, 2))
 }
 
-const timeTag = (datetime) => {
+export const timeTag = (datetime) => {
   return (
     <time dateTime={datetime} title={datetime}>
       {new Date(datetime).toDateString()}
@@ -40,7 +41,7 @@ const checkboxInputTag = (checked) => {
   return <input type="checkbox" checked={checked} disabled />
 }
 
-const ExpensesList = ({ myExpenses, tagEditState, setTagEditState }) => {
+const ExpensesList = ({ myExpenses, tagEditState, setTagEditState, user }) => {
   const [deleteExpense] = useMutation(DELETE_EXPENSE_MUTATION, {
     onCompleted: () => {
       toast.success('Expense deleted')
@@ -66,9 +67,24 @@ const ExpensesList = ({ myExpenses, tagEditState, setTagEditState }) => {
             iconTypes={iconTypes}
             tagEditState={tagEditState}
             setTagEditState={setTagEditState}
+            myExpenses={myExpenses}
+            user={user}
           />
         )
       })}
+      <Plus
+        onClick={() => {
+          setTagEditState((state) => {
+            return {
+              ...state,
+              id: null,
+              editState: false,
+              newTagState: true,
+            }
+          })
+        }}
+        className="mx-auto h-6 w-6 text-white hover:text-green-300 cursor-pointer"
+      />
     </div>
   )
 }

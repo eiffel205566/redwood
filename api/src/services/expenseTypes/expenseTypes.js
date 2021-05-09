@@ -17,6 +17,7 @@ export const userTypes = ({ input: { user } }) => {
     orderBy: {
       id: 'asc',
     },
+    include: { tags: true },
   })
 }
 

@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import SingleType from 'src/components/DefaultType/SingleType'
-import { Edit, Plus, Check, Left, Right } from 'src/components/Misc/svg'
+import { Edit, Plus, Check, Left, Right, Cancel } from 'src/components/Misc/svg'
 import { Form, TextField, Submit, Label } from '@redwoodjs/forms'
 import { truncate } from '../Misc/UtilityFunc'
 import Carousel from './Carousel'
@@ -27,11 +27,36 @@ const ONE_EXPENSE_QUERY = gql`
   }
 `
 
+const QUERY = gql`
+  query EXPENSES($input: String!) {
+    myExpenses(input: $input) {
+      id
+      amount
+      createdAt
+      expenseType {
+        id
+        user
+        description
+        newName
+        tags {
+          id
+          tagName
+        }
+      }
+      tags {
+        id
+      }
+    }
+  }
+`
+
 const SingleExpense = ({
   singleExpense,
   iconTypes,
   tagEditState,
   setTagEditState,
+  myExpenses,
+  user,
 }) => {
   const { id, amount, createdAt, expenseType, tags } = singleExpense
 
@@ -100,28 +125,53 @@ const SingleExpense = ({
     })
   }
 
-  const onHandleSubmitTagChang = async () => {
-    // console.log(chosenTags.chosenTagIds)
+  const onHandleSubmitTagChange = async () => {
+    // if chosen tags hasn't change from before, handler should do nothing
+    if (
+      tags
+        .map((tag) => tag.id)
+        .sort((a, b) => {
+          return +a - +b
+        })
+        .join('') ===
+      chosenTags.chosenTagIds
+        .sort((a, b) => {
+          return +a - +b
+        })
+        .join('')
+    )
+      return
+
     try {
       const input = { id, tags: { ids: [...chosenTags.chosenTagIds] } }
+
       await connectTagsToExpense({
         variables: {
           input: input,
         },
-        update: (cache, { id }) => {
+        update: (cache) => {
           cache.writeQuery({
-            query: ONE_EXPENSE_QUERY,
-            variables: { id },
+            query: QUERY,
+            variables: { input: user },
             data: {
-              expense: {
-                tags: [{ id: 5 }],
-              },
+              myExpenses: [
+                ...myExpenses.map((expense) => {
+                  if (expense.id === id) {
+                    return {
+                      ...expense,
+                      tags: [...chosenTags.chosenTagIds],
+                    }
+                  } else {
+                    return expense
+                  }
+                }),
+              ],
             },
           })
         },
       })
 
-      setTagEditState((state) => {
+      await setTagEditState((state) => {
         return {
           ...state,
           id: null,
@@ -129,7 +179,7 @@ const SingleExpense = ({
           newTagState: false,
         }
       })
-      toast.success('success!!!')
+      toast.success('New Tags Selected!')
     } catch (error) {
       console.log(error)
     }
@@ -180,29 +230,34 @@ const SingleExpense = ({
           <span>{'Tags: '}</span>
         </Wrapper>
 
-        <Wrapper
-          onClick={onHandleAddTagClick}
-          className="hover:text-gray-300 cursor-pointer"
-        >
-          <Plus className="h-5 w-5 md:h-6 md:w-6" />
-        </Wrapper>
-
         {id === tagEditState.id ? (
           <Wrapper
-            onClick={onHandleSubmitTagChang}
+            onClick={
+              connectTagsToExpenseLoading ? () => {} : onHandleSubmitTagChange
+            }
             className="hover:text-green-300 cursor-pointer"
           >
             <Check className="h-5 w-5 md:h-6 md:w-6" />
           </Wrapper>
         ) : null}
 
-        {/*
-          // new form for creating a tag
-
-          {id === tagEditState.id ? (
-            <Tag setTagEditState={setTagEditState} />
-          ) : null}
-        */}
+        {id === tagEditState.id ? (
+          <Wrapper
+            onClick={() =>
+              setTagEditState((state) => {
+                return {
+                  ...state,
+                  id: null,
+                  editState: false,
+                  newTagState: false,
+                }
+              })
+            }
+            className="hover:text-red-300 cursor-pointer"
+          >
+            <Cancel className="h-5 w-5 md:h-6 md:w-6" />
+          </Wrapper>
+        ) : null}
 
         <Wrapper>
           <Left

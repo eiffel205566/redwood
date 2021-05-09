@@ -1,4 +1,6 @@
 import { Link, routes } from '@redwoodjs/router'
+import { timeTag } from 'src/components/Expenses/Expenses'
+import { Clock } from 'src/components/Misc/svg'
 
 import Expenses from 'src/components/Expenses'
 
@@ -25,7 +27,14 @@ export const QUERY = gql`
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = ({ user }) => (
+  <div className="w-full mt-5 flex flex-col justify-center select-none">
+    <h1 className="text-white text-xl">
+      {timeTag(new Date())}
+      <Clock className="h-6 w-6 text-white inline" />
+    </h1>
+  </div>
+)
 
 export const Empty = () => {
   return (
@@ -46,12 +55,19 @@ export const beforeQuery = (props) => {
   }
 }
 
-export const Success = ({ myExpenses, tagEditState, setTagEditState }) => {
+export const Success = ({
+  myExpenses,
+  tagEditState,
+  setTagEditState,
+  user,
+  setNewExpenseState,
+}) => {
   return (
     <Expenses
       myExpenses={myExpenses}
       tagEditState={tagEditState}
       setTagEditState={setTagEditState}
+      user={user}
     />
   )
 }

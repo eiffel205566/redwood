@@ -46,7 +46,7 @@ const CommonLayout = ({
           <div className="z-30 bg-gray-400">
             <nav className="h-14 w-full flex flex-row z-20">
               <div
-                className="cursor-pointer bg-gray-400 w-10 flex flex-row justify-center z-20"
+                className="cursor-pointer bg-gray-400 w-10 flex flex-row justify-center z-10"
                 onClick={onHandleSideBar}
               >
                 <Dots
@@ -57,7 +57,7 @@ const CommonLayout = ({
                   }
                 />
               </div>
-              <div className="text-center flex-grow flex-col flex justify-center z-20 bg-gray-400">
+              <div className="text-center flex-grow flex-col flex justify-center z-10 bg-gray-400">
                 <h1 className="text-xl md:text-3xl font-semibold tracking-tight flex flex-row">
                   <span className="love">{'Exp '}</span>
                   <span> </span>

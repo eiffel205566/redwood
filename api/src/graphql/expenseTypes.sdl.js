@@ -19,6 +19,8 @@ export const schema = gql`
 
   input CreateExpenseTypeInput {
     description: String!
+    newName: String!
+    user: String!
   }
 
   input UpdateExpenseTypeInput {

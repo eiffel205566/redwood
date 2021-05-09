@@ -12,14 +12,14 @@ const SingleType = ({
     rest || {}
 
   return (
-    <div key={index} className={parentClass + 'z-1'}>
+    <div key={index} className={parentClass + ' z-1'}>
       {React.createElement(icon, {
         className: noHoverNeeded
           ? iconClass
-          : iconClass + ' hover:bg-gray-300 cursor-pointer',
+          : iconClass + ' sm:hover:bg-gray-300 cursor-pointer',
         onClick: setIconType
-          ? (e) => {
-              e.stopPropagation()
+          ? () => {
+              //e.stopPropagation()
               setIconType((state) => {
                 return {
                   ...state,
