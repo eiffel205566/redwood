@@ -6,6 +6,7 @@ import { truncate } from '../Misc/UtilityFunc'
 import Carousel from './Carousel'
 import { toast } from '@redwoodjs/web/toast'
 import { useMutation } from '@redwoodjs/web'
+import { Wrapper } from 'src/components/Misc/UtilityFunc'
 
 const ADD_TAGS_TO_ONE_EXPENSE = gql`
   mutation addTagsToOneExpense($input: ConnectTagsToExpenseInput!) {
@@ -13,6 +14,9 @@ const ADD_TAGS_TO_ONE_EXPENSE = gql`
       id
       user
       amount
+      tags {
+        id
+      }
     }
   }
 `
@@ -149,6 +153,18 @@ const SingleExpense = ({
         variables: {
           input: input,
         },
+        // optimisticResponse: {
+        //   connectTagsToExpense: {
+        //     id,
+        //     __typename: 'Expense',
+        //     user,
+        //     tags: [
+        //       ...chosenTags.chosenTagIds.map((id) => {
+        //         return { id, __typename: 'Tag' }
+        //       }),
+        //     ],
+        //   },
+        // },
         update: (cache) => {
           cache.writeQuery({
             query: QUERY,
@@ -243,15 +259,18 @@ const SingleExpense = ({
 
         {id === tagEditState.id ? (
           <Wrapper
-            onClick={() =>
-              setTagEditState((state) => {
-                return {
-                  ...state,
-                  id: null,
-                  editState: false,
-                  newTagState: false,
-                }
-              })
+            onClick={
+              connectTagsToExpenseLoading
+                ? () => {}
+                : () =>
+                    setTagEditState((state) => {
+                      return {
+                        ...state,
+                        id: null,
+                        editState: false,
+                        newTagState: false,
+                      }
+                    })
             }
             className="hover:text-red-300 cursor-pointer"
           >
@@ -306,46 +325,33 @@ const timeTag = (datetime) => {
 }
 
 //utility
-const Tag = ({ content, setTagEditState = () => {} }) => {
-  return (
-    <div
-      className={`${
-        content ? '' : 'text-displayOnly'
-      } flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-32 h-full`}
-    >
-      <span className="rounded-full py-1 px-2 bg-overlay">
-        {content ? (
-          truncate(content, 8)
-        ) : (
-          <input
-            onBlur={() => {
-              setTagEditState((state) => {
-                return {
-                  ...state,
-                  id: null,
-                  editState: false,
-                }
-              })
-            }}
-            className="bg-overlay border focus:border-green-300 w-full"
-          ></input>
-        )}
-      </span>
-    </div>
-  )
-}
-
-//utility
-const Wrapper = ({ children, className, ...rest }) => {
-  const { onClick } = rest || {}
-  return (
-    <div
-      onClick={onClick}
-      className={`${className} flex flex-col justify-center pl-1 text-xs sm:text-sm md:text-base`}
-    >
-      {children}
-    </div>
-  )
-}
+// const Tag = ({ content, setTagEditState = () => {} }) => {
+//   return (
+//     <div
+//       className={`${
+//         content ? '' : 'text-displayOnly'
+//       } flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-32 h-full`}
+//     >
+//       <span className="rounded-full py-1 px-2 bg-overlay">
+//         {content ? (
+//           truncate(content, 8)
+//         ) : (
+//           <input
+//             onBlur={() => {
+//               setTagEditState((state) => {
+//                 return {
+//                   ...state,
+//                   id: null,
+//                   editState: false,
+//                 }
+//               })
+//             }}
+//             className="bg-overlay border focus:border-green-300 w-full"
+//           ></input>
+//         )}
+//       </span>
+//     </div>
+//   )
+// }
 
 export default SingleExpense

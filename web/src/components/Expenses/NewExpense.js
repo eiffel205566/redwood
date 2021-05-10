@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Form, Submit } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-import { Check, Garbage } from '../Misc/svg'
+import { Check, Garbage, Plus, Cancel } from '../Misc/svg'
 import SingleType from '../DefaultType/SingleType'
+import { isTagChosen, Tag } from './Tag'
+import { Wrapper } from 'src/components/Misc/UtilityFunc'
 
 const NewExpense = ({
   user,
@@ -29,8 +31,10 @@ const NewExpense = ({
             return {
               ...state,
               id: null,
-              types: null,
               tags: null,
+              chosenTags: [],
+              newTagName: null,
+              isEditingTag: false,
             }
           })
         }
@@ -66,6 +70,60 @@ const NewExpense = ({
               ))}
           </div>
           <h3 className="text-white">Pick Tags:</h3>
+          <div className="types w-full flex flex-wrap h-12 overflow-y-scroll overflow-x-hidden">
+            {newExpenseState.id
+              ? newExpenseState.tags.map((tag) => (
+                  <Tag
+                    key={tag.id}
+                    content={tag.tagName}
+                    isChosenTag={isTagChosen(
+                      newExpenseState.chosenTags,
+                      tag.id
+                    )}
+                    setChosenTags={setNewExpenseState}
+                    tagId={tag.id}
+                    tagBackground={'bg-gray-500'}
+                  />
+                ))
+              : null}
+            {!newExpenseState.isEditingTag ? (
+              <Wrapper
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setNewExpenseState((state) => {
+                    return {
+                      ...state,
+                      isEditingTag: true,
+                    }
+                  })
+                }}
+                className="text-white hover:text-gray-300 cursor-pointer"
+              >
+                <Plus className="h-6 w-6" />
+              </Wrapper>
+            ) : null}
+            {newExpenseState.isEditingTag ? (
+              <Fragment>
+                <Wrapper className="text-white hover:text-gray-300 cursor-pointer">
+                  <Check className="h-6 w-6" />
+                </Wrapper>
+                <Wrapper
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setNewExpenseState((state) => {
+                      return {
+                        ...state,
+                        isEditingTag: false,
+                      }
+                    })
+                  }}
+                  className="text-white hover:text-gray-300 cursor-pointer"
+                >
+                  <Cancel className="h-6 w-6" />
+                </Wrapper>
+              </Fragment>
+            ) : null}
+          </div>
         </div>
 
         <div className="bottomButtons text-white flex justify-between">

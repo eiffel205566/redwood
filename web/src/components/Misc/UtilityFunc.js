@@ -6,3 +6,15 @@ export const truncate = (text, maxStringLength) => {
   }
   return output
 }
+
+export const Wrapper = ({ children, className, ...rest }) => {
+  const { onClick } = rest || {}
+  return (
+    <div
+      onClick={onClick}
+      className={`${className} flex flex-col justify-center pl-1 text-xs sm:text-sm md:text-base`}
+    >
+      {children}
+    </div>
+  )
+}

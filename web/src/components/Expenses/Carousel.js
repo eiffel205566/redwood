@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { truncate } from '../Misc/UtilityFunc'
+import { Tag } from './Tag'
 
 const Carousel = ({
   id,
@@ -62,56 +63,6 @@ const Carousel = ({
           </li>
         ))}
       </ul>
-    </div>
-  )
-}
-
-const Tag = ({
-  id: expenseId,
-  content,
-  isChosenTag,
-  chosenTags,
-  setChosenTags,
-  tagId,
-  setTagEditState = () => {},
-}) => {
-  const onHandleTagClick = async () => {
-    // add setTagEditState to set "editState",
-    // need to check if any changed had been made to chosenTags
-
-    await setTagEditState((state) => {
-      return {
-        ...state,
-        id: expenseId,
-        editState: true,
-        newTagState: false,
-      }
-    })
-
-    setChosenTags((state) => {
-      return {
-        ...state,
-        chosenTagIds: state.chosenTagIds.includes(tagId)
-          ? [...state.chosenTagIds.filter((id) => id !== tagId)]
-          : [...state.chosenTagIds, tagId],
-      }
-    })
-  }
-
-  return (
-    <div
-      onClick={onHandleTagClick}
-      className={`${
-        content ? '' : 'text-displayOnly'
-      } cursor-pointer flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-16 sm:w-32 h-full select-none`}
-    >
-      <span
-        className={`rounded-full py-1 px-2 ${
-          isChosenTag ? 'bg-green-300 text-black' : 'bg-overlay'
-        }`}
-      >
-        {content ? truncate(content, 8) : null}
-      </span>
     </div>
   )
 }

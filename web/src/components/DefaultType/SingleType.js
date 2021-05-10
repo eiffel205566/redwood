@@ -1,4 +1,5 @@
 import React from 'react'
+import * as _ from 'lodash'
 
 const SingleType = ({
   icon,
@@ -10,9 +11,11 @@ const SingleType = ({
 }) => {
   const { setIconType, id, newName, currentName, noHoverNeeded, textColor } =
     rest || {}
+  const currentType = 'currentType'
+  const tags = 'tags'
 
   return (
-    <div key={index} className={parentClass + ' z-1'}>
+    <div key={index} className={parentClass + 'z-1'}>
       {React.createElement(icon, {
         className: noHoverNeeded
           ? iconClass
@@ -21,11 +24,26 @@ const SingleType = ({
           ? () => {
               //e.stopPropagation()
               setIconType((state) => {
-                return {
-                  ...state,
-                  currentType: description,
-                  id: id ? id : null,
-                  currentName: currentName,
+                if (currentType in state) {
+                  //type page
+                  return {
+                    ...state,
+                    id: id ? id : null,
+                    currentType: description,
+                    currentName: currentName,
+                  }
+                }
+                if (tags in state) {
+                  //NewEpense page
+                  return {
+                    ...state,
+                    id: id ? id : null,
+                    tags: {
+                      ..._.find(state.types, function (o) {
+                        return o?.id === id
+                      }),
+                    }[tags],
+                  }
                 }
               })
             }
