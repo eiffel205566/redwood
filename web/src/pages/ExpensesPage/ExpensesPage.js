@@ -46,7 +46,7 @@ const ExpensesPage = () => {
     tags: null,
     chosenTags: [],
     newTagName: null,
-    isAddintNewTag: false,
+    isEditingTag: false,
   })
 
   //USER_TYPES_QUERY

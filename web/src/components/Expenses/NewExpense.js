@@ -1,10 +1,20 @@
-import React, { Fragment } from 'react'
-import { Form, Submit } from '@redwoodjs/forms'
+import React, { Fragment, useEffect } from 'react'
+import { Form, Submit, TextField } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 import { Check, Garbage, Plus, Cancel } from '../Misc/svg'
 import SingleType from '../DefaultType/SingleType'
 import { isTagChosen, Tag } from './Tag'
 import { Wrapper } from 'src/components/Misc/UtilityFunc'
+import { USER_TYPES_QUERY } from 'src/pages/ExpensesPage/UserTypesTagsQuery'
+
+const ADD_ONE_TAG = gql`
+  mutation addOneTag($input: CreateTagInput!) {
+    createTag(input: $input) {
+      id
+      tagName
+    }
+  }
+`
 
 const NewExpense = ({
   user,
@@ -14,6 +24,64 @@ const NewExpense = ({
   setNewExpenseState,
   newExpenseState,
 }) => {
+  // const { types } = newExpenseState
+  // useEffect(() => {
+  //   if (newExpenseState.id) {
+  //     const currentType = newExpenseState.types.filter(
+  //       (type) => type.id === newExpenseState.id
+  //     )[0]
+  //     console.log(currentType)
+  //   }
+  // }, [newExpenseState])
+
+  //Add new Tag
+  const [addOneTag, { loading: addOneTagLoading }] = useMutation(ADD_ONE_TAG, {
+    onCompleted: () => {
+      setNewExpenseState((state) => {
+        return {
+          ...state,
+          id: null,
+          newTagName: null,
+          isEditingTag: false,
+        }
+      })
+    },
+  })
+
+  const onHandleAddNewTag = async () => {
+    await addOneTag({
+      variables: {
+        input: {
+          tagName: newExpenseState.newTagName,
+          expenseType: { id: newExpenseState.id },
+        },
+      },
+      update: (cache) => {
+        cache.writeQuery({
+          query: USER_TYPES_QUERY,
+          variables: { input: { user } },
+          data: {
+            userTypes: [
+              ...userTypes.map((type) => {
+                if (type.id === newExpenseState.id) {
+                  return {
+                    ...type,
+                    tags: [
+                      ...type.tags,
+                      { __typename: 'Tag', tagName: newExpenseState.tagName },
+                    ],
+                  }
+                } else {
+                  return type
+                }
+              }),
+            ],
+          },
+        })
+      },
+    })
+  }
+
   return (
     <div
       className="backgroundOverlay bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50"
@@ -86,17 +154,21 @@ const NewExpense = ({
                   />
                 ))
               : null}
-            {!newExpenseState.isEditingTag ? (
+            {newExpenseState.id && !newExpenseState.isEditingTag ? (
               <Wrapper
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setNewExpenseState((state) => {
-                    return {
-                      ...state,
-                      isEditingTag: true,
-                    }
-                  })
-                }}
+                onClick={
+                  addOneTagLoading
+                    ? () => {}
+                    : (e) => {
+                        e.stopPropagation()
+                        setNewExpenseState((state) => {
+                          return {
+                            ...state,
+                            isEditingTag: true,
+                          }
+                        })
+                      }
+                }
                 className="text-white hover:text-gray-300 cursor-pointer"
               >
                 <Plus className="h-6 w-6" />
@@ -104,22 +176,50 @@ const NewExpense = ({
             ) : null}
             {newExpenseState.isEditingTag ? (
               <Fragment>
-                <Wrapper className="text-white hover:text-gray-300 cursor-pointer">
+                <Wrapper
+                  onClick={addOneTagLoading ? () => {} : onHandleAddNewTag}
+                  className="text-white hover:text-gray-300 cursor-pointer"
+                >
                   <Check className="h-6 w-6" />
                 </Wrapper>
                 <Wrapper
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setNewExpenseState((state) => {
-                      return {
-                        ...state,
-                        isEditingTag: false,
-                      }
-                    })
-                  }}
+                  onClick={
+                    addOneTagLoading
+                      ? () => {}
+                      : (e) => {
+                          e.stopPropagation()
+                          setNewExpenseState((state) => {
+                            return {
+                              ...state,
+                              isEditingTag: false,
+                              newTagName: null,
+                            }
+                          })
+                        }
+                  }
                   className="text-white hover:text-gray-300 cursor-pointer"
                 >
                   <Cancel className="h-6 w-6" />
+                </Wrapper>
+                <Wrapper>
+                  <input
+                    onChange={(e) => {
+                      setNewExpenseState((state) => {
+                        return {
+                          ...state,
+                          newTagName: e.target.value,
+                        }
+                      })
+                    }}
+                    className="rounded-full py-1 px-2 bg-gray-500 text-white w-16 sm:w-32"
+                    type="text"
+                    placeholder="New Tag"
+                    value={
+                      newExpenseState.newTagName
+                        ? newExpenseState.newTagName
+                        : ''
+                    }
+                  />
                 </Wrapper>
               </Fragment>
             ) : null}
@@ -127,10 +227,10 @@ const NewExpense = ({
         </div>
 
         <div className="bottomButtons text-white flex justify-between">
-          <Submit>
+          <Submit disabled={addOneTagLoading}>
             <Check className="h-8 w-8 hover:text-green-300" />
           </Submit>
-          <button>
+          <button disabled={addOneTagLoading}>
             <Garbage className="h-8 w-8 hover:text-red-300" />
           </button>
         </div>

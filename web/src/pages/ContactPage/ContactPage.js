@@ -128,6 +128,7 @@ const ContactPage = () => {
   })
 
   const onSubmit = async (data) => {
+    console.log(data)
     try {
       await create({
         variables: { input: data },
