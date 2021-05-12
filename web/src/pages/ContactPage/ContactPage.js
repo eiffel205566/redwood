@@ -121,16 +121,21 @@ const ContactPage = () => {
 
   const formMethods = useForm({ mode: 'onBlur' })
 
-  const [create, { loading, error }] = useMutation(CREATE_CONTACT, {
-    onCompleted: () => {
-      formMethods.reset()
-    },
-  })
+  const [create, { data: createDtaa, loading, error }] = useMutation(
+    CREATE_CONTACT,
+    {
+      ignoreResults: false,
+      onCompleted: () => {
+        // console.log(createDtaa)
+        formMethods.reset()
+      },
+    }
+  )
 
   const onSubmit = async (data) => {
     console.log(data)
     try {
-      await create({
+      const testData = await create({
         variables: { input: data },
         update: (cache, { data }) => {
           cache.writeQuery({
@@ -141,6 +146,7 @@ const ContactPage = () => {
           })
         },
       })
+      console.log(testData)
       toast.success('success!!!')
     } catch (error) {
       console.log(error)

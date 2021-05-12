@@ -24,8 +24,17 @@ export const schema = gql`
     ids: [Int]!
   }
 
+  input TagWhereInput {
+    ids: [Int]!
+  }
+
+  type BatchPayload {
+    count: Int!
+  }
+
   type Mutation {
     createTag(input: CreateTagInput!): Tag!
     connectTag(input: ConnectTagInput!): Tag!
+    deleteTags(input: TagWhereInput!): BatchPayload!
   }
 `

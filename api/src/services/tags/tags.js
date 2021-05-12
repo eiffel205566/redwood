@@ -29,6 +29,17 @@ export const createTag = ({ input }) => {
   })
 }
 
+export const deleteTags = async ({ input }) => {
+  const { ids } = input
+  return await db.tag.deleteMany({
+    where: {
+      id: {
+        in: [...ids],
+      },
+    },
+  })
+}
+
 /*
 
 * Note:

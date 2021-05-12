@@ -24,62 +24,81 @@ const NewExpense = ({
   setNewExpenseState,
   newExpenseState,
 }) => {
-  // const { types } = newExpenseState
-  // useEffect(() => {
-  //   if (newExpenseState.id) {
-  //     const currentType = newExpenseState.types.filter(
-  //       (type) => type.id === newExpenseState.id
-  //     )[0]
-  //     console.log(currentType)
-  //   }
-  // }, [newExpenseState])
-
   //Add new Tag
   const [addOneTag, { loading: addOneTagLoading }] = useMutation(ADD_ONE_TAG, {
     onCompleted: () => {
       setNewExpenseState((state) => {
         return {
           ...state,
-          id: null,
           newTagName: null,
-          isEditingTag: false,
+          isAddingTag: false,
         }
       })
     },
   })
 
-  const onHandleAddNewTag = async () => {
-    await addOneTag({
-      variables: {
-        input: {
-          tagName: newExpenseState.newTagName,
-          expenseType: { id: newExpenseState.id },
-        },
-      },
-      update: (cache) => {
-        cache.writeQuery({
-          query: USER_TYPES_QUERY,
-          variables: { input: { user } },
-          data: {
-            userTypes: [
-              ...userTypes.map((type) => {
-                if (type.id === newExpenseState.id) {
-                  return {
-                    ...type,
-                    tags: [
-                      ...type.tags,
-                      { __typename: 'Tag', tagName: newExpenseState.tagName },
-                    ],
-                  }
-                } else {
-                  return type
-                }
-              }),
-            ],
+  const onHandleTagEditSubmit = async () => {
+    if (newExpenseState.isAddingTag && newExpenseState.newTagName) {
+      const newTagAdded = await addOneTag({
+        variables: {
+          input: {
+            tagName: newExpenseState.newTagName,
+            expenseType: { id: newExpenseState.id },
           },
-        })
-      },
-    })
+        },
+        update: (cache) => {
+          cache.writeQuery({
+            query: USER_TYPES_QUERY,
+            variables: { input: { user } },
+            data: {
+              userTypes: [
+                ...userTypes.map((type) => {
+                  if (type.id === newExpenseState.id) {
+                    return {
+                      ...type,
+                      tags: [
+                        ...type.tags,
+                        { __typename: 'Tag', tagName: newExpenseState.tagName },
+                      ],
+                    }
+                  } else {
+                    return type
+                  }
+                }),
+              ],
+            },
+          })
+        },
+      })
+      const { data: createTag } = newTagAdded
+      setNewExpenseState((state) => {
+        return {
+          ...state,
+          types: [
+            ...state.types.map((type) => {
+              if (type.id === state.id) {
+                return {
+                  ...type,
+                  tags: [...type.tags, createTag],
+                }
+              } else {
+                return type
+              }
+            }),
+          ],
+        }
+      })
+    } else {
+      //empty newTag name, cancel
+      setNewExpenseState((state) => {
+        return {
+          ...state,
+          newTagName: null,
+          isAddingTag: false,
+          isDeletingTag: false,
+        }
+      })
+    }
   }
 
   return (
@@ -102,7 +121,8 @@ const NewExpense = ({
               tags: null,
               chosenTags: [],
               newTagName: null,
-              isEditingTag: false,
+              isAddingTag: false,
+              isDeletingTag: false,
             }
           })
         }
@@ -113,7 +133,7 @@ const NewExpense = ({
         className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-2/3 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <div className="topSection flex-grow flex flex-col select-none">
-          <h3 className="text-white">Choose A Type:</h3>
+          <h3 className="text-white">Pick An Expense Type</h3>
           <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden">
             {userTypes &&
               userTypes.map((oneType) => (
@@ -137,24 +157,23 @@ const NewExpense = ({
                 />
               ))}
           </div>
-          <h3 className="text-white">Pick Tags:</h3>
+          <h3 className="text-white">{`${
+            newExpenseState.id
+              ? `${
+                  newExpenseState.isAddingTag
+                    ? 'Adding Tag'
+                    : `${
+                        newExpenseState.isDeletingTag
+                          ? 'Delete Tag'
+                          : 'Pick a Tag'
+                      }`
+                }`
+              : 'Pick a Tag'
+          }`}</h3>
           <div className="types w-full flex flex-wrap h-12 overflow-y-scroll overflow-x-hidden">
-            {newExpenseState.id
-              ? newExpenseState.tags.map((tag) => (
-                  <Tag
-                    key={tag.id}
-                    content={tag.tagName}
-                    isChosenTag={isTagChosen(
-                      newExpenseState.chosenTags,
-                      tag.id
-                    )}
-                    setChosenTags={setNewExpenseState}
-                    tagId={tag.id}
-                    tagBackground={'bg-gray-500'}
-                  />
-                ))
-              : null}
-            {newExpenseState.id && !newExpenseState.isEditingTag ? (
+            {newExpenseState.id &&
+            !newExpenseState.isAddingTag &&
+            !newExpenseState.isDeletingTag ? (
               <Wrapper
                 onClick={
                   addOneTagLoading
@@ -164,20 +183,44 @@ const NewExpense = ({
                         setNewExpenseState((state) => {
                           return {
                             ...state,
-                            isEditingTag: true,
+                            isDeletingTag: false,
+                            isAddingTag: true,
                           }
                         })
                       }
                 }
-                className="text-white hover:text-gray-300 cursor-pointer"
+                className="text-white hover:text-green-300 cursor-pointer"
               >
                 <Plus className="h-6 w-6" />
               </Wrapper>
             ) : null}
-            {newExpenseState.isEditingTag ? (
+            {newExpenseState.id &&
+            !newExpenseState.isAddingTag &&
+            !newExpenseState.isDeletingTag ? (
+              <Wrapper
+                onClick={
+                  addOneTagLoading
+                    ? () => {}
+                    : (e) => {
+                        e.stopPropagation()
+                        setNewExpenseState((state) => {
+                          return {
+                            ...state,
+                            isAddingTag: false,
+                            isDeletingTag: true,
+                          }
+                        })
+                      }
+                }
+                className="text-white hover:text-red-300 cursor-pointer"
+              >
+                <Garbage className="h-6 w-6" />
+              </Wrapper>
+            ) : null}
+            {newExpenseState.isAddingTag || newExpenseState.isDeletingTag ? (
               <Fragment>
                 <Wrapper
-                  onClick={addOneTagLoading ? () => {} : onHandleAddNewTag}
+                  onClick={addOneTagLoading ? () => {} : onHandleTagEditSubmit}
                   className="text-white hover:text-gray-300 cursor-pointer"
                 >
                   <Check className="h-6 w-6" />
@@ -191,8 +234,10 @@ const NewExpense = ({
                           setNewExpenseState((state) => {
                             return {
                               ...state,
-                              isEditingTag: false,
+                              isAddingTag: false,
                               newTagName: null,
+                              isDeletingTag: false,
+                              chosenTags: [],
                             }
                           })
                         }
@@ -201,38 +246,61 @@ const NewExpense = ({
                 >
                   <Cancel className="h-6 w-6" />
                 </Wrapper>
-                <Wrapper>
-                  <input
-                    onChange={(e) => {
-                      setNewExpenseState((state) => {
-                        return {
-                          ...state,
-                          newTagName: e.target.value,
-                        }
-                      })
-                    }}
-                    className="rounded-full py-1 px-2 bg-gray-500 text-white w-16 sm:w-32"
-                    type="text"
-                    placeholder="New Tag"
-                    value={
-                      newExpenseState.newTagName
-                        ? newExpenseState.newTagName
-                        : ''
-                    }
-                  />
-                </Wrapper>
+                {!newExpenseState.isDeletingTag && (
+                  <Wrapper>
+                    <input
+                      onChange={(e) => {
+                        setNewExpenseState((state) => {
+                          return {
+                            ...state,
+                            newTagName: e.target.value,
+                          }
+                        })
+                      }}
+                      className="rounded-full py-1 px-2 bg-gray-500 text-white w-16 sm:w-32"
+                      type="text"
+                      placeholder="New Tag"
+                      value={
+                        newExpenseState.newTagName
+                          ? newExpenseState.newTagName
+                          : ''
+                      }
+                    />
+                  </Wrapper>
+                )}
               </Fragment>
             ) : null}
+            {newExpenseState.id
+              ? _.find(newExpenseState.types, function (o) {
+                  return o.id === newExpenseState.id
+                }).tags.map((tag) => (
+                  <Tag
+                    key={tag.id}
+                    content={tag.tagName}
+                    isChosenTag={isTagChosen(
+                      newExpenseState.chosenTags,
+                      tag.id
+                    )}
+                    setChosenTags={setNewExpenseState}
+                    tagId={tag.id}
+                    tagBackground={'bg-gray-500'}
+                    isDeletingTag={newExpenseState.isDeletingTag}
+                  />
+                ))
+              : null}
           </div>
         </div>
 
         <div className="bottomButtons text-white flex justify-between">
+          {/*
+
           <Submit disabled={addOneTagLoading}>
             <Check className="h-8 w-8 hover:text-green-300" />
           </Submit>
           <button disabled={addOneTagLoading}>
             <Garbage className="h-8 w-8 hover:text-red-300" />
           </button>
+        */}
         </div>
         {/*
          */}

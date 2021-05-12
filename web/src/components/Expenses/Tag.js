@@ -5,11 +5,11 @@ export const Tag = ({
   id,
   content,
   isChosenTag,
-  chosenTags,
   setChosenTags,
   tagId,
   setTagEditState,
   tagBackground,
+  isDeletingTag,
 }) => {
   const onHandleTagClick = async () => {
     // add setTagEditState to set "editState",
@@ -63,7 +63,11 @@ export const Tag = ({
       <span
         className={`rounded-full py-1 px-2 ${
           isChosenTag
-            ? 'bg-green-300 text-black'
+            ? `${
+                isDeletingTag
+                  ? 'bg-red-300 text-black'
+                  : 'bg-green-300 text-black'
+              }`
             : `text-white ${tagBackground ? tagBackground : 'bg-overlay'}`
         }`}
       >
@@ -79,6 +83,6 @@ export const isTagChosen = (Tags, tagId) => {
   }
 
   return !!_.find(Tags, function (o) {
-    return o.id === tagId
+    return o?.id === tagId
   })
 }
