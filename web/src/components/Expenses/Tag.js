@@ -44,9 +44,14 @@ export const Tag = ({
             ? [...state.chosenTags.filter((tag) => tag.id !== tagId)]
             : [
                 ...state.chosenTags,
-                _.find(state.tags, function (o) {
-                  return o?.id === tagId
-                }),
+                _.find(
+                  _.find(state.types, function (o) {
+                    return o.id === id
+                  }).tags,
+                  function (o) {
+                    return o.id === tagId
+                  }
+                ),
               ],
         }
       })

@@ -275,6 +275,7 @@ const NewExpense = ({
                   return o.id === newExpenseState.id
                 }).tags.map((tag) => (
                   <Tag
+                    id={newExpenseState.id}
                     key={tag.id}
                     content={tag.tagName}
                     isChosenTag={isTagChosen(
