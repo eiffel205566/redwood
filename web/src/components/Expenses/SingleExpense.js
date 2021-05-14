@@ -294,6 +294,7 @@ const SingleExpense = ({
           tagEditState={tagEditState}
           chosenTags={chosenTags}
           setChosenTags={setChosenTags}
+          setTranslateDistance={setTranslateDistance}
         />
         {/*
 

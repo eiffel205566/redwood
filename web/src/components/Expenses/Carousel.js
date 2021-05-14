@@ -11,26 +11,20 @@ const Carousel = ({
   tagEditState,
   chosenTags,
   setChosenTags,
+  setTranslateDistance,
 }) => {
   const { currentTranslateX } = translateDistance || false
   const { chosenTagIds } = chosenTags
-  // const tagIds = tags.map((tag) => tag.id)
 
-  //store tags in local state onmount
-  // const [chosenTags, setChosenTags] = useState({
-  //   chosenTagIds: [...tagIds],
-  // })
-
-  // const { chosenTagIds } = chosenTags
-
-  // useEffect(() => {
-  //   setChosenTags((state) => {
-  //     return {
-  //       ...state,
-  //       chosenTagIds: [...tagIds],
-  //     }
-  //   })
-  // }, [tags])
+  // when adding a new tag, update Carousel's maximum translate X distance
+  useEffect(() => {
+    setTranslateDistance((state) => {
+      return {
+        ...state,
+        maxTranslateX: expenseTypTags.length ? expenseTypTags.length - 1 : 0,
+      }
+    })
+  }, [expenseTypTags])
   //--
 
   return (
@@ -41,7 +35,7 @@ const Carousel = ({
           : ''
       }`}
     >
-      <ul className="allTags the-infinite-row text-xs sm:text-sm md:text-base h-full">
+      <ul className="allTags the-infinite-row text-xs sm:text-sm md:text-base h-full relative">
         {expenseTypTags.map((tag) => (
           <li
             key={tag.id}

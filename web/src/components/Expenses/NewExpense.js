@@ -6,15 +6,8 @@ import SingleType from '../DefaultType/SingleType'
 import { isTagChosen, Tag } from './Tag'
 import { Wrapper } from 'src/components/Misc/UtilityFunc'
 import { USER_TYPES_QUERY } from 'src/pages/ExpensesPage/UserTypesTagsQuery'
-
-const ADD_ONE_TAG = gql`
-  mutation addOneTag($input: CreateTagInput!) {
-    createTag(input: $input) {
-      id
-      tagName
-    }
-  }
-`
+import { v4 as uuidv4 } from 'uuid'
+import { ADD_ONE_TAG, DELETE_TAGS } from 'src/components/Misc/Queries'
 
 const NewExpense = ({
   user,
@@ -36,6 +29,60 @@ const NewExpense = ({
       })
     },
   })
+
+  const [deleteTags, { loading: deleteTagsLoading }] = useMutation(
+    DELETE_TAGS,
+    {
+      onCompleted: () => {
+        setNewExpenseState((state) => {
+          return {
+            ...state,
+            newTagName: null,
+            isDeletingTag: false,
+          }
+        })
+      },
+    }
+  )
+
+  const onHandleTagsDeleteSubmit = async () => {
+    try {
+      const copyToBeDeletedTagIds = [
+        ...newExpenseState.chosenTags.map((tag) => tag.id),
+      ]
+      await deleteTags({
+        variables: {
+          input: { ids: copyToBeDeletedTagIds },
+        },
+        update: (cache) => {
+          cache.writeQuery({
+            query: USER_TYPES_QUERY,
+            variables: { input: { user } },
+            data: {
+              userTypes: [
+                ...userTypes.map((type) => {
+                  if (type.id === newExpenseState.id) {
+                    return {
+                      ...type,
+                      tags: [
+                        ...type.tags.filter(
+                          (tag) => !copyToBeDeletedTagIds.includes(tag.id)
+                        ),
+                      ],
+                    }
+                  } else {
+                    return type
+                  }
+                }),
+              ],
+            },
+          })
+        },
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const onHandleTagEditSubmit = async () => {
     if (newExpenseState.isAddingTag && newExpenseState.newTagName) {
@@ -69,24 +116,6 @@ const NewExpense = ({
             },
           })
         },
-      })
-      const { data: createTag } = newTagAdded
-      setNewExpenseState((state) => {
-        return {
-          ...state,
-          types: [
-            ...state.types.map((type) => {
-              if (type.id === state.id) {
-                return {
-                  ...type,
-                  tags: [...type.tags, createTag],
-                }
-              } else {
-                return type
-              }
-            }),
-          ],
-        }
       })
     } else {
       //empty newTag name, cancel
@@ -176,7 +205,7 @@ const NewExpense = ({
             !newExpenseState.isDeletingTag ? (
               <Wrapper
                 onClick={
-                  addOneTagLoading
+                  addOneTagLoading || deleteTagsLoading
                     ? () => {}
                     : (e) => {
                         e.stopPropagation()
@@ -199,7 +228,7 @@ const NewExpense = ({
             !newExpenseState.isDeletingTag ? (
               <Wrapper
                 onClick={
-                  addOneTagLoading
+                  addOneTagLoading || deleteTagsLoading
                     ? () => {}
                     : (e) => {
                         e.stopPropagation()
@@ -220,14 +249,20 @@ const NewExpense = ({
             {newExpenseState.isAddingTag || newExpenseState.isDeletingTag ? (
               <Fragment>
                 <Wrapper
-                  onClick={addOneTagLoading ? () => {} : onHandleTagEditSubmit}
+                  onClick={
+                    addOneTagLoading || deleteTagsLoading
+                      ? () => {}
+                      : newExpenseState.isAddingTag
+                      ? onHandleTagEditSubmit
+                      : onHandleTagsDeleteSubmit
+                  }
                   className="text-white hover:text-gray-300 cursor-pointer"
                 >
                   <Check className="h-6 w-6" />
                 </Wrapper>
                 <Wrapper
                   onClick={
-                    addOneTagLoading
+                    addOneTagLoading || deleteTagsLoading
                       ? () => {}
                       : (e) => {
                           e.stopPropagation()
@@ -276,7 +311,7 @@ const NewExpense = ({
                 }).tags.map((tag) => (
                   <Tag
                     id={newExpenseState.id}
-                    key={tag.id}
+                    key={tag.id ? tag.id : uuidv4()} //comments!
                     content={tag.tagName}
                     isChosenTag={isTagChosen(
                       newExpenseState.chosenTags,
@@ -295,10 +330,10 @@ const NewExpense = ({
         <div className="bottomButtons text-white flex justify-between">
           {/*
 
-          <Submit disabled={addOneTagLoading}>
+          <Submit disabled={addOneTagLoading || deleteTagsLoading}>
             <Check className="h-8 w-8 hover:text-green-300" />
           </Submit>
-          <button disabled={addOneTagLoading}>
+          <button disabled={addOneTagLoading || deleteTagsLoading}>
             <Garbage className="h-8 w-8 hover:text-red-300" />
           </button>
         */}

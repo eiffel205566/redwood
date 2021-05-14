@@ -40,3 +40,20 @@ export const UPDATE_TYPE = gql`
     }
   }
 `
+
+export const ADD_ONE_TAG = gql`
+  mutation addOneTag($input: CreateTagInput!) {
+    createTag(input: $input) {
+      id
+      tagName
+    }
+  }
+`
+
+export const DELETE_TAGS = gql`
+  mutation deleteManyTags($input: TagWhereInput!) {
+    deleteTags(input: $input) {
+      count
+    }
+  }
+`
