@@ -42,6 +42,10 @@ const NewExpense = ({
           }
         })
       },
+      // refetchQueries: [
+      //   { query: USER_TYPES_QUERY, variables: { input: { user } } },
+      // ],
+      // awaitRefetchQueries: true,
     }
   )
 
@@ -54,8 +58,13 @@ const NewExpense = ({
         variables: {
           input: { ids: copyToBeDeletedTagIds },
         },
-        update: (cache) => {
-          cache.writeQuery({
+        update: async (cache) => {
+          const existingData = await cache.readQuery({
+            query: USER_TYPES_QUERY,
+            variables: { input: { user } },
+          })
+
+          await cache.writeQuery({
             query: USER_TYPES_QUERY,
             variables: { input: { user } },
             data: {
@@ -65,9 +74,13 @@ const NewExpense = ({
                     return {
                       ...type,
                       tags: [
-                        ...type.tags.filter(
-                          (tag) => !copyToBeDeletedTagIds.includes(tag.id)
-                        ),
+                        ...type.tags
+                          .filter(
+                            (tag) => !copyToBeDeletedTagIds.includes(tag.id)
+                          )
+                          .map((tag) => {
+                            return { ...tag, __typename: 'Tag' }
+                          }),
                       ],
                     }
                   } else {
@@ -77,6 +90,14 @@ const NewExpense = ({
               ],
             },
           })
+
+          const updatedData = await cache.readQuery({
+            query: USER_TYPES_QUERY,
+            variables: { input: { user } },
+          })
+
+          // console.log(existingData)
+          // console.log(updatedData)
         },
       })
     } catch (error) {
