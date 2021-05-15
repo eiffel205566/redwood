@@ -11,6 +11,24 @@ const cache = new InMemoryCache({
         },
       },
     },
+    Query: {
+      fields: {
+        userTypes: {
+          merge(existing, incoming) {
+            return [...incoming]
+          },
+        },
+      },
+    },
+    Expense: {
+      fields: {
+        tags: {
+          merge(existing, incoming) {
+            return [...incoming]
+          },
+        },
+      },
+    },
   },
 })
 

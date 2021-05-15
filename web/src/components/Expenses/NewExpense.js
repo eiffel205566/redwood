@@ -42,10 +42,6 @@ const NewExpense = ({
           }
         })
       },
-      // refetchQueries: [
-      //   { query: USER_TYPES_QUERY, variables: { input: { user } } },
-      // ],
-      // awaitRefetchQueries: true,
     }
   )
 
@@ -59,11 +55,6 @@ const NewExpense = ({
           input: { ids: copyToBeDeletedTagIds },
         },
         update: async (cache) => {
-          const existingData = await cache.readQuery({
-            query: USER_TYPES_QUERY,
-            variables: { input: { user } },
-          })
-
           await cache.writeQuery({
             query: USER_TYPES_QUERY,
             variables: { input: { user } },
@@ -74,13 +65,9 @@ const NewExpense = ({
                     return {
                       ...type,
                       tags: [
-                        ...type.tags
-                          .filter(
-                            (tag) => !copyToBeDeletedTagIds.includes(tag.id)
-                          )
-                          .map((tag) => {
-                            return { ...tag, __typename: 'Tag' }
-                          }),
+                        ...type.tags.filter(
+                          (tag) => !copyToBeDeletedTagIds.includes(tag.id)
+                        ),
                       ],
                     }
                   } else {
@@ -90,14 +77,6 @@ const NewExpense = ({
               ],
             },
           })
-
-          const updatedData = await cache.readQuery({
-            query: USER_TYPES_QUERY,
-            variables: { input: { user } },
-          })
-
-          // console.log(existingData)
-          // console.log(updatedData)
         },
       })
     } catch (error) {
@@ -184,7 +163,7 @@ const NewExpense = ({
       >
         <div className="topSection flex-grow flex flex-col select-none">
           <h3 className="text-white">Pick An Expense Type</h3>
-          <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden">
+          <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
             {userTypes &&
               userTypes.map((oneType) => (
                 <SingleType
@@ -207,80 +186,48 @@ const NewExpense = ({
                 />
               ))}
           </div>
-          <h3 className="text-white">{`${
-            newExpenseState.id
-              ? `${
-                  newExpenseState.isAddingTag
-                    ? 'Adding Tag'
-                    : `${
-                        newExpenseState.isDeletingTag
-                          ? 'Delete Tag'
-                          : 'Pick a Tag'
-                      }`
-                }`
-              : 'Pick a Tag'
-          }`}</h3>
-          <div className="types w-full flex flex-wrap h-12 overflow-y-scroll overflow-x-hidden">
-            {newExpenseState.id &&
-            !newExpenseState.isAddingTag &&
-            !newExpenseState.isDeletingTag ? (
-              <Wrapper
-                onClick={
-                  addOneTagLoading || deleteTagsLoading
-                    ? () => {}
-                    : (e) => {
-                        e.stopPropagation()
-                        setNewExpenseState((state) => {
-                          return {
-                            ...state,
-                            isDeletingTag: false,
-                            isAddingTag: true,
-                          }
-                        })
-                      }
-                }
-                className="text-white hover:text-green-300 cursor-pointer"
-              >
-                <Plus className="h-6 w-6" />
-              </Wrapper>
-            ) : null}
-            {newExpenseState.id &&
-            !newExpenseState.isAddingTag &&
-            !newExpenseState.isDeletingTag ? (
-              <Wrapper
-                onClick={
-                  addOneTagLoading || deleteTagsLoading
-                    ? () => {}
-                    : (e) => {
-                        e.stopPropagation()
-                        setNewExpenseState((state) => {
-                          return {
-                            ...state,
-                            isAddingTag: false,
-                            isDeletingTag: true,
-                          }
-                        })
-                      }
-                }
-                className="text-white hover:text-red-300 cursor-pointer"
-              >
-                <Garbage className="h-6 w-6" />
-              </Wrapper>
-            ) : null}
-            {newExpenseState.isAddingTag || newExpenseState.isDeletingTag ? (
-              <Fragment>
+
+          <div className="description-w-buttons flex flex-row">
+            <h3 className="text-white">{`${
+              newExpenseState.id
+                ? `${
+                    newExpenseState.isAddingTag
+                      ? 'Adding A New Tag'
+                      : `${
+                          newExpenseState.isDeletingTag
+                            ? 'Delete Tags'
+                            : 'Choose Your Tags'
+                        }`
+                  }`
+                : 'Pick a Tag'
+            }`}</h3>
+            <div className="buttons flex flex-row">
+              {newExpenseState.id &&
+              !newExpenseState.isAddingTag &&
+              !newExpenseState.isDeletingTag ? (
                 <Wrapper
                   onClick={
                     addOneTagLoading || deleteTagsLoading
                       ? () => {}
-                      : newExpenseState.isAddingTag
-                      ? onHandleTagEditSubmit
-                      : onHandleTagsDeleteSubmit
+                      : (e) => {
+                          e.stopPropagation()
+                          setNewExpenseState((state) => {
+                            return {
+                              ...state,
+                              isDeletingTag: false,
+                              isAddingTag: true,
+                            }
+                          })
+                        }
                   }
-                  className="text-white hover:text-gray-300 cursor-pointer"
+                  className="text-white hover:text-green-300 cursor-pointer"
                 >
-                  <Check className="h-6 w-6" />
+                  <Plus className="h-6 w-6" />
                 </Wrapper>
+              ) : null}
+              {newExpenseState.id &&
+              !newExpenseState.isAddingTag &&
+              !newExpenseState.isDeletingTag ? (
                 <Wrapper
                   onClick={
                     addOneTagLoading || deleteTagsLoading
@@ -291,17 +238,59 @@ const NewExpense = ({
                             return {
                               ...state,
                               isAddingTag: false,
-                              newTagName: null,
-                              isDeletingTag: false,
-                              chosenTags: [],
+                              isDeletingTag: true,
                             }
                           })
                         }
                   }
-                  className="text-white hover:text-gray-300 cursor-pointer"
+                  className="text-white hover:text-red-300 cursor-pointer"
                 >
-                  <Cancel className="h-6 w-6" />
+                  <Garbage className="h-6 w-6" />
                 </Wrapper>
+              ) : null}
+              {newExpenseState.isAddingTag || newExpenseState.isDeletingTag ? (
+                <Fragment>
+                  <Wrapper
+                    onClick={
+                      addOneTagLoading || deleteTagsLoading
+                        ? () => {}
+                        : newExpenseState.isAddingTag
+                        ? onHandleTagEditSubmit
+                        : onHandleTagsDeleteSubmit
+                    }
+                    className="text-white hover:text-gray-300 cursor-pointer"
+                  >
+                    <Check className="h-6 w-6" />
+                  </Wrapper>
+                  <Wrapper
+                    onClick={
+                      addOneTagLoading || deleteTagsLoading
+                        ? () => {}
+                        : (e) => {
+                            e.stopPropagation()
+                            setNewExpenseState((state) => {
+                              return {
+                                ...state,
+                                isAddingTag: false,
+                                newTagName: null,
+                                isDeletingTag: false,
+                                chosenTags: [],
+                              }
+                            })
+                          }
+                    }
+                    className="text-white hover:text-gray-300 cursor-pointer"
+                  >
+                    <Cancel className="h-6 w-6" />
+                  </Wrapper>
+                </Fragment>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="tagsList w-full flex flex-wrap h-24 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+            {newExpenseState.isAddingTag || newExpenseState.isDeletingTag ? (
+              <Fragment>
                 {!newExpenseState.isDeletingTag && (
                   <Wrapper>
                     <input

@@ -129,7 +129,7 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar')],
 }
 
 //#7e7e7e
