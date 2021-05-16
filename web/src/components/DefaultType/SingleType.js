@@ -9,8 +9,15 @@ const SingleType = ({
   iconClass,
   ...rest
 }) => {
-  const { setIconType, id, newName, currentName, noHoverNeeded, textColor } =
-    rest || {}
+  const {
+    setIconType,
+    id,
+    newName,
+    currentName,
+    noHoverNeeded,
+    textColor,
+    newExpenseState,
+  } = rest || {}
   const currentType = 'currentType'
   const tags = 'tags'
 
@@ -22,7 +29,6 @@ const SingleType = ({
           : iconClass + ' sm:hover:bg-gray-300 cursor-pointer',
         onClick: setIconType
           ? () => {
-              //e.stopPropagation()
               setIconType((state) => {
                 if (currentType in state) {
                   //type page
@@ -43,6 +49,9 @@ const SingleType = ({
                         return o?.id === id
                       }),
                     }[tags],
+                    //when switch between expense type, clear out status storing chosen tags
+                    chosenTags:
+                      newExpenseState?.id === id ? [...state.chosenTags] : [],
                   }
                 }
               })

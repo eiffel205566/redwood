@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react'
 import { Form, Submit, TextField } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-import { Check, Garbage, Plus, Cancel } from '../Misc/svg'
+import { Check, Garbage, Plus, Cancel, LoadingIndicator } from '../Misc/svg'
 import SingleType from '../DefaultType/SingleType'
 import { isTagChosen, Tag } from './Tag'
 import { Wrapper } from 'src/components/Misc/UtilityFunc'
@@ -50,6 +50,20 @@ const NewExpense = ({
       const copyToBeDeletedTagIds = [
         ...newExpenseState.chosenTags.map((tag) => tag.id),
       ]
+
+      //click check when no chosen tag will reset isDeletingTag state
+      if (copyToBeDeletedTagIds.length === 0) {
+        setNewExpenseState((state) => {
+          return {
+            ...state,
+            newTagName: null,
+            isAddingTag: false,
+            isDeletingTag: false,
+          }
+        })
+        return
+      }
+
       await deleteTags({
         variables: {
           input: { ids: copyToBeDeletedTagIds },
@@ -130,10 +144,29 @@ const NewExpense = ({
     }
   }
 
+  //amount input handling
+  const onChange = (e) => {
+    const test = /^\d{1,}(\.(\d){0,2})?/g
+    if (e.target.value) {
+      //user did enter something in input
+      if (Number(e.target.value).toString().match(test)) {
+        //if formatted input exist
+        const formatedInput = Number(e.target.value).toString().match(test)[0]
+        setNewExpenseState((state) => {
+          return {
+            ...state,
+            amount: formatedInput,
+          }
+        })
+      }
+    }
+  }
+
   return (
     <div
       className="backgroundOverlay bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50"
       onClick={(e) => {
+        //when user click anywhere else other than the overlaying NewExpense Component
         if (Array.from(e.target.classList).includes('backgroundOverlay')) {
           setTagEditState((state) => {
             return {
@@ -152,13 +185,14 @@ const NewExpense = ({
               newTagName: null,
               isAddingTag: false,
               isDeletingTag: false,
+              amount: null,
             }
           })
         }
       }}
     >
       <Form
-        onSubmit={() => {}}
+        onSubmit={() => console.log(newExpenseState)}
         className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-2/3 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <div className="topSection flex-grow flex flex-col select-none">
@@ -180,6 +214,7 @@ const NewExpense = ({
                       : 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-100 rounded-full p-2 mx-auto'
                   }
                   setIconType={setNewExpenseState}
+                  newExpenseState={newExpenseState}
                   newName={oneType.newName}
                   currentName={oneType.newName}
                   textColor="text-white"
@@ -288,7 +323,7 @@ const NewExpense = ({
             </div>
           </div>
 
-          <div className="tagsList w-full flex flex-wrap h-24 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+          <div className="tagsList border-b w-full flex flex-wrap h-24 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
             {newExpenseState.isAddingTag || newExpenseState.isDeletingTag ? (
               <Fragment>
                 {!newExpenseState.isDeletingTag && (
@@ -335,26 +370,39 @@ const NewExpense = ({
                 ))
               : null}
           </div>
+          <div className="amount text-white">
+            <h3>How much did you expend?</h3>
+            <Wrapper paddingLeft="pl-0">
+              <input
+                onChange={onChange}
+                className="py-1 px-2 bg-gray-500 text-white w-48"
+                placeholder="Spending"
+                type="number"
+                value={newExpenseState.amount ? newExpenseState.amount : ''}
+              />
+            </Wrapper>
+          </div>
         </div>
 
-        <div className="bottomButtons text-white flex justify-between">
+        <div className="bottomButtons border-t text-white flex justify-between">
           {/*
+            Cases when Submit should NOT be displayed:
+              1. any loading status being true
+              2. when isAddintTag or isDeletingTag is true
+              3. when newExpenseState.id or newExpenseState.amount is null/undefined
+          */}
 
-          <Submit disabled={addOneTagLoading || deleteTagsLoading}>
-            <Check className="h-8 w-8 hover:text-green-300" />
-          </Submit>
-          <button disabled={addOneTagLoading || deleteTagsLoading}>
-            <Garbage className="h-8 w-8 hover:text-red-300" />
-          </button>
-        */}
+          {addOneTagLoading || deleteTagsLoading ? (
+            <LoadingIndicator className="h-8 w-8 cursor-not-allowed animate-spin" />
+          ) : newExpenseState.isAddingTag ||
+            newExpenseState.isDeletingTag ? null : newExpenseState.id &&
+            newExpenseState.amount ? (
+            <Check className="h-8 w-8 hover:text-green-300 cursor-pointer" />
+          ) : null}
         </div>
-        {/*
-         */}
       </Form>
     </div>
   )
 }
 
 export default NewExpense
-
-//inset-1/2 transform -translate-x-1/2 -translate-y-full

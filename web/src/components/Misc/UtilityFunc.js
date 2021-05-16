@@ -8,11 +8,13 @@ export const truncate = (text, maxStringLength) => {
 }
 
 export const Wrapper = ({ children, className, ...rest }) => {
-  const { onClick } = rest || {}
+  const { onClick, paddingLeft } = rest || {}
   return (
     <div
       onClick={onClick}
-      className={`${className} flex flex-col justify-center pl-1 text-xs sm:text-sm md:text-base`}
+      className={`${className} flex flex-col justify-center ${
+        paddingLeft ? 'paddingLeft' : 'pl-1'
+      } text-xs sm:text-sm md:text-base`}
     >
       {children}
     </div>
