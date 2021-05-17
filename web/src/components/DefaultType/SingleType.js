@@ -22,7 +22,7 @@ const SingleType = ({
   const tags = 'tags'
 
   return (
-    <div key={index} className={parentClass + 'z-1'}>
+    <div key={index} className={parentClass + ' z-1'}>
       {React.createElement(icon, {
         className: noHoverNeeded
           ? iconClass

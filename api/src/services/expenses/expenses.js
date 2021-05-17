@@ -19,7 +19,12 @@ export const createExpense = ({ input }) => {
     amount,
     user,
     expenseType: { id },
+    tags,
   } = input
+
+  //take ids from tags
+  const tagIds = tags?.ids ? [...tags.ids] : []
+
   return db.expense.create({
     data: {
       amount,
@@ -28,6 +33,14 @@ export const createExpense = ({ input }) => {
         connect: {
           id,
         },
+      },
+      tags: {
+        connect: [
+          // connect/create accept id in forms of {id: xx}
+          ...tagIds.map((id) => {
+            return { id }
+          }),
+        ],
       },
     },
     include: {

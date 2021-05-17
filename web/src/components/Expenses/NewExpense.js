@@ -1,13 +1,18 @@
 import React, { Fragment, useEffect } from 'react'
 import { Form, Submit, TextField } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
-import { Check, Garbage, Plus, Cancel, LoadingIndicator } from '../Misc/svg'
+import { Check, Garbage, Plus, Cancel, ClockLoading } from '../Misc/svg'
 import SingleType from '../DefaultType/SingleType'
 import { isTagChosen, Tag } from './Tag'
 import { Wrapper } from 'src/components/Misc/UtilityFunc'
 import { USER_TYPES_QUERY } from 'src/pages/ExpensesPage/UserTypesTagsQuery'
 import { v4 as uuidv4 } from 'uuid'
-import { ADD_ONE_TAG, DELETE_TAGS } from 'src/components/Misc/Queries'
+import {
+  ADD_ONE_TAG,
+  DELETE_TAGS,
+  ADD_ONE_EXPENSE,
+} from 'src/components/Misc/Queries'
+import { QUERY } from 'src/components/ExpensesCell/ExpensesCell'
 
 const NewExpense = ({
   user,
@@ -149,9 +154,9 @@ const NewExpense = ({
     const test = /^\d{1,}(\.(\d){0,2})?/g
     if (e.target.value) {
       //user did enter something in input
-      if (Number(e.target.value).toString().match(test)) {
+      if (e.target.value.toString().match(test)) {
         //if formatted input exist
-        const formatedInput = Number(e.target.value).toString().match(test)[0]
+        const formatedInput = e.target.value.toString().match(test)[0]
         setNewExpenseState((state) => {
           return {
             ...state,
@@ -159,6 +164,81 @@ const NewExpense = ({
           }
         })
       }
+    }
+  }
+
+  //submit new expense
+  const [createOneExpense, { loading: createOneExpenseLoading }] = useMutation(
+    ADD_ONE_EXPENSE,
+    {
+      onCompleted: () => {
+        setTagEditState((state) => {
+          return {
+            ...state,
+            id: null,
+            editState: false,
+            newTagState: false,
+          }
+        })
+        setNewExpenseState((state) => {
+          return {
+            ...state,
+            id: null,
+            tags: null,
+            chosenTags: [],
+            newTagName: null,
+            isAddingTag: false,
+            isDeletingTag: false,
+            amount: null,
+          }
+        })
+      },
+    }
+  )
+
+  const onHandleAddOneExpense = async () => {
+    try {
+      await createOneExpense({
+        variables: {
+          input: {
+            amount: Number(newExpenseState.amount).toFixed(2),
+            user,
+            expenseType: { id: newExpenseState.id },
+            tags: { ids: [...newExpenseState.chosenTags.map((tag) => tag.id)] },
+          },
+        },
+        update: async (cache) => {
+          const { myExpenses } = await cache.readQuery({
+            query: QUERY, //all user expenses query
+            variables: { input: user },
+          })
+          await cache.writeQuery({
+            query: QUERY, //all user expenses query
+            variables: { input: user },
+            data: {
+              myExpenses: [
+                ...myExpenses,
+                {
+                  __typename: 'Expense',
+                  amount: Number(newExpenseState.amount).toFixed(2),
+                  createdAt: new Date()
+                    .toDateString()
+                    .split(' ')
+                    .slice(1)
+                    .join(' '),
+                  expenseType: {
+                    __typename: 'ExpenseType',
+                    id: newExpenseState.id,
+                  },
+                  tags: [...newExpenseState.chosenTags],
+                },
+              ],
+            },
+          })
+        },
+      })
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -327,7 +407,7 @@ const NewExpense = ({
             {newExpenseState.isAddingTag || newExpenseState.isDeletingTag ? (
               <Fragment>
                 {!newExpenseState.isDeletingTag && (
-                  <Wrapper>
+                  <Wrapper className="h-12">
                     <input
                       onChange={(e) => {
                         setNewExpenseState((state) => {
@@ -377,7 +457,7 @@ const NewExpense = ({
                 onChange={onChange}
                 className="py-1 px-2 bg-gray-500 text-white w-48"
                 placeholder="Spending"
-                type="number"
+                type="text"
                 value={newExpenseState.amount ? newExpenseState.amount : ''}
               />
             </Wrapper>
@@ -393,11 +473,14 @@ const NewExpense = ({
           */}
 
           {addOneTagLoading || deleteTagsLoading ? (
-            <LoadingIndicator className="h-8 w-8 cursor-not-allowed animate-spin" />
+            <ClockLoading className="h-8 w-8 cursor-not-allowed" />
           ) : newExpenseState.isAddingTag ||
             newExpenseState.isDeletingTag ? null : newExpenseState.id &&
             newExpenseState.amount ? (
-            <Check className="h-8 w-8 hover:text-green-300 cursor-pointer" />
+            <Check
+              onClick={onHandleAddOneExpense}
+              className="h-8 w-8 hover:text-green-300 cursor-pointer"
+            />
           ) : null}
         </div>
       </Form>

@@ -1,6 +1,6 @@
 import { Link, routes } from '@redwoodjs/router'
 import { timeTag } from 'src/components/Expenses/Expenses'
-import { LoadingIndicator } from 'src/components/Misc/svg'
+import { ClockLoading } from 'src/components/Misc/svg'
 
 import Expenses from 'src/components/Expenses'
 
@@ -31,7 +31,7 @@ export const Loading = ({ user }) => (
   <div className="w-full mt-5 flex flex-col justify-center select-none">
     <h1 className="text-white text-xl">
       {timeTag(new Date())}
-      <LoadingIndicator className="h-8 w-8 cursor-not-allowed animate-spin inline p-1" />
+      <ClockLoading className="h-8 w-8 cursor-not-allowed animate-spin inline p-1" />
     </h1>
   </div>
 )

@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 export const Calculator = ({ className }) => {
   return (
     <svg
@@ -339,6 +340,41 @@ export const Clock = ({ className, onClick }) => {
         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
       />
     </svg>
+  )
+}
+
+const ClockByNumber = ({ className, onClick, d }) => {
+  return (
+    <svg
+      onClick={onClick}
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d={d}
+      />
+    </svg>
+  )
+}
+
+export const ClockLoading = ({ className }) => {
+  return (
+    <div className={`relative ${className}`}>
+      <ClockByNumber
+        d="M 12 7 V 12 M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 0 1 21 12 Z"
+        className={`${className} text-gray-300 absolute animate-spin`}
+      />
+      <ClockByNumber
+        d="M 12 9 V 12 M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 0 1 21 12 Z"
+        className={`${className} text-gray-300 absolute animate-spin-slow`}
+      />
+    </div>
   )
 }
 

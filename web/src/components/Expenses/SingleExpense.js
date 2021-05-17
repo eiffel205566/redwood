@@ -225,7 +225,7 @@ const SingleExpense = ({
           <Edit className="h-6 w-6" />
         </Wrapper>
 
-        <Wrapper>
+        <Wrapper className="w-10 sm:w-20">
           <span>{`$${amount}`}</span>
         </Wrapper>
 
@@ -235,76 +235,79 @@ const SingleExpense = ({
               description ? iconTypes[description] : iconTypes['CREDIT_CARD']
             }
             newName={newName ? newName : 'default'}
-            parentClass="w-max"
+            parentClass="w-10"
             iconClass="mx-auto h-6 w-6 text-displayOnly"
             noHoverNeeded={true}
             textColor="text-displayOnly"
           />
         </Wrapper>
 
-        <Wrapper>
-          <span>{'Tags: '}</span>
-        </Wrapper>
-
-        {id === tagEditState.id ? (
-          <Wrapper
-            onClick={
-              connectTagsToExpenseLoading ? () => {} : onHandleSubmitTagChange
-            }
-            className="hover:text-green-300 cursor-pointer"
-          >
-            <Check className="h-5 w-5 md:h-6 md:w-6" />
-          </Wrapper>
-        ) : null}
-
-        {id === tagEditState.id ? (
-          <Wrapper
-            onClick={
-              connectTagsToExpenseLoading
-                ? () => {}
-                : () =>
-                    setTagEditState((state) => {
-                      return {
-                        ...state,
-                        id: null,
-                        editState: false,
-                        newTagState: false,
-                      }
-                    })
-            }
-            className="hover:text-red-300 cursor-pointer"
-          >
-            <Cancel className="h-5 w-5 md:h-6 md:w-6" />
-          </Wrapper>
-        ) : null}
-
-        <Wrapper>
-          <Left
-            onClick={onHandleTranslateLeft}
-            className="h-5 w-5 md:h-6 md:w-6 hover:text-gray-300 cursor-pointer"
-          />
-        </Wrapper>
-
-        <Carousel
-          translateDistance={translateDistance}
-          expenseTypTags={expenseTypTags}
-          tags={tags}
-          id={id}
-          setTagEditState={setTagEditState}
-          tagEditState={tagEditState}
-          chosenTags={chosenTags}
-          setChosenTags={setChosenTags}
-          setTranslateDistance={setTranslateDistance}
-        />
-        {/*
-
+        <div className="tagTitle-chevron-corousel flex-grow flex flex-row justify-center">
+          {/*
+            <Wrapper>
+              <span>{'Tags: '}</span>
+            </Wrapper>
           */}
-        <Wrapper>
-          <Right
-            onClick={onHandleTranslateRight}
-            className="h-5 w-5 md:h-6 md:w-6 hover:text-gray-300 cursor-pointer"
+
+          {id === tagEditState.id ? (
+            <Wrapper
+              onClick={
+                connectTagsToExpenseLoading ? () => {} : onHandleSubmitTagChange
+              }
+              className="hover:text-green-300 cursor-pointer"
+            >
+              <Check className="h-5 w-5 md:h-6 md:w-6" />
+            </Wrapper>
+          ) : null}
+
+          {id === tagEditState.id ? (
+            <Wrapper
+              onClick={
+                connectTagsToExpenseLoading
+                  ? () => {}
+                  : () =>
+                      setTagEditState((state) => {
+                        return {
+                          ...state,
+                          id: null,
+                          editState: false,
+                          newTagState: false,
+                        }
+                      })
+              }
+              className="hover:text-red-300 cursor-pointer"
+            >
+              <Cancel className="h-5 w-5 md:h-6 md:w-6" />
+            </Wrapper>
+          ) : null}
+          <Wrapper>
+            <Left
+              onClick={onHandleTranslateLeft}
+              className="h-5 w-5 md:h-6 md:w-6 hover:text-gray-300 cursor-pointer"
+            />
+          </Wrapper>
+
+          <Carousel
+            translateDistance={translateDistance}
+            expenseTypTags={expenseTypTags}
+            tags={tags}
+            id={id}
+            setTagEditState={setTagEditState}
+            tagEditState={tagEditState}
+            chosenTags={chosenTags}
+            setChosenTags={setChosenTags}
+            setTranslateDistance={setTranslateDistance}
           />
-        </Wrapper>
+          {/*
+
+            */}
+          <Wrapper>
+            <Right
+              onClick={onHandleTranslateRight}
+              className="h-5 w-5 md:h-6 md:w-6 hover:text-gray-300 cursor-pointer"
+            />
+          </Wrapper>
+        </div>
       </div>
 
       {timeTag(new Date(createdAt))}
@@ -324,35 +327,5 @@ const timeTag = (datetime) => {
     </Fragment>
   )
 }
-
-//utility
-// const Tag = ({ content, setTagEditState = () => {} }) => {
-//   return (
-//     <div
-//       className={`${
-//         content ? '' : 'text-displayOnly'
-//       } flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-32 h-full`}
-//     >
-//       <span className="rounded-full py-1 px-2 bg-overlay">
-//         {content ? (
-//           truncate(content, 8)
-//         ) : (
-//           <input
-//             onBlur={() => {
-//               setTagEditState((state) => {
-//                 return {
-//                   ...state,
-//                   id: null,
-//                   editState: false,
-//                 }
-//               })
-//             }}
-//             className="bg-overlay border focus:border-green-300 w-full"
-//           ></input>
-//         )}
-//       </span>
-//     </div>
-//   )
-// }
 
 export default SingleExpense

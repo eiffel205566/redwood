@@ -18,6 +18,7 @@ export const schema = gql`
     amount: String!
     user: String!
     expenseType: ExpenseTypeWhereUniqueInput!
+    tags: TagsWhereUniqueInput
   }
 
   input ExpenseTypeWhereUniqueInput {

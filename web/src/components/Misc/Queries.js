@@ -57,3 +57,23 @@ export const DELETE_TAGS = gql`
     }
   }
 `
+
+export const ADD_ONE_EXPENSE = gql`
+  mutation addOneExpense($input: CreateExpenseInput!) {
+    createExpense(input: $input) {
+      id
+      amount
+      user
+      createdAt
+      expenseType {
+        id
+        description
+        newName
+      }
+      tags {
+        id
+        tagName
+      }
+    }
+  }
+`

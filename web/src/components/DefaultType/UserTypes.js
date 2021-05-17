@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import SingleType from './SingleType'
-import { Spin, Customize } from 'src/components/Misc/svg'
+import { Spin, Customize, ClockLoading } from 'src/components/Misc/svg'
 
 const UserTypes = ({ userTypes, id, iconTypes, setIconType }) => {
   return userTypes?.map((oneType) => (
@@ -28,9 +28,15 @@ export const Wrapper = (Component) => {
   return ({ ...props }) => {
     const { userTypes, allUserLoading } = props
     return (
-      <div className="m-5 sm:mx-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-gray-200 overflow-scroll max-h-72 p-1 border rounded z-10">
+      <div
+        className={`m-5 sm:mx-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-gray-200 ${
+          allUserLoading ? 'overflow-hidden' : 'overflow-scroll'
+        }  max-h-72 p-1 border rounded z-10`}
+      >
         {allUserLoading ? (
-          <Spin className="w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 text-gray-500 animate-spin m-auto" />
+          <Fragment>
+            <ClockLoading className="w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 text-gray-500 m-auto" />
+          </Fragment>
         ) : (
           userTypes &&
           (userTypes.length ? (

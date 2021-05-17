@@ -5,7 +5,7 @@ import { useAuth } from '@redwoodjs/auth'
 import { QUERY } from 'src/components/ExpensesCell'
 import SingleExpense from './SingleExpense'
 import { iconTypes } from 'src/components/DefaultType/Static'
-import { Plus } from '../Misc/svg'
+import { ClockLoading, Plus } from '../Misc/svg'
 
 const DELETE_EXPENSE_MUTATION = gql`
   mutation DeleteExpenseMutation($id: Int!) {
@@ -58,7 +58,13 @@ const ExpensesList = ({ myExpenses, tagEditState, setTagEditState, user }) => {
 
   return (
     <div className="w-full mt-5 flex flex-col justify-center select-none">
-      <h1 className="text-white text-xl">{timeTag(new Date())}</h1>
+      <h1 className="text-white text-xl">
+        {timeTag(new Date())}
+        {/*
+          <ClockLoading className="h-8 w-8 cursor-not-allowed animate-spin inline p-1" />
+        */}
+      </h1>
+
       {myExpenses.map((singleExpense) => {
         return (
           <SingleExpense
