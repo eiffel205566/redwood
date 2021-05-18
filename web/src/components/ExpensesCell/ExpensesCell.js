@@ -68,6 +68,7 @@ export const Success = ({
       tagEditState={tagEditState}
       setTagEditState={setTagEditState}
       user={user}
+      setNewExpenseState={setNewExpenseState}
     />
   )
 }

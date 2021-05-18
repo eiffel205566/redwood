@@ -21,6 +21,7 @@ const NewExpense = ({
   iconTypes,
   setNewExpenseState,
   newExpenseState,
+  // singleExpense, //used when editing existing expense, null when adding new expense
 }) => {
   //Add new Tag
   const [addOneTag, { loading: addOneTagLoading }] = useMutation(ADD_ONE_TAG, {
@@ -167,6 +168,15 @@ const NewExpense = ({
     }
   }
 
+  const onDateChange = (e) => {
+    setNewExpenseState((state) => {
+      return {
+        ...state,
+        date: e.target.value,
+      }
+    })
+  }
+
   //submit new expense
   const [createOneExpense, { loading: createOneExpenseLoading }] = useMutation(
     ADD_ONE_EXPENSE,
@@ -184,12 +194,14 @@ const NewExpense = ({
           return {
             ...state,
             id: null,
+            expenseToEdit: null,
             tags: null,
             chosenTags: [],
             newTagName: null,
             isAddingTag: false,
             isDeletingTag: false,
             amount: null,
+            date: null,
           }
         })
       },
@@ -242,6 +254,9 @@ const NewExpense = ({
     }
   }
 
+  //on handle editing an expense
+  const onHandleEditOneExpense = () => {}
+
   return (
     <div
       className="backgroundOverlay bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50"
@@ -260,12 +275,14 @@ const NewExpense = ({
             return {
               ...state,
               id: null,
+              expenseToEdit: null,
               tags: null,
               chosenTags: [],
               newTagName: null,
               isAddingTag: false,
               isDeletingTag: false,
               amount: null,
+              date: null,
             }
           })
         }
@@ -273,10 +290,14 @@ const NewExpense = ({
     >
       <Form
         onSubmit={() => console.log(newExpenseState)}
-        className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-2/3 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-3/4 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <div className="topSection flex-grow flex flex-col select-none">
-          <h3 className="text-white">Pick An Expense Type</h3>
+          <h3 className="text-white ">{`${
+            newExpenseState.expenseToEdit
+              ? 'Edit With New Type'
+              : 'Pick Expense Type For New Exp'
+          }`}</h3>
           <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
             {userTypes &&
               userTypes.map((oneType) => (
@@ -451,16 +472,32 @@ const NewExpense = ({
               : null}
           </div>
           <div className="amount text-white">
-            <h3>How much did you expend?</h3>
-            <Wrapper paddingLeft="pl-0">
-              <input
-                onChange={onChange}
-                className="py-1 px-2 bg-gray-500 text-white w-48"
-                placeholder="Spending"
-                type="text"
-                value={newExpenseState.amount ? newExpenseState.amount : ''}
-              />
-            </Wrapper>
+            <div className="twoH3Parent w-full flex flex-col">
+              <h3 className="m-1">How much you spend?</h3>
+              <Wrapper className="flex-grow" paddingLeft="pl-0">
+                <input
+                  onChange={onChange}
+                  className="h-8 m-1 bg-gray-500 text-white max-w-xs"
+                  placeholder="Spending"
+                  type="text"
+                  value={newExpenseState.amount ? newExpenseState.amount : ''}
+                />
+              </Wrapper>
+            </div>
+
+            {newExpenseState.expenseToEdit ? (
+              <div className="twoInput flex flex-col justify-between">
+                <h3 className="m-1">When did you spend?</h3>
+                <Wrapper className="flex-grow" paddingLeft="pl-0">
+                  <input
+                    className="h-8 m-1 bg-gray-500 text-white max-w-xs"
+                    type="date"
+                    value={newExpenseState.date ? newExpenseState.date : ''}
+                    onChange={onDateChange}
+                  />
+                </Wrapper>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -478,7 +515,11 @@ const NewExpense = ({
             newExpenseState.isDeletingTag ? null : newExpenseState.id &&
             newExpenseState.amount ? (
             <Check
-              onClick={onHandleAddOneExpense}
+              onClick={
+                newExpenseState.expenseToEdit
+                  ? onHandleEditOneExpense //when expenseToEdit is present, handle editing expense
+                  : onHandleAddOneExpense //when expenseToEdit is null, handle adding new expense
+              }
               className="h-8 w-8 hover:text-green-300 cursor-pointer"
             />
           ) : null}

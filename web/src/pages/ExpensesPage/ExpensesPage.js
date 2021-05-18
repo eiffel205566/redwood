@@ -41,7 +41,8 @@ const ExpensesPage = () => {
 
   //have to save expenseType and tags in state in Page
   const [newExpenseState, setNewExpenseState] = useState({
-    id: null,
+    id: null, //expenseType id when overlayed NewExpense comp showed up
+    expenseToEdit: null, //not used when adding new, used when editing existing exp
     types: null,
     tags: null,
     chosenTags: [],
@@ -49,6 +50,7 @@ const ExpensesPage = () => {
     isAddingTag: false,
     isDeletingTag: false,
     amount: null,
+    date: null,
   })
 
   //USER_TYPES_QUERY

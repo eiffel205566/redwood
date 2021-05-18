@@ -41,7 +41,13 @@ const checkboxInputTag = (checked) => {
   return <input type="checkbox" checked={checked} disabled />
 }
 
-const ExpensesList = ({ myExpenses, tagEditState, setTagEditState, user }) => {
+const ExpensesList = ({
+  myExpenses,
+  tagEditState,
+  setTagEditState,
+  user,
+  setNewExpenseState,
+}) => {
   const [deleteExpense] = useMutation(DELETE_EXPENSE_MUTATION, {
     onCompleted: () => {
       toast.success('Expense deleted')
@@ -75,6 +81,7 @@ const ExpensesList = ({ myExpenses, tagEditState, setTagEditState, user }) => {
             setTagEditState={setTagEditState}
             myExpenses={myExpenses}
             user={user}
+            setNewExpenseState={setNewExpenseState}
           />
         )
       })}

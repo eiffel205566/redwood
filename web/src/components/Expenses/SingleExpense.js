@@ -61,6 +61,7 @@ const SingleExpense = ({
   setTagEditState,
   myExpenses,
   user,
+  setNewExpenseState,
 }) => {
   const { id, amount, createdAt, expenseType, tags } = singleExpense
 
@@ -221,7 +222,30 @@ const SingleExpense = ({
   return (
     <div className="singleExpense flex w-full h-12 bg-sideDark text-white my-1">
       <div className="flexWrapperNoTime flex flex-grow">
-        <Wrapper className="hover:text-gray-300 cursor-pointer">
+        <Wrapper
+          onClick={() => {
+            // click will bring up NewExpense
+            setTagEditState((state) => {
+              return {
+                ...state,
+                newTagState: true,
+              }
+            })
+            setNewExpenseState((state) => {
+              console.log(singleExpense.createdAt)
+              return {
+                ...state,
+                expenseToEdit: singleExpense,
+                id: singleExpense.expenseType.id,
+                tags: [...singleExpense.expenseType.tags],
+                chosenTags: [...singleExpense.tags],
+                amount: singleExpense.amount,
+                date: singleExpense.createdAt,
+              }
+            })
+          }}
+          className="hover:text-gray-300 cursor-pointer"
+        >
           <Edit className="h-6 w-6" />
         </Wrapper>
 
