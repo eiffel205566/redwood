@@ -232,7 +232,6 @@ const SingleExpense = ({
               }
             })
             setNewExpenseState((state) => {
-              console.log(singleExpense.createdAt)
               return {
                 ...state,
                 expenseToEdit: singleExpense,
@@ -334,7 +333,7 @@ const SingleExpense = ({
         </div>
       </div>
 
-      {timeTag(new Date(createdAt))}
+      {timeTag(new Date(createdAt.replace('-', '/')))}
     </div>
   )
 }
@@ -344,7 +343,7 @@ const timeTag = (datetime) => {
   return (
     <Fragment>
       <div className="text-xs sm:text-sm md:text-base flex flex-col justify-center text-displayOnly px-0.5 sm:px-1 md:px-2">
-        <time dateTime={datetime} title={datetime}>
+        <time>
           {new Date(datetime).toDateString().split(' ').slice(1).join(' ')}
         </time>
       </div>

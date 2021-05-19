@@ -11,6 +11,7 @@ import {
   ADD_ONE_TAG,
   DELETE_TAGS,
   ADD_ONE_EXPENSE,
+  UPDATE_ONE_EXPENSE,
 } from 'src/components/Misc/Queries'
 import { QUERY } from 'src/components/ExpensesCell/ExpensesCell'
 
@@ -255,7 +256,78 @@ const NewExpense = ({
   }
 
   //on handle editing an expense
-  const onHandleEditOneExpense = () => {}
+  const [updateOneExpense, { loading: updateOneExpenseLoading }] = useMutation(
+    UPDATE_ONE_EXPENSE,
+    {
+      onCompleted: () => {
+        setTagEditState((state) => {
+          return {
+            ...state,
+            id: null,
+            editState: false,
+            newTagState: false,
+          }
+        })
+        setNewExpenseState((state) => {
+          return {
+            ...state,
+            id: null,
+            expenseToEdit: null,
+            tags: null,
+            chosenTags: [],
+            newTagName: null,
+            isAddingTag: false,
+            isDeletingTag: false,
+            amount: null,
+            date: null,
+          }
+        })
+      },
+    }
+  )
+
+  const onHandleEditOneExpense = async () => {
+    try {
+      await updateOneExpense({
+        variables: {
+          input: {
+            id: newExpenseState.expenseToEdit.id,
+            amount: Number(newExpenseState.amount).toFixed(2),
+            expenseType: { id: newExpenseState.id },
+            tags: { ids: [...newExpenseState.chosenTags.map((tag) => tag.id)] },
+            createdAt: newExpenseState.date,
+          },
+        },
+        // update: async (cache) => {
+        //   const { myExpenses } = await cache.readQuery({
+        //     query: QUERY, //all user expenses query
+        //     variables: { input: user },
+        //   })
+        //   await cache.writeQuery({
+        //     query: QUERY, //all user expenses query
+        //     variables: { input: user },
+        //     data: {
+        //       myExpenses: [
+        //         ...myExpenses,
+        //         {
+        //           __typename: 'Expense',
+        //           amount: Number(newExpenseState.amount).toFixed(2),
+        //           createdAt: newExpenseState.date,
+        //           expenseType: {
+        //             __typename: 'ExpenseType',
+        //             id: newExpenseState.id,
+        //           },
+        //           tags: [...newExpenseState.chosenTags],
+        //         },
+        //       ],
+        //     },
+        //   })
+        // },
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div

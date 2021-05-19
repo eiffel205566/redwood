@@ -110,3 +110,7 @@ canvas {
     width: 134px;
   }
 }
+
+aside {
+  z-index: 10;
+}

@@ -77,3 +77,23 @@ export const ADD_ONE_EXPENSE = gql`
     }
   }
 `
+
+export const UPDATE_ONE_EXPENSE = gql`
+  mutation updateOneExpense($input: UpdateExpenseInput!) {
+    updateExpense(input: $input) {
+      id
+      amount
+      user
+      createdAt
+      expenseType {
+        id
+        description
+        newName
+      }
+      tags {
+        id
+        tagName
+      }
+    }
+  }
+`

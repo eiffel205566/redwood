@@ -10,7 +10,14 @@ export const expenses = ({ input }) => {
 export const expense = ({ id }) => {
   return db.expense.findUnique({
     where: { id },
-    include: { tags: true, expenseType: true },
+    include: {
+      tags: true,
+      expenseType: {
+        include: {
+          tags: true,
+        },
+      },
+    },
   })
 }
 
@@ -135,6 +142,38 @@ export const myExpenses = ({ input }) => {
         },
       },
       tags: true,
+    },
+  })
+}
+
+export const updateExpense = async ({ input }) => {
+  const { id, amount, createdAt, expenseType, tags } = input
+  const { id: expenseTypeId } = expenseType
+  const { ids } = tags
+
+  return await db.expense.update({
+    where: { id },
+    data: {
+      amount,
+      createdAt,
+      expenseType: {
+        connect: { id: expenseTypeId },
+      },
+      tags: {
+        set: [
+          ...ids.map((id) => {
+            return { id }
+          }),
+        ],
+      },
+    },
+    include: {
+      tags: true,
+      expenseType: {
+        include: {
+          tags: true,
+        },
+      },
     },
   })
 }

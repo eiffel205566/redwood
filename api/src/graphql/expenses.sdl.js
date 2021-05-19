@@ -27,6 +27,9 @@ export const schema = gql`
 
   input UpdateExpenseInput {
     id: Int!
+    amount: String
+    createdAt: Date
+    expenseType: ExpenseTypeWhereUniqueInput
     tags: TagsWhereUniqueInput
   }
 
@@ -48,5 +51,6 @@ export const schema = gql`
     deleteExpense(id: Int!): Expense!
     connectTagsToExpense(input: ConnectTagsToExpenseInput!): Expense!
     addTag(input: AddTagInput!): Expense!
+    updateExpense(input: UpdateExpenseInput!): Expense!
   }
 `

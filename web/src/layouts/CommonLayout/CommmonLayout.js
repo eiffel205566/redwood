@@ -35,7 +35,7 @@ const CommonLayout = ({
           sideBarShowed ? 'left-0' : '-left-40'
         } transition-all duration-500 ease-in-out min-h-screen fixed w-40 bg-sideDark`}
       >
-        <SideBar className="w-40 z-1" />
+        <SideBar className="w-40" />
       </aside>
 
       <header className="h-14 z-30 bg-gray-400">
