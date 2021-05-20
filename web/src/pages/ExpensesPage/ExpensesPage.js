@@ -8,7 +8,7 @@ import { USER_TYPES_QUERY } from './UserTypesTagsQuery'
 import { useQuery } from '@redwoodjs/web'
 import { iconTypes } from 'src/components/DefaultType/Static'
 
-const ExpensesPage = () => {
+const ExpensesPage = ({ page = 1 }) => {
   //side bar state
   const [showSidebar, setShowSidebar] = useState({
     sideBarShowed: false,
@@ -89,6 +89,7 @@ const ExpensesPage = () => {
           setTagEditState={setTagEditState}
           user={user}
           setNewExpenseState={setNewExpenseState}
+          page={page}
         />
       </CommonLayout>
     </Fragment>

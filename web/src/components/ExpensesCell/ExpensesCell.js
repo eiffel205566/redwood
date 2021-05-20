@@ -4,25 +4,50 @@ import { ClockLoading } from 'src/components/Misc/svg'
 
 import Expenses from 'src/components/Expenses'
 
+// export const QUERY = gql`
+//   query EXPENSES($input: String!) {
+//     myExpenses(input: $input) {
+//       id
+//       amount
+//       createdAt
+//       expenseType {
+//         id
+//         user
+//         description
+//         newName
+//         tags {
+//           id
+//           tagName
+//         }
+//       }
+//       tags {
+//         id
+//       }
+//     }
+//   }
+// `
 export const QUERY = gql`
-  query EXPENSES($input: String!) {
-    myExpenses(input: $input) {
-      id
-      amount
-      createdAt
-      expenseType {
+  query PAGINATED_EXPENSES($page: Int, $user: String!) {
+    expensePage(page: $page, user: $user) {
+      myExpenses {
         id
-        user
-        description
-        newName
+        amount
+        createdAt
+        expenseType {
+          id
+          user
+          description
+          newName
+          tags {
+            id
+            tagName
+          }
+        }
         tags {
           id
-          tagName
         }
       }
-      tags {
-        id
-      }
+      count
     }
   }
 `
@@ -47,16 +72,18 @@ export const Empty = () => {
   )
 }
 
-export const beforeQuery = (props) => {
+export const beforeQuery = ({ user, page }) => {
+  page = page ? parseInt(page, 10) : 1
   return {
-    variables: props,
+    variables: { user, page },
     fetchPolicy: 'cache-first',
     nextFetchPolicy: 'cache-first',
   }
 }
 
 export const Success = ({
-  myExpenses,
+  // myExpenses,
+  expensePage,
   tagEditState,
   setTagEditState,
   user,
@@ -64,11 +91,12 @@ export const Success = ({
 }) => {
   return (
     <Expenses
-      myExpenses={myExpenses}
+      myExpenses={expensePage.myExpenses}
       tagEditState={tagEditState}
       setTagEditState={setTagEditState}
       user={user}
       setNewExpenseState={setNewExpenseState}
+      count={expensePage.count}
     />
   )
 }

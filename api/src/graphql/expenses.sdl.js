@@ -12,6 +12,12 @@ export const schema = gql`
     expenses: [Expense!]!
     expense(id: Int!): Expense
     myExpenses(input: String!): [Expense!]!
+    expensePage(page: Int, user: String!): ExpensePage
+  }
+
+  type ExpensePage {
+    myExpenses: [Expense!]!
+    count: Int!
   }
 
   input CreateExpenseInput {

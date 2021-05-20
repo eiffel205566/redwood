@@ -46,6 +46,7 @@ const NewExpense = ({
             ...state,
             newTagName: null,
             isDeletingTag: false,
+            chosenTags: [],
           }
         })
       },
@@ -286,6 +287,14 @@ const NewExpense = ({
     }
   )
 
+  //try out master loading
+  const masterLoading =
+    addOneTagLoading ||
+    deleteTagsLoading ||
+    createOneExpenseLoading ||
+    createOneExpenseLoading ||
+    updateOneExpenseLoading
+
   const onHandleEditOneExpense = async () => {
     try {
       await updateOneExpense({
@@ -362,10 +371,10 @@ const NewExpense = ({
     >
       <Form
         onSubmit={() => console.log(newExpenseState)}
-        className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-3/4 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-3/4 sm:h-5/6 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <div className="topSection flex-grow flex flex-col select-none">
-          <h3 className="text-white ">{`${
+          <h3 className="text-sm sm:text-base text-white ">{`${
             newExpenseState.expenseToEdit
               ? 'Edit With New Type'
               : 'Pick Expense Type For New Exp'
@@ -396,7 +405,7 @@ const NewExpense = ({
           </div>
 
           <div className="description-w-buttons flex flex-row">
-            <h3 className="text-white">{`${
+            <h3 className="text-sm sm:text-base text-white">{`${
               newExpenseState.id
                 ? `${
                     newExpenseState.isAddingTag
@@ -415,7 +424,11 @@ const NewExpense = ({
               !newExpenseState.isDeletingTag ? (
                 <Wrapper
                   onClick={
-                    addOneTagLoading || deleteTagsLoading
+                    // addOneTagLoading ||
+                    // deleteTagsLoading ||
+                    // updateOneExpenseLoading ||
+                    // createOneExpenseLoading
+                    masterLoading
                       ? () => {}
                       : (e) => {
                           e.stopPropagation()
@@ -438,7 +451,11 @@ const NewExpense = ({
               !newExpenseState.isDeletingTag ? (
                 <Wrapper
                   onClick={
-                    addOneTagLoading || deleteTagsLoading
+                    // addOneTagLoading ||
+                    // deleteTagsLoading ||
+                    // updateOneExpenseLoading ||
+                    // createOneExpenseLoading
+                    masterLoading
                       ? () => {}
                       : (e) => {
                           e.stopPropagation()
@@ -460,7 +477,11 @@ const NewExpense = ({
                 <Fragment>
                   <Wrapper
                     onClick={
-                      addOneTagLoading || deleteTagsLoading
+                      // addOneTagLoading ||
+                      // deleteTagsLoading ||
+                      // updateOneExpenseLoading ||
+                      // createOneExpenseLoading
+                      masterLoading
                         ? () => {}
                         : newExpenseState.isAddingTag
                         ? onHandleTagEditSubmit
@@ -472,7 +493,11 @@ const NewExpense = ({
                   </Wrapper>
                   <Wrapper
                     onClick={
-                      addOneTagLoading || deleteTagsLoading
+                      // addOneTagLoading ||
+                      // deleteTagsLoading ||
+                      // updateOneExpenseLoading ||
+                      // createOneExpenseLoading
+                      masterLoading
                         ? () => {}
                         : (e) => {
                             e.stopPropagation()
@@ -545,7 +570,7 @@ const NewExpense = ({
           </div>
           <div className="amount text-white">
             <div className="twoH3Parent w-full flex flex-col">
-              <h3 className="m-1">How much you spend?</h3>
+              <h3 className="text-sm sm:text-base m-1">How much you spend?</h3>
               <Wrapper className="flex-grow" paddingLeft="pl-0">
                 <input
                   onChange={onChange}
@@ -559,7 +584,9 @@ const NewExpense = ({
 
             {newExpenseState.expenseToEdit ? (
               <div className="twoInput flex flex-col justify-between">
-                <h3 className="m-1">When did you spend?</h3>
+                <h3 className="text-sm sm:text-base m-1">
+                  When did you spend?
+                </h3>
                 <Wrapper className="flex-grow" paddingLeft="pl-0">
                   <input
                     className="h-8 m-1 bg-gray-500 text-white max-w-xs"
@@ -581,20 +608,26 @@ const NewExpense = ({
               3. when newExpenseState.id or newExpenseState.amount is null/undefined
           */}
 
-          {addOneTagLoading || deleteTagsLoading ? (
-            <ClockLoading className="h-8 w-8 cursor-not-allowed" />
-          ) : newExpenseState.isAddingTag ||
-            newExpenseState.isDeletingTag ? null : newExpenseState.id &&
-            newExpenseState.amount ? (
-            <Check
-              onClick={
-                newExpenseState.expenseToEdit
-                  ? onHandleEditOneExpense //when expenseToEdit is present, handle editing expense
-                  : onHandleAddOneExpense //when expenseToEdit is null, handle adding new expense
-              }
-              className="h-8 w-8 hover:text-green-300 cursor-pointer"
-            />
-          ) : null}
+          {
+            // updateOneExpenseLoading ||
+            // addOneTagLoading ||
+            // deleteTagsLoading ||
+            // createOneExpenseLoading
+            masterLoading ? (
+              <ClockLoading className="h-8 w-8 cursor-not-allowed" />
+            ) : newExpenseState.isAddingTag ||
+              newExpenseState.isDeletingTag ? null : newExpenseState.id &&
+              newExpenseState.amount ? (
+              <Check
+                onClick={
+                  newExpenseState.expenseToEdit
+                    ? onHandleEditOneExpense //when expenseToEdit is present, handle editing expense
+                    : onHandleAddOneExpense //when expenseToEdit is null, handle adding new expense
+                }
+                className="h-8 w-8 hover:text-green-300 cursor-pointer"
+              />
+            ) : null
+          }
         </div>
       </Form>
     </div>

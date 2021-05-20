@@ -1,4 +1,31 @@
 import { db } from 'src/lib/db'
+const EXPENSENS_PER_PAGE = 5
+
+export const expensePage = ({ page = 1, user }) => {
+  const offset = (page - 1) * EXPENSENS_PER_PAGE
+
+  return {
+    myExpenses: db.expense.findMany({
+      where: { user },
+      take: EXPENSENS_PER_PAGE,
+      skip: offset,
+      orderBy: { createdAt: 'desc' },
+      include: {
+        tags: true,
+        expenseType: {
+          include: {
+            tags: true,
+          },
+        },
+      },
+    }),
+    count: db.expense.count({
+      where: {
+        user,
+      },
+    }),
+  }
+}
 
 export const expenses = ({ input }) => {
   return db.expense.findMany({
@@ -150,7 +177,6 @@ export const updateExpense = async ({ input }) => {
   const { id, amount, createdAt, expenseType, tags } = input
   const { id: expenseTypeId } = expenseType
   const { ids } = tags
-
   return await db.expense.update({
     where: { id },
     data: {

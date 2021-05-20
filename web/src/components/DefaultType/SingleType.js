@@ -61,7 +61,7 @@ const SingleType = ({
       <p
         className={`${
           textColor ? textColor : ''
-        } mx-1 text-xs sm:text-sm md:text-base text-center`}
+        } mx-1 text-xs sm:text-sm md:text-base text-center whitespace-nowrap`}
       >
         {newName ? newName : description}
       </p>
