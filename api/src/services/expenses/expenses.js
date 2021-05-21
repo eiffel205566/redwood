@@ -1,4 +1,5 @@
 import { db } from 'src/lib/db'
+
 const EXPENSENS_PER_PAGE = 5
 
 export const expensePage = ({ page = 1, user }) => {

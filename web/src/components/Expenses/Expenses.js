@@ -6,6 +6,7 @@ import { QUERY } from 'src/components/ExpensesCell'
 import SingleExpense from './SingleExpense'
 import { iconTypes } from 'src/components/DefaultType/Static'
 import { ClockLoading, Plus } from '../Misc/svg'
+import PagenatiedExpenses from './PagenatiedExpenses'
 
 const DELETE_EXPENSE_MUTATION = gql`
   mutation DeleteExpenseMutation($id: Int!) {
@@ -47,6 +48,7 @@ const ExpensesList = ({
   setTagEditState,
   user,
   setNewExpenseState,
+  count,
 }) => {
   const [deleteExpense] = useMutation(DELETE_EXPENSE_MUTATION, {
     onCompleted: () => {
@@ -85,19 +87,29 @@ const ExpensesList = ({
           />
         )
       })}
-      <Plus
-        onClick={() => {
-          setTagEditState((state) => {
-            return {
-              ...state,
-              id: null,
-              editState: false,
-              newTagState: true,
-            }
-          })
-        }}
-        className="mx-auto h-6 w-6 text-white hover:text-green-300 cursor-pointer"
-      />
+      <div className="relative">
+        <Plus
+          onClick={() => {
+            setTagEditState((state) => {
+              return {
+                ...state,
+                id: null,
+                editState: false,
+                newTagState: true,
+              }
+            })
+          }}
+          className="mx-auto h-6 w-6 text-white hover:text-green-300 cursor-pointer"
+        />
+        {/*
+
+          <p className="text-white absolute absolute -right-0 -top-0">xxx</p>
+        */}
+        <PagenatiedExpenses
+          className="absolute -right-0 -top-0"
+          count={count}
+        />
+      </div>
     </div>
   )
 }

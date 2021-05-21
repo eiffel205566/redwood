@@ -13,6 +13,7 @@ import {
   ADD_ONE_EXPENSE,
   UPDATE_ONE_EXPENSE,
 } from 'src/components/Misc/Queries'
+// import { QUERY } from 'src/components/Misc/Queries'
 import { QUERY } from 'src/components/ExpensesCell/ExpensesCell'
 
 const NewExpense = ({
@@ -207,6 +208,8 @@ const NewExpense = ({
           }
         })
       },
+      // refetchQueries: [{ query: QUERY, variables: { input: user } }],
+      // awaitRefetchQueries: true,
     }
   )
 
@@ -221,34 +224,70 @@ const NewExpense = ({
             tags: { ids: [...newExpenseState.chosenTags.map((tag) => tag.id)] },
           },
         },
+        //none pagigated version of this function will use "myExpenses" query which ask for user name
+        //and return all expenses. paginated version will not return all expenses at once
+        // update: async (cache) => {
+        //   const { myExpenses } = await cache.readQuery({
+        //     query: QUERY, //all user expenses query
+        //     variables: { input: user },
+        //   })
+        //   await cache.writeQuery({
+        //     query: QUERY, //all user expenses query
+        //     variables: { input: user },
+        //     data: {
+        //       myExpenses: [
+        //         ...myExpenses,
+        //         {
+        //           __typename: 'Expense',
+        //           amount: Number(newExpenseState.amount).toFixed(2),
+        //           createdAt: new Date()
+        //             .toDateString()
+        //             .split(' ')
+        //             .slice(1)
+        //             .join(' '),
+        //           expenseType: {
+        //             __typename: 'ExpenseType',
+        //             id: newExpenseState.id,
+        //           },
+        //           tags: [...newExpenseState.chosenTags],
+        //         },
+        //       ],
+        //     },
+        //   })
+        // },
         update: async (cache) => {
-          const { myExpenses } = await cache.readQuery({
+          const data = await cache.readQuery({
             query: QUERY, //all user expenses query
-            variables: { input: user },
+            variables: { page: 1, user },
           })
-          await cache.writeQuery({
-            query: QUERY, //all user expenses query
-            variables: { input: user },
-            data: {
-              myExpenses: [
-                ...myExpenses,
-                {
-                  __typename: 'Expense',
-                  amount: Number(newExpenseState.amount).toFixed(2),
-                  createdAt: new Date()
-                    .toDateString()
-                    .split(' ')
-                    .slice(1)
-                    .join(' '),
-                  expenseType: {
-                    __typename: 'ExpenseType',
-                    id: newExpenseState.id,
-                  },
-                  tags: [...newExpenseState.chosenTags],
-                },
-              ],
-            },
-          })
+
+          console.log(data)
+
+          // await cache.writeQuery({
+          //   query: PAGENATIEDQUERY, //all user expenses query
+          //   variables: { input: user },
+          //   data: {
+          //     expensePage: {
+          //       myExpenses: [
+          //         ...myExpenses,
+          //         {
+          //           __typename: 'Expense',
+          //           amount: Number(newExpenseState.amount).toFixed(2),
+          //           createdAt: new Date()
+          //             .toDateString()
+          //             .split(' ')
+          //             .slice(1)
+          //             .join(' '),
+          //           expenseType: {
+          //             __typename: 'ExpenseType',
+          //             id: newExpenseState.id,
+          //           },
+          //           tags: [...newExpenseState.chosenTags],
+          //         },
+          //       ],
+          //     },
+          //   },
+          // })
         },
       })
     } catch (error) {

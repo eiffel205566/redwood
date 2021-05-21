@@ -97,3 +97,26 @@ export const UPDATE_ONE_EXPENSE = gql`
     }
   }
 `
+
+export const QUERY = gql`
+  query EXPENSES($input: String!) {
+    myExpenses(input: $input) {
+      id
+      amount
+      createdAt
+      expenseType {
+        id
+        user
+        description
+        newName
+        tags {
+          id
+          tagName
+        }
+      }
+      tags {
+        id
+      }
+    }
+  }
+`
