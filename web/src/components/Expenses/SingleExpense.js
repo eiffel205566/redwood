@@ -1,6 +1,14 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import SingleType from 'src/components/DefaultType/SingleType'
-import { Edit, Plus, Check, Left, Right, Cancel } from 'src/components/Misc/svg'
+import {
+  Edit,
+  Plus,
+  Check,
+  Left,
+  Right,
+  Cancel,
+  ClockLoading,
+} from 'src/components/Misc/svg'
 import { Form, TextField, Submit, Label } from '@redwoodjs/forms'
 import { truncate } from '../Misc/UtilityFunc'
 import Carousel from './Carousel'
@@ -279,7 +287,11 @@ const SingleExpense = ({
               }
               className="hover:text-green-300 cursor-pointer"
             >
-              <Check className="h-5 w-5 md:h-6 md:w-6" />
+              {connectTagsToExpenseLoading ? (
+                <ClockLoading className="h-5 w-5 md:h-6 md:w-6 cursor-not-allowed" />
+              ) : (
+                <Check className="h-5 w-5 md:h-6 md:w-6" />
+              )}
             </Wrapper>
           ) : null}
 
@@ -300,7 +312,9 @@ const SingleExpense = ({
               }
               className="hover:text-red-300 cursor-pointer"
             >
-              <Cancel className="h-5 w-5 md:h-6 md:w-6" />
+              {connectTagsToExpenseLoading ? null : (
+                <Cancel className="h-5 w-5 md:h-6 md:w-6" />
+              )}
             </Wrapper>
           ) : null}
           <Wrapper>

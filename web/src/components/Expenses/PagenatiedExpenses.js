@@ -4,7 +4,7 @@ import { EXPENSENS_PER_PAGE } from 'web/src/components/Misc/Constant'
 
 const PagenatiedExpenses = ({ count, className }) => {
   const { search } = useLocation()
-  const currentPageNum = Number(search.split('=')[1])
+  const currentPageNum = Number(search.split('=')[1]) || 1 //by default no page #, always display 1st page
 
   return (
     <div className={`text-white flex px-2 ${className}`}>

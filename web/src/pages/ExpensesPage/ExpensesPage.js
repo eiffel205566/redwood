@@ -7,6 +7,7 @@ import NewExpense from 'src/components/Expenses/NewExpense'
 import { USER_TYPES_QUERY } from './UserTypesTagsQuery'
 import { useQuery } from '@redwoodjs/web'
 import { iconTypes } from 'src/components/DefaultType/Static'
+import { useLocation } from '@redwoodjs/router'
 
 const ExpensesPage = ({ page = 1 }) => {
   //side bar state
@@ -79,6 +80,7 @@ const ExpensesPage = ({ page = 1 }) => {
           iconTypes={iconTypes}
           setNewExpenseState={setNewExpenseState}
           newExpenseState={newExpenseState}
+          page={page}
         />
       ) : null}
       <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>

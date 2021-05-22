@@ -49,7 +49,10 @@ const ExpensesList = ({
   user,
   setNewExpenseState,
   count,
+  page,
 }) => {
+  //page state
+
   const [deleteExpense] = useMutation(DELETE_EXPENSE_MUTATION, {
     onCompleted: () => {
       toast.success('Expense deleted')

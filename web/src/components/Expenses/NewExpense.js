@@ -23,6 +23,7 @@ const NewExpense = ({
   iconTypes,
   setNewExpenseState,
   newExpenseState,
+  page, //current page number for refetching
   // singleExpense, //used when editing existing expense, null when adding new expense
 }) => {
   //Add new Tag
@@ -208,8 +209,8 @@ const NewExpense = ({
           }
         })
       },
-      // refetchQueries: [{ query: QUERY, variables: { input: user } }],
-      // awaitRefetchQueries: true,
+      refetchQueries: [{ query: QUERY, variables: { page: +page, user } }],
+      awaitRefetchQueries: true,
     }
   )
 
@@ -323,6 +324,8 @@ const NewExpense = ({
           }
         })
       },
+      refetchQueries: [{ query: QUERY, variables: { page: +page, user } }],
+      awaitRefetchQueries: true,
     }
   )
 
@@ -346,31 +349,6 @@ const NewExpense = ({
             createdAt: newExpenseState.date,
           },
         },
-        // update: async (cache) => {
-        //   const { myExpenses } = await cache.readQuery({
-        //     query: QUERY, //all user expenses query
-        //     variables: { input: user },
-        //   })
-        //   await cache.writeQuery({
-        //     query: QUERY, //all user expenses query
-        //     variables: { input: user },
-        //     data: {
-        //       myExpenses: [
-        //         ...myExpenses,
-        //         {
-        //           __typename: 'Expense',
-        //           amount: Number(newExpenseState.amount).toFixed(2),
-        //           createdAt: newExpenseState.date,
-        //           expenseType: {
-        //             __typename: 'ExpenseType',
-        //             id: newExpenseState.id,
-        //           },
-        //           tags: [...newExpenseState.chosenTags],
-        //         },
-        //       ],
-        //     },
-        //   })
-        // },
       })
     } catch (error) {
       console.log(error)

@@ -76,7 +76,7 @@ export const beforeQuery = ({ user, page }) => {
   page = page ? parseInt(page, 10) : 1
   return {
     variables: { user, page },
-    fetchPolicy: 'cache-first',
+    fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first',
   }
 }
@@ -88,6 +88,7 @@ export const Success = ({
   setTagEditState,
   user,
   setNewExpenseState,
+  page,
 }) => {
   return (
     <Expenses
@@ -97,6 +98,7 @@ export const Success = ({
       user={user}
       setNewExpenseState={setNewExpenseState}
       count={expensePage.count}
+      page={page}
     />
   )
 }
