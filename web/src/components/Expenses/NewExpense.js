@@ -12,9 +12,12 @@ import {
   DELETE_TAGS,
   ADD_ONE_EXPENSE,
   UPDATE_ONE_EXPENSE,
+  DELETE_ONE_EXPENSE,
 } from 'src/components/Misc/Queries'
 // import { QUERY } from 'src/components/Misc/Queries'
 import { QUERY } from 'src/components/ExpensesCell/ExpensesCell'
+import CommonConfirmation from 'src/components/Confirmation/CommonConfirmation'
+import { toast } from '@redwoodjs/web/toast'
 
 const NewExpense = ({
   user,
@@ -25,6 +28,8 @@ const NewExpense = ({
   newExpenseState,
   page, //current page number for refetching
   // singleExpense, //used when editing existing expense, null when adding new expense
+  needConfirmation,
+  setNeedConfirmation,
 }) => {
   //Add new Tag
   const [addOneTag, { loading: addOneTagLoading }] = useMutation(ADD_ONE_TAG, {
@@ -291,6 +296,7 @@ const NewExpense = ({
           // })
         },
       })
+      toast.success('New Expense Added')
     } catch (error) {
       console.log(error)
     }
@@ -329,6 +335,50 @@ const NewExpense = ({
     }
   )
 
+  //on handle delete one expense
+  const [deleteOneExpense, { loading: deleteOneExpenseLoading }] = useMutation(
+    DELETE_ONE_EXPENSE,
+    {
+      onCompleted: () => {
+        setTagEditState((state) => {
+          return {
+            ...state,
+            id: null,
+            editState: false,
+            newTagState: false,
+          }
+        })
+        setNewExpenseState((state) => {
+          return {
+            ...state,
+            id: null,
+            expenseToEdit: null,
+            tags: null,
+            chosenTags: [],
+            newTagName: null,
+            isAddingTag: false,
+            isDeletingTag: false,
+            amount: null,
+            date: null,
+          }
+        })
+      },
+      refetchQueries: [{ query: QUERY, variables: { page: +page, user } }],
+      awaitRefetchQueries: true,
+    }
+  )
+
+  const onHandelDeleteOneExpense = async (id) => {
+    try {
+      await deleteOneExpense({
+        variables: { id },
+      })
+      toast.success('Expense Deleted!')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   //try out master loading
   const masterLoading =
     addOneTagLoading ||
@@ -350,6 +400,7 @@ const NewExpense = ({
           },
         },
       })
+      toast.success('Edit Expense Success!')
     } catch (error) {
       console.log(error)
     }
@@ -645,8 +696,31 @@ const NewExpense = ({
               />
             ) : null
           }
+
+          {newExpenseState.expenseToEdit ? (
+            <Garbage
+              onClick={() =>
+                setNeedConfirmation((state) => {
+                  return {
+                    ...state,
+                    needToConfirm: true,
+                  }
+                })
+              }
+              className="h-8 w-8 hover:text-red-300 cursor-pointer"
+            />
+          ) : null}
         </div>
       </Form>
+      {needConfirmation.needToConfirm ? (
+        <CommonConfirmation
+          message="Delete This Expense?"
+          needConfirmation={needConfirmation}
+          setNeedConfirmation={setNeedConfirmation}
+          onHandelDeleteOneExpense={onHandelDeleteOneExpense}
+          newExpenseState={newExpenseState}
+        />
+      ) : null}
     </div>
   )
 }

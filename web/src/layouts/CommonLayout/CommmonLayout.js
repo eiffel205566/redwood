@@ -26,12 +26,13 @@ const CommonLayout = ({
   return (
     <Fragment>
       {/*
-          //overlay
-        */}
+        <div className="masterLoadingOverlay select-none background bg-transparent absolute min-h-full min-w-full z-50"></div>
+       */}
+
       <div className="cover min-h-screen min-w-full fixed bg-overlay -z-10"></div>
 
       <aside
-        className={`transform ${
+        className={`sidebarContainer transform ${
           sideBarShowed ? 'left-0' : '-left-40'
         } transition-all duration-500 ease-in-out min-h-screen fixed w-40 bg-sideDark`}
       >

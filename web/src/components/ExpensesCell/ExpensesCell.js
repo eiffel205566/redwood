@@ -89,6 +89,7 @@ export const Success = ({
   user,
   setNewExpenseState,
   page,
+  setGrandMasterLoadingState,
 }) => {
   return (
     <Expenses
@@ -99,6 +100,7 @@ export const Success = ({
       setNewExpenseState={setNewExpenseState}
       count={expensePage.count}
       page={page}
+      setGrandMasterLoadingState={setGrandMasterLoadingState}
     />
   )
 }

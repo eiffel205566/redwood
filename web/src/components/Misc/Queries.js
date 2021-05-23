@@ -120,3 +120,11 @@ export const QUERY = gql`
     }
   }
 `
+
+export const DELETE_ONE_EXPENSE = gql`
+  mutation DeleteOneExpense($id: Int!) {
+    deleteExpense(id: $id) {
+      id
+    }
+  }
+`

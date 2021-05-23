@@ -50,6 +50,7 @@ const ExpensesList = ({
   setNewExpenseState,
   count,
   page,
+  setGrandMasterLoadingState,
 }) => {
   //page state
 
@@ -87,6 +88,7 @@ const ExpensesList = ({
             myExpenses={myExpenses}
             user={user}
             setNewExpenseState={setNewExpenseState}
+            setGrandMasterLoadingState={setGrandMasterLoadingState}
           />
         )
       })}

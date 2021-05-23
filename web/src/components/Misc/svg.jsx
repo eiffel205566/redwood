@@ -54,9 +54,10 @@ export const ChevronRight = ({ className }) => {
   )
 }
 
-export const Garbage = ({ className }) => {
+export const Garbage = ({ className, onClick = () => {} }) => {
   return (
     <svg
+      onClick={onClick}
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       fill="none"

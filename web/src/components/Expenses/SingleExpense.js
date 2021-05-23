@@ -29,15 +29,15 @@ const ADD_TAGS_TO_ONE_EXPENSE = gql`
   }
 `
 
-const ONE_EXPENSE_QUERY = gql`
-  query oneExpenseQuery($id: Int!) {
-    expense(id: $id) {
-      tags {
-        id
-      }
-    }
-  }
-`
+// const ONE_EXPENSE_QUERY = gql`
+//   query oneExpenseQuery($id: Int!) {
+//     expense(id: $id) {
+//       tags {
+//         id
+//       }
+//     }
+//   }
+// `
 
 const QUERY = gql`
   query EXPENSES($input: String!) {
@@ -70,6 +70,7 @@ const SingleExpense = ({
   myExpenses,
   user,
   setNewExpenseState,
+  setGrandMasterLoadingState,
 }) => {
   const { id, amount, createdAt, expenseType, tags } = singleExpense
 
@@ -84,6 +85,7 @@ const SingleExpense = ({
   const tagIds = tags.map((tag) => tag.id)
   const [chosenTags, setChosenTags] = useState({
     chosenTagIds: [...tagIds],
+    originalChosenTagIds: [...tagIds],
   })
 
   //onmount store selected tags in state
@@ -152,10 +154,35 @@ const SingleExpense = ({
           return +a - +b
         })
         .join('')
-    )
+    ) {
+      //when chosen tags hasn't change, reset all states
+      //set choseTagIds back to oirignalChosenTagIds
+      setChosenTags((state) => {
+        return {
+          ...state,
+          chosenTagIds: [...state.originalChosenTagIds],
+        }
+      })
+      setTagEditState((state) => {
+        return {
+          ...state,
+          id: null,
+          editState: false,
+          newTagState: false,
+        }
+      })
       return
+    }
 
     try {
+      //initiate overlay blocking
+      setGrandMasterLoadingState((state) => {
+        return {
+          ...state,
+          grandMasterLoading: true,
+        }
+      })
+
       const input = { id, tags: { ids: [...chosenTags.chosenTagIds] } }
 
       await connectTagsToExpense({
@@ -204,9 +231,24 @@ const SingleExpense = ({
           newTagState: false,
         }
       })
+
+      //remove overlay blocking
+      setGrandMasterLoadingState((state) => {
+        return {
+          ...state,
+          grandMasterLoading: false,
+        }
+      })
       toast.success('New Tags Selected!')
     } catch (error) {
       console.log(error)
+      //in case error, remove overlay blocking
+      setGrandMasterLoadingState((state) => {
+        return {
+          ...state,
+          grandMasterLoading: false,
+        }
+      })
     }
   }
 
@@ -237,6 +279,7 @@ const SingleExpense = ({
               return {
                 ...state,
                 newTagState: true,
+                editState: false,
               }
             })
             setNewExpenseState((state) => {
@@ -248,6 +291,12 @@ const SingleExpense = ({
                 chosenTags: [...singleExpense.tags],
                 amount: singleExpense.amount,
                 date: singleExpense.createdAt,
+              }
+            })
+            setChosenTags((state) => {
+              return {
+                ...state,
+                chosenTagIds: [...state.originalChosenTagIds],
               }
             })
           }}
@@ -300,7 +349,7 @@ const SingleExpense = ({
               onClick={
                 connectTagsToExpenseLoading
                   ? () => {}
-                  : () =>
+                  : () => {
                       setTagEditState((state) => {
                         return {
                           ...state,
@@ -309,6 +358,13 @@ const SingleExpense = ({
                           newTagState: false,
                         }
                       })
+                      setChosenTags((state) => {
+                        return {
+                          ...state,
+                          chosenTagIds: [...state.originalChosenTagIds],
+                        }
+                      })
+                    }
               }
               className="hover:text-red-300 cursor-pointer"
             >

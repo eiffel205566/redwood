@@ -54,6 +54,11 @@ const ExpensesPage = ({ page = 1 }) => {
     date: null,
   })
 
+  //confirmation overlay state
+  const [needConfirmation, setNeedConfirmation] = useState({
+    needToConfirm: false,
+  })
+
   //USER_TYPES_QUERY
   //Make User Types Query onMount and store in staet
   const { data } = useQuery(USER_TYPES_QUERY, {
@@ -70,8 +75,17 @@ const ExpensesPage = ({ page = 1 }) => {
     })
   }, [data, userTypes])
 
+  const [grandMasterLoadingState, setGrandMasterLoadingState] = useState({
+    grandMasterLoading: false,
+  })
+
+  const { grandMasterLoading } = grandMasterLoadingState
+
   return (
     <Fragment>
+      {grandMasterLoading ? (
+        <div className="masterLoadingOverlay select-none background bg-transparent absolute min-h-full min-w-full z-50"></div>
+      ) : null}
       {tagEditState.newTagState ? (
         <NewExpense
           user={user}
@@ -81,6 +95,8 @@ const ExpensesPage = ({ page = 1 }) => {
           setNewExpenseState={setNewExpenseState}
           newExpenseState={newExpenseState}
           page={page}
+          needConfirmation={needConfirmation}
+          setNeedConfirmation={setNeedConfirmation}
         />
       ) : null}
       <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>
@@ -92,6 +108,7 @@ const ExpensesPage = ({ page = 1 }) => {
           user={user}
           setNewExpenseState={setNewExpenseState}
           page={page}
+          setGrandMasterLoadingState={setGrandMasterLoadingState}
         />
       </CommonLayout>
     </Fragment>
