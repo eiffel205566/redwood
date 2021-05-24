@@ -26,7 +26,7 @@ const SingleType = ({
       {React.createElement(icon, {
         className: noHoverNeeded
           ? iconClass
-          : iconClass + ' sm:hover:bg-gray-300 cursor-pointer',
+          : iconClass + ' sm:hover:bg-gray-400 cursor-pointer',
         onClick: setIconType
           ? () => {
               setIconType((state) => {

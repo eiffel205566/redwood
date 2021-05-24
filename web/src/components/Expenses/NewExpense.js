@@ -460,8 +460,8 @@ const NewExpense = ({
                   parentClass="w-20 justify-self-center cursor-pointer"
                   iconClass={
                     newExpenseState.id === oneType.id
-                      ? 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-100 rounded-full p-2 mx-auto bg-green-300'
-                      : 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-100 rounded-full p-2 mx-auto'
+                      ? 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto bg-green-300'
+                      : 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto'
                   }
                   setIconType={setNewExpenseState}
                   newExpenseState={newExpenseState}
@@ -698,17 +698,20 @@ const NewExpense = ({
           }
 
           {newExpenseState.expenseToEdit ? (
-            <Garbage
-              onClick={() =>
-                setNeedConfirmation((state) => {
-                  return {
-                    ...state,
-                    needToConfirm: true,
-                  }
-                })
-              }
-              className="h-8 w-8 hover:text-red-300 cursor-pointer"
-            />
+            newExpenseState.isAddingTag ||
+            newExpenseState.isDeletingTag ? null : (
+              <Garbage
+                onClick={() =>
+                  setNeedConfirmation((state) => {
+                    return {
+                      ...state,
+                      needToConfirm: true,
+                    }
+                  })
+                }
+                className="h-8 w-8 hover:text-red-300 cursor-pointer"
+              />
+            )
           ) : null}
         </div>
       </Form>

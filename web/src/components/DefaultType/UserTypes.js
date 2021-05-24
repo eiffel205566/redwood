@@ -14,12 +14,13 @@ const UserTypes = ({ userTypes, id, iconTypes, setIconType }) => {
       parentClass="w-max justify-self-center cursor-pointer"
       iconClass={
         id === oneType.id
-          ? 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-100 rounded-full p-2 mx-auto bg-green-300'
-          : 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-100 rounded-full p-2 mx-auto'
+          ? 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto bg-green-300'
+          : 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto'
       }
       setIconType={setIconType}
       newName={oneType.newName}
       currentName={oneType.newName}
+      textColor="text-white"
     />
   ))
 }
@@ -29,9 +30,11 @@ export const Wrapper = (Component) => {
     const { userTypes, allUserLoading } = props
     return (
       <div
-        className={`m-5 sm:mx-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-gray-200 ${
-          allUserLoading ? 'overflow-hidden' : 'overflow-scroll'
-        }  max-h-72 p-1 border rounded z-10`}
+        className={`m-5 sm:mx-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-sideDark ${
+          allUserLoading
+            ? 'overflow-hidden'
+            : 'overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300'
+        }  max-h-72 p-1 border rounded z-10 border-transparent`}
       >
         {allUserLoading ? (
           <Fragment>

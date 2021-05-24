@@ -14,6 +14,10 @@ import {
 
 import { ImAirplane, ImGlass } from 'react-icons/im'
 
+import { GiClothes, GiRunningShoe } from 'react-icons/gi'
+
+import { Puipui } from 'src/components/Misc/svg'
+
 export const CREDIT_CARD = 'CREDIT_CARD'
 export const TRANSPORT = 'TRANSPORT'
 export const GROCERY = 'GROCERY'
@@ -27,6 +31,9 @@ export const VACATION = 'VACATION'
 export const DINE_OUT = 'DINE_OUT'
 export const HOUSEHOLD = 'HOUSEHOLD'
 export const MEMERSHIP = 'MEMERSHIP'
+export const CLOTH = 'CLOTH'
+export const SHOE = 'SHOE'
+export const PUIPUI = 'PUIPUI'
 
 export const iconTypes = {
   CREDIT_CARD: BiCreditCardAlt,
@@ -42,6 +49,9 @@ export const iconTypes = {
   DINE_OUT: ImGlass,
   HOUSEHOLD: BiChair,
   MEMERSHIP: BiDumbbell,
+  CLOTH: GiClothes,
+  SHOE: GiRunningShoe,
+  PUIPUI: Puipui,
 }
 
 export const defaultIcons = [
@@ -58,4 +68,7 @@ export const defaultIcons = [
   [ImGlass, DINE_OUT],
   [BiChair, HOUSEHOLD],
   [BiDumbbell, MEMERSHIP],
+  [GiClothes, CLOTH],
+  [GiRunningShoe, SHOE],
+  [Puipui, PUIPUI],
 ]

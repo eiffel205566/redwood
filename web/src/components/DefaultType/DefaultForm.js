@@ -38,17 +38,34 @@ const DefaultForm = ({
 
   //form onChange
   const onChange = (e) => {
-    setTypePageFormDesc((state) => {
-      return {
-        ...state,
-        typePageDescription: e.target.value,
-      }
-    })
+    //arbitrarily restrict length to 10
+    if (e.target.value.length > 10) {
+      setTypePageFormDesc((state) => {
+        return {
+          ...state,
+          typePageDescription: e.target.value.substr(0, 10),
+        }
+      })
+    } else {
+      setTypePageFormDesc((state) => {
+        return {
+          ...state,
+          typePageDescription: e.target.value,
+        }
+      })
+    }
   }
 
   //delete user type moved to confirmation
 
   const onDelete = async () => {
+    // reset the input field when user had entered something but click on Delete button
+    setTypePageFormDesc((state) => {
+      return {
+        ...state,
+        typePageDescription: '',
+      }
+    })
     setNeedConfirm((state) => {
       return { ...state, confirmNeeded: true }
     })
@@ -188,15 +205,15 @@ const DefaultForm = ({
   }
 
   return (
-    <div className="m-5 sm:m-10 h-96 bg-gray-200 border border-transparent rounded-xl p-1 grid grid-cols-2 sm:grid-cols-3 overflow-hidden">
+    <div className="select-none mx-5 sm:mx-10 h-96 bg-sideDark border border-transparent rounded-xl p-1 grid grid-cols-2 sm:grid-cols-3 overflow-hidden">
       <div className="flex flex-col">
         {currentType ? (
           React.createElement(iconTypes[currentType], {
             className:
-              'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-100 rounded-full p-2 mx-auto',
+              'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto',
           })
         ) : (
-          <Customize className="w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-100 rounded-full p-2 mx-auto" />
+          <Customize className="w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto" />
         )}
         <Form
           onSubmit={onSubmit}
@@ -207,28 +224,40 @@ const DefaultForm = ({
           <FormError
             wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
           />
-          <Label className="text-xs sm:text-sm md:text-base mb-1 sm:mb-5">
+          <Label className="text-white text-xs sm:text-sm md:text-base mb-1 sm:mb-5">
             {!currentType
               ? 'Pick A Icon to Start'
               : !id
               ? 'Adding New Exp Type'
               : 'Rename Your Exp Type'}
           </Label>
-          <TextField
-            name="newName"
-            validation={{ required: true }}
-            errorClassName="error rounded p-1 min-w-full max-w-full"
-            className="border border-gray-500 rounded p-1 min-w-full max-w-full text-xs sm:text-sm md:text-base"
-            placeholder={currentName ? currentName : currentType}
-            onChange={onChange}
-            value={typePageDescription}
-          />
+          <div className="relative">
+            <TextField
+              name="newName"
+              validation={{ required: true }}
+              errorClassName="error rounded p-1 min-w-full max-w-full bg-gray-500"
+              className="relative border border-gray-500 rounded p-1 min-w-full max-w-full text-sm sm:text-sm md:text-base bg-gray-500 text-white"
+              placeholder={currentName ? currentName : currentType}
+              onChange={onChange}
+              value={typePageDescription}
+            ></TextField>
+            {/*
+
+            */}
+            <span className="absolute text-white right-0 top-0 text-gray-400 pr-1 sm:p-1 h-full">
+              {`${typePageFormDesc.typePageDescription.length}/10`}
+            </span>
+          </div>
+
           {currentType ? (
             <FieldError
               name="newName"
               className="error text-xs sm:text-sm md:text-base"
             />
           ) : null}
+          {/*
+
+            */}
 
           <div className="mt-5 flex flex-col">
             <Submit

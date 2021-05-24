@@ -100,6 +100,7 @@ const Confirmation = ({
         </Submit>
         <button
           onClick={onClick}
+          type="button"
           className="bg-gray-400 hover:bg-red-300 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base"
         >
           Cancel
