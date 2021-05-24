@@ -45,7 +45,7 @@ const CommonLayout = ({
         */}
         <div className="h-full max-w-5xl mx-auto">
           <div className="z-30 bg-gray-400">
-            <nav className="h-14 w-full flex flex-row z-20">
+            <nav className="h-14 min-w-full flex flex-row z-20">
               <div
                 className="cursor-pointer bg-gray-400 w-10 flex flex-row justify-center z-10"
                 onClick={onHandleSideBar}

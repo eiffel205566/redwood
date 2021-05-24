@@ -70,7 +70,7 @@ const ExpensesList = ({
 
   return (
     <div className="w-full mt-5 flex flex-col justify-center select-none">
-      <h1 className="text-white text-xl">
+      <h1 className="text-white text-base sm:text-xl">
         {timeTag(new Date())}
         {/*
           <ClockLoading className="h-8 w-8 cursor-not-allowed animate-spin inline p-1" />
@@ -105,7 +105,7 @@ const ExpensesList = ({
             })
           }}
           className="mx-auto h-6 w-6 text-white hover:text-green-300 cursor-pointer"
-        />
+        ></Plus>
         {/*
 
           <p className="text-white absolute absolute -right-0 -top-0">xxx</p>

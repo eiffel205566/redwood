@@ -205,7 +205,7 @@ const DefaultForm = ({
   }
 
   return (
-    <div className="select-none mx-5 sm:mx-10 h-96 bg-sideDark border border-transparent rounded-xl p-1 grid grid-cols-2 sm:grid-cols-3 overflow-hidden">
+    <div className="select-none mx-5 sm:mx-10 h-64 sm:h-96 bg-sideDark border border-transparent rounded-xl p-1 grid grid-cols-2 sm:grid-cols-3 overflow-hidden">
       <div className="flex flex-col">
         {currentType ? (
           React.createElement(iconTypes[currentType], {
@@ -259,7 +259,7 @@ const DefaultForm = ({
 
             */}
 
-          <div className="mt-5 flex flex-col">
+          <div className="mt-2 sm:mt-5 flex flex-col">
             <Submit
               className="bg-gray-400 hover:bg-green-300 text-gray py-2 sm:px-4 rounded w-28 mt-5 min-w-full max-w-full text-xs sm:text-sm md:text-base"
               disabled={createTypeLoading || updateTypeLoading}

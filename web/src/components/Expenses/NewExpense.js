@@ -261,40 +261,40 @@ const NewExpense = ({
         //     },
         //   })
         // },
-        update: async (cache) => {
-          const data = await cache.readQuery({
-            query: QUERY, //all user expenses query
-            variables: { page: 1, user },
-          })
+        // update: async (cache) => {
+        //   const data = await cache.readQuery({
+        //     query: QUERY, //all user expenses query
+        //     variables: { page: 1, user },
+        //   })
 
-          console.log(data)
+        //   // console.log(data)
 
-          // await cache.writeQuery({
-          //   query: PAGENATIEDQUERY, //all user expenses query
-          //   variables: { input: user },
-          //   data: {
-          //     expensePage: {
-          //       myExpenses: [
-          //         ...myExpenses,
-          //         {
-          //           __typename: 'Expense',
-          //           amount: Number(newExpenseState.amount).toFixed(2),
-          //           createdAt: new Date()
-          //             .toDateString()
-          //             .split(' ')
-          //             .slice(1)
-          //             .join(' '),
-          //           expenseType: {
-          //             __typename: 'ExpenseType',
-          //             id: newExpenseState.id,
-          //           },
-          //           tags: [...newExpenseState.chosenTags],
-          //         },
-          //       ],
-          //     },
-          //   },
-          // })
-        },
+        //   // await cache.writeQuery({
+        //   //   query: PAGENATIEDQUERY, //all user expenses query
+        //   //   variables: { input: user },
+        //   //   data: {
+        //   //     expensePage: {
+        //   //       myExpenses: [
+        //   //         ...myExpenses,
+        //   //         {
+        //   //           __typename: 'Expense',
+        //   //           amount: Number(newExpenseState.amount).toFixed(2),
+        //   //           createdAt: new Date()
+        //   //             .toDateString()
+        //   //             .split(' ')
+        //   //             .slice(1)
+        //   //             .join(' '),
+        //   //           expenseType: {
+        //   //             __typename: 'ExpenseType',
+        //   //             id: newExpenseState.id,
+        //   //           },
+        //   //           tags: [...newExpenseState.chosenTags],
+        //   //         },
+        //   //       ],
+        //   //     },
+        //   //   },
+        //   // })
+        // },
       })
       toast.success('New Expense Added')
     } catch (error) {
@@ -439,7 +439,7 @@ const NewExpense = ({
     >
       <Form
         onSubmit={() => console.log(newExpenseState)}
-        className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-3/4 sm:h-5/6 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-3/4 sm:h-5/6 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-y-hidden"
       >
         <div className="topSection flex-grow flex flex-col select-none">
           <h3 className="text-sm sm:text-base text-white ">{`${

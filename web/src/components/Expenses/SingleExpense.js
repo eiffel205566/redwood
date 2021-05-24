@@ -306,7 +306,7 @@ const SingleExpense = ({
         </Wrapper>
 
         <Wrapper className="w-10 sm:w-20">
-          <span>{`$${amount}`}</span>
+          <span>{`$${+amount > 9999 ? '>9999' : amount}`}</span>
         </Wrapper>
 
         <Wrapper>
@@ -315,7 +315,7 @@ const SingleExpense = ({
               description ? iconTypes[description] : iconTypes['CREDIT_CARD']
             }
             newName={newName ? newName : 'default'}
-            parentClass="w-10"
+            parentClass="w-16 sm:w-20"
             iconClass="mx-auto h-6 w-6 text-displayOnly"
             noHoverNeeded={true}
             textColor="text-displayOnly"
@@ -403,19 +403,45 @@ const SingleExpense = ({
         </div>
       </div>
 
-      {timeTag(new Date(createdAt.replace('-', '/')))}
+      <Wrapper className="hidden sm:block">
+        {timeTag(new Date(createdAt.replace('-', '/')))}
+      </Wrapper>
     </div>
   )
 }
 
 //utility
 const timeTag = (datetime) => {
+  const timeString = new Date(datetime)
+    .toDateString()
+    .split(' ')
+    .slice(1)
+    .join(' ')
+  const shortString = timeString.substr(0, timeString.length - 5)
+
   return (
     <Fragment>
       <div className="text-xs sm:text-sm md:text-base flex flex-col justify-center text-displayOnly px-0.5 sm:px-1 md:px-2">
         <time>
           {new Date(datetime).toDateString().split(' ').slice(1).join(' ')}
         </time>
+      </div>
+    </Fragment>
+  )
+}
+
+const ShortTimeTag = (datetime) => {
+  const timeString = new Date(datetime)
+    .toDateString()
+    .split(' ')
+    .slice(1)
+    .join(' ')
+  const shortString = timeString.substr(0, timeString.length - 5)
+
+  return (
+    <Fragment>
+      <div className="text-xs sm:text-sm md:text-base flex flex-col justify-center text-displayOnly px-0.5 sm:px-1 md:px-2">
+        <time>{shortString}</time>
       </div>
     </Fragment>
   )
