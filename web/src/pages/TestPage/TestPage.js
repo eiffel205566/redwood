@@ -25,7 +25,8 @@ const TestPage = () => {
         ></div>
         <ClockLoading className="h-10 w-10" />
       </CommonLayout>
-      <Puipui className="h-10 w-10 text-white border rounded-full bg-gray-300" />
+      <Puipui className="h-20 w-20 text-white border rounded-full bg-gray-300 footerGradient" />
+      <Puipui className="h-20 w-20 text-white border rounded-full bg-gray-300 headerGradient" />
     </Fragment>
   )
 }

@@ -30,6 +30,7 @@ const NewExpense = ({
   // singleExpense, //used when editing existing expense, null when adding new expense
   needConfirmation,
   setNeedConfirmation,
+  setGrandMasterLoadingState,
 }) => {
   //Add new Tag
   const [addOneTag, { loading: addOneTagLoading }] = useMutation(ADD_ONE_TAG, {
@@ -191,28 +192,7 @@ const NewExpense = ({
     ADD_ONE_EXPENSE,
     {
       onCompleted: () => {
-        setTagEditState((state) => {
-          return {
-            ...state,
-            id: null,
-            editState: false,
-            newTagState: false,
-          }
-        })
-        setNewExpenseState((state) => {
-          return {
-            ...state,
-            id: null,
-            expenseToEdit: null,
-            tags: null,
-            chosenTags: [],
-            newTagName: null,
-            isAddingTag: false,
-            isDeletingTag: false,
-            amount: null,
-            date: null,
-          }
-        })
+        resetAllState()
       },
       refetchQueries: [{ query: QUERY, variables: { page: +page, user } }],
       awaitRefetchQueries: true,
@@ -221,6 +201,12 @@ const NewExpense = ({
 
   const onHandleAddOneExpense = async () => {
     try {
+      setGrandMasterLoadingState((state) => {
+        return {
+          ...state,
+          grandMasterLoading: true,
+        }
+      })
       await createOneExpense({
         variables: {
           input: {
@@ -299,6 +285,12 @@ const NewExpense = ({
       toast.success('New Expense Added')
     } catch (error) {
       console.log(error)
+      setGrandMasterLoadingState((state) => {
+        return {
+          ...state,
+          grandMasterLoading: false,
+        }
+      })
     }
   }
 
@@ -307,28 +299,7 @@ const NewExpense = ({
     UPDATE_ONE_EXPENSE,
     {
       onCompleted: () => {
-        setTagEditState((state) => {
-          return {
-            ...state,
-            id: null,
-            editState: false,
-            newTagState: false,
-          }
-        })
-        setNewExpenseState((state) => {
-          return {
-            ...state,
-            id: null,
-            expenseToEdit: null,
-            tags: null,
-            chosenTags: [],
-            newTagName: null,
-            isAddingTag: false,
-            isDeletingTag: false,
-            amount: null,
-            date: null,
-          }
-        })
+        resetAllState()
       },
       refetchQueries: [{ query: QUERY, variables: { page: +page, user } }],
       awaitRefetchQueries: true,
@@ -340,28 +311,7 @@ const NewExpense = ({
     DELETE_ONE_EXPENSE,
     {
       onCompleted: () => {
-        setTagEditState((state) => {
-          return {
-            ...state,
-            id: null,
-            editState: false,
-            newTagState: false,
-          }
-        })
-        setNewExpenseState((state) => {
-          return {
-            ...state,
-            id: null,
-            expenseToEdit: null,
-            tags: null,
-            chosenTags: [],
-            newTagName: null,
-            isAddingTag: false,
-            isDeletingTag: false,
-            amount: null,
-            date: null,
-          }
-        })
+        resetAllState()
       },
       refetchQueries: [{ query: QUERY, variables: { page: +page, user } }],
       awaitRefetchQueries: true,
@@ -370,12 +320,24 @@ const NewExpense = ({
 
   const onHandelDeleteOneExpense = async (id) => {
     try {
+      setGrandMasterLoadingState((state) => {
+        return {
+          ...state,
+          grandMasterLoading: true,
+        }
+      })
       await deleteOneExpense({
         variables: { id },
       })
       toast.success('Expense Deleted!')
     } catch (error) {
       console.log(error)
+      setGrandMasterLoadingState((state) => {
+        return {
+          ...state,
+          grandMasterLoading: false,
+        }
+      })
     }
   }
 
@@ -389,6 +351,12 @@ const NewExpense = ({
 
   const onHandleEditOneExpense = async () => {
     try {
+      setGrandMasterLoadingState((state) => {
+        return {
+          ...state,
+          grandMasterLoading: true,
+        }
+      })
       await updateOneExpense({
         variables: {
           input: {
@@ -403,7 +371,45 @@ const NewExpense = ({
       toast.success('Edit Expense Success!')
     } catch (error) {
       console.log(error)
+      setGrandMasterLoadingState((state) => {
+        return {
+          ...state,
+          grandMasterLoading: false,
+        }
+      })
     }
+  }
+
+  //rest state for cancelling or after mutation
+  const resetAllState = () => {
+    setTagEditState((state) => {
+      return {
+        ...state,
+        id: null,
+        editState: false,
+        newTagState: false,
+      }
+    })
+    setNewExpenseState((state) => {
+      return {
+        ...state,
+        id: null,
+        expenseToEdit: null,
+        tags: null,
+        chosenTags: [],
+        newTagName: null,
+        isAddingTag: false,
+        isDeletingTag: false,
+        amount: null,
+        date: null,
+      }
+    })
+    setGrandMasterLoadingState((state) => {
+      return {
+        ...state,
+        grandMasterLoading: false,
+      }
+    })
   }
 
   return (
@@ -412,41 +418,31 @@ const NewExpense = ({
       onClick={(e) => {
         //when user click anywhere else other than the overlaying NewExpense Component
         if (Array.from(e.target.classList).includes('backgroundOverlay')) {
-          setTagEditState((state) => {
-            return {
-              ...state,
-              id: null,
-              editState: false,
-              newTagState: false,
-            }
-          })
-          setNewExpenseState((state) => {
-            return {
-              ...state,
-              id: null,
-              expenseToEdit: null,
-              tags: null,
-              chosenTags: [],
-              newTagName: null,
-              isAddingTag: false,
-              isDeletingTag: false,
-              amount: null,
-              date: null,
-            }
-          })
+          resetAllState()
         }
       }}
     >
       <Form
         onSubmit={() => console.log(newExpenseState)}
-        className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-3/4 sm:h-5/6 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-y-hidden"
+        className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-full xs:h-5/6 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-y-hidden"
       >
         <div className="topSection flex-grow flex flex-col select-none">
-          <h3 className="text-sm sm:text-base text-white ">{`${
-            newExpenseState.expenseToEdit
-              ? 'Edit With New Type'
-              : 'Pick Expense Type For New Exp'
-          }`}</h3>
+          <div className="flex justify-between">
+            <h3 className="text-sm sm:text-base text-white">{`${
+              newExpenseState.expenseToEdit
+                ? 'Edit With New Type'
+                : 'Pick Expense Type For New Exp'
+            }`}</h3>
+            <div className="block xs:hidden">
+              <Cancel
+                onClick={() => {
+                  resetAllState()
+                }}
+                className="h-8 w-8 text-white"
+              />
+            </div>
+          </div>
+
           <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
             {userTypes &&
               userTypes.map((oneType) => (

@@ -161,6 +161,9 @@ const TypePage = () => {
               </div>
             )}
           */}
+          <h3 className="absolute text-white text-sm sm:text-base mx-5 sm:mx-10">
+            Your Exp Types
+          </h3>
           <div className="w-full">
             <WrappedUserTypes
               id={id}

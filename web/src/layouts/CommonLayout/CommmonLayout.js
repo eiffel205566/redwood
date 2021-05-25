@@ -39,7 +39,7 @@ const CommonLayout = ({
         <SideBar className="w-40" />
       </aside>
 
-      <header className="h-14 z-30 bg-gray-400">
+      <header className="h-14 z-30 headerGradient text-gray-300 select-none">
         {/*
 
         */}
@@ -47,18 +47,18 @@ const CommonLayout = ({
           <div className="z-30 bg-gray-400">
             <nav className="h-14 min-w-full flex flex-row z-20">
               <div
-                className="cursor-pointer bg-gray-400 w-10 flex flex-row justify-center z-10"
+                className="cursor-pointer bg-gray-400 w-10 flex flex-row justify-center z-10 headerGradient"
                 onClick={onHandleSideBar}
               >
                 <Dots
                   className={
                     sideBarShowed
-                      ? 'h-full w-6 transition duration-500 ease-in-out transform hover:text-gray-300'
-                      : 'h-full w-6 transition duration-500 ease-in-out transform rotate-90 hover:text-gray-300'
+                      ? 'h-full w-6 transition duration-500 ease-in-out transform hover:text-gray-900'
+                      : 'h-full w-6 transition duration-500 ease-in-out transform rotate-90 hover:text-gray-900'
                   }
                 />
               </div>
-              <div className="text-center flex-grow flex-col flex justify-center z-10 bg-gray-400">
+              <div className="text-center flex-grow flex-col flex justify-center z-10 bg-gray-400 headerGradient">
                 <h1 className="text-xl md:text-3xl font-semibold tracking-tight flex flex-row">
                   <span className="love">{'Exp '}</span>
                   <span> </span>
@@ -74,16 +74,16 @@ const CommonLayout = ({
                   <span className="love">ight</span>
                 </h1>
               </div>
-              <div className="flex flex-row justify-center">
-                <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-300 flex-col justify-center cursor-pointer">
+              <div className="flex flex-row justify-center headerGradient">
+                <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
                   <Link className="m-auto">Login</Link>
                 </div>
-                <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-300 flex-col justify-center cursor-pointer">
+                <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
                   <Link to={routes.home()} className="m-auto">
                     Home
                   </Link>
                 </div>
-                <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-300 flex-col justify-center cursor-pointer">
+                <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
                   <Link to={routes.about()} className="m-auto">
                     About
                   </Link>

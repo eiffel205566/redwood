@@ -97,6 +97,7 @@ const ExpensesPage = ({ page = 1 }) => {
           page={page}
           needConfirmation={needConfirmation}
           setNeedConfirmation={setNeedConfirmation}
+          setGrandMasterLoadingState={setGrandMasterLoadingState}
         />
       ) : null}
       <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>

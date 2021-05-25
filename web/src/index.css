@@ -101,6 +101,10 @@ canvas {
   width: 385px;
 }
 
+.smallCarousel {
+  width: 96px;
+}
+
 .allTags {
   width: 9999px;
 }
@@ -113,4 +117,16 @@ canvas {
 
 aside {
   z-index: 10;
+}
+
+.headerGradient {
+  background-image: linear-gradient(to bottom, #aaaaaa, #8c8c8c, #6f6f6f, #545454, #3a3a3a);
+}
+
+.footerGradient {
+  background-image: linear-gradient(to top, #aaaaaa, #8c8c8c, #6f6f6f, #545454, #3a3a3a);
+}
+
+.pageNumber {
+  width: 24px;
 }

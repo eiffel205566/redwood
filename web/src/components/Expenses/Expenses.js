@@ -92,7 +92,7 @@ const ExpensesList = ({
           />
         )
       })}
-      <div className="relative">
+      <div className="relative flex flex-row">
         <Plus
           onClick={() => {
             setTagEditState((state) => {
@@ -110,10 +110,7 @@ const ExpensesList = ({
 
           <p className="text-white absolute absolute -right-0 -top-0">xxx</p>
         */}
-        <PagenatiedExpenses
-          className="absolute -right-0 -top-0"
-          count={count}
-        />
+        <PagenatiedExpenses count={count} />
       </div>
     </div>
   )

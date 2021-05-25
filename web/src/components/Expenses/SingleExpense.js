@@ -309,7 +309,7 @@ const SingleExpense = ({
           <span>{`$${+amount > 9999 ? '>9999' : amount}`}</span>
         </Wrapper>
 
-        <Wrapper>
+        <Wrapper className="hidden xs:block">
           <SingleType
             icon={
               description ? iconTypes[description] : iconTypes['CREDIT_CARD']
@@ -412,16 +412,9 @@ const SingleExpense = ({
 
 //utility
 const timeTag = (datetime) => {
-  const timeString = new Date(datetime)
-    .toDateString()
-    .split(' ')
-    .slice(1)
-    .join(' ')
-  const shortString = timeString.substr(0, timeString.length - 5)
-
   return (
     <Fragment>
-      <div className="text-xs sm:text-sm md:text-base flex flex-col justify-center text-displayOnly px-0.5 sm:px-1 md:px-2">
+      <div className="h-full text-xs md:text-sm flex flex-col justify-center text-displayOnly px-0.5 sm:px-1 md:px-2">
         <time>
           {new Date(datetime).toDateString().split(' ').slice(1).join(' ')}
         </time>

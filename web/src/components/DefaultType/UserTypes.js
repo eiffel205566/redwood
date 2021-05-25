@@ -30,11 +30,11 @@ export const Wrapper = (Component) => {
     const { userTypes, allUserLoading } = props
     return (
       <div
-        className={`m-5 sm:mx-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-sideDark ${
+        className={`mt-7 mb-5 ml-5 mr-5 sm:mx-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-sideDark ${
           allUserLoading
             ? 'overflow-hidden'
             : 'overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300'
-        }  max-h-64 sm:max-h-72 p-1 border rounded z-10 border-transparent`}
+        }  max-h-44 p-1 border rounded z-10 border-transparent`}
       >
         {allUserLoading ? (
           <Fragment>
