@@ -24,11 +24,48 @@ const TestPage = () => {
           } transition-all duration-500 ease-in-out`}
         ></div>
         <ClockLoading className="h-10 w-10" />
+        <TestComp />
+        <C />
       </CommonLayout>
-      <Puipui className="h-20 w-20 text-white border rounded-full bg-gray-300 footerGradient" />
-      <Puipui className="h-20 w-20 text-white border rounded-full bg-gray-300 headerGradient" />
+
+      {/*
+        <Puipui className="h-40 w-40 text-white border rounded-full bg-gray-300 footerGradient" />
+        <Puipui className="h-40 w-40 text-white border rounded-full bg-gray-300 footerGradient" />
+      */}
     </Fragment>
   )
 }
 
 export default TestPage
+
+const TestComp = () => {
+  const [checkState, setCheckState] = useState({
+    checked: false,
+  })
+  const { checked } = checkState
+  return (
+    <div
+      onClick={() => {
+        setCheckState((state) => {
+          return {
+            ...state,
+            checked: !state.checked,
+          }
+        })
+      }}
+      className={`transform transition-all duration-500 ease-in-out parent relative h-5 w-12 rounded-full bg-${
+        checked ? 'green' : 'yellow'
+      }-${checked ? '500' : '500'} cursor-pointer`}
+    >
+      <span
+        className={`translate-x-${
+          checked ? '7' : '0'
+        } transform transition-all duration-500 ease-in-out absolute border-transparent rounded-full -inset-0 slider bg-gray-500 h-5 w-5 `}
+      ></span>
+    </div>
+  )
+}
+
+const C = () => {
+  return <span className="absolute h-10 w-10 bg-red-300 z-20"></span>
+}

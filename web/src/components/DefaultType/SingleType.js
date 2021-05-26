@@ -1,5 +1,6 @@
 import React from 'react'
 import * as _ from 'lodash'
+import { Money } from '../Misc/svg'
 
 const SingleType = ({
   icon,
