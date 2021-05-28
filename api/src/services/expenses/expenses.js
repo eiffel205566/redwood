@@ -204,3 +204,38 @@ export const updateExpense = async ({ input }) => {
     },
   })
 }
+
+export const expenseCount = ({ user }) => {
+  return db.expense.count({
+    where: { user },
+  })
+}
+
+export const userExpensesSum = async ({ input }) => {
+  const { user } = input
+  const result = await db.expense.aggregate({
+    sum: {
+      amount: true,
+    },
+    where: {
+      user,
+    },
+  })
+  const {
+    sum: { amount },
+  } = result
+  return amount
+}
+
+export const textExpenseByType = async ({ user }) => {
+  const result = await db.expense.groupBy({
+    by: ['expenseType'],
+    where: {
+      user,
+    },
+    sum: {
+      amount: true,
+    },
+  })
+  return result
+}

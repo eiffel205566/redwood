@@ -46,7 +46,7 @@ export const Wrapper = (Component) => {
             <Component {...props} />
           ) : (
             <Fragment>
-              <div className="text-xs sm:text-sm md:text-base col-span-3">
+              <div className="text-xs sm:text-sm md:text-base col-span-3 text-white">
                 Add Your Own Expense Type to Start!
               </div>
             </Fragment>

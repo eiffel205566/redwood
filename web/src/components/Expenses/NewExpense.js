@@ -210,7 +210,7 @@ const NewExpense = ({
       await createOneExpense({
         variables: {
           input: {
-            amount: Number(newExpenseState.amount).toFixed(2),
+            amount: Number(Number(newExpenseState.amount).toFixed(2)),
             user,
             expenseType: { id: newExpenseState.id },
             tags: { ids: [...newExpenseState.chosenTags.map((tag) => tag.id)] },
@@ -361,7 +361,7 @@ const NewExpense = ({
         variables: {
           input: {
             id: newExpenseState.expenseToEdit.id,
-            amount: Number(newExpenseState.amount).toFixed(2),
+            amount: Number(Number(newExpenseState.amount).toFixed(2)),
             expenseType: { id: newExpenseState.id },
             tags: { ids: [...newExpenseState.chosenTags.map((tag) => tag.id)] },
             createdAt: newExpenseState.date,

@@ -1,7 +1,7 @@
 export const schema = gql`
   type Expense {
     id: Int!
-    amount: String!
+    amount: Float!
     user: String!
     createdAt: Date!
     expenseType: ExpenseType!
@@ -13,6 +13,9 @@ export const schema = gql`
     expense(id: Int!): Expense
     myExpenses(input: String!): [Expense!]!
     expensePage(page: Int, user: String!): ExpensePage
+    expenseCount(user: String!): Int!
+    userExpensesSum(input: OneUserAllExpenseInput!): Float!
+    textExpenseByType(user: String!): JSON!
   }
 
   type ExpensePage {
@@ -21,7 +24,7 @@ export const schema = gql`
   }
 
   input CreateExpenseInput {
-    amount: String!
+    amount: Float!
     user: String!
     expenseType: ExpenseTypeWhereUniqueInput!
     tags: TagsWhereUniqueInput
@@ -33,7 +36,7 @@ export const schema = gql`
 
   input UpdateExpenseInput {
     id: Int!
-    amount: String
+    amount: Float
     createdAt: Date
     expenseType: ExpenseTypeWhereUniqueInput
     tags: TagsWhereUniqueInput
@@ -51,6 +54,12 @@ export const schema = gql`
   input AddTagInput {
     id: Int!
     tag: Int!
+  }
+
+  input OneUserAllExpenseInput {
+    user: String!
+    maxDate: Date
+    mindDate: Date
   }
   type Mutation {
     createExpense(input: CreateExpenseInput!): Expense!

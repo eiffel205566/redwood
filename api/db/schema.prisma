@@ -26,7 +26,7 @@ model Contact {
 
 model Expense {
   id            Int         @id @default(autoincrement())
-  amount        String
+  amount        Float
   user          String
   createdAt     DateTime    @default(now())
   expenseType   ExpenseType @relation(fields: [expenseTypeId], references: [id])
