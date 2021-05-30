@@ -227,11 +227,31 @@ export const userExpensesSum = async ({ input }) => {
   return amount
 }
 
-export const textExpenseByType = async ({ user }) => {
+export const textExpenseByType = async ({ user, maxDate, minDate }) => {
+  minDate = minDate ? minDate : '1900-01-01'
+  maxDate = maxDate ? maxDate : '9999-01-01'
   const result = await db.expense.groupBy({
-    by: ['expenseType'],
+    by: ['expenseTypeId'],
     where: {
       user,
+      AND: [
+        { createdAt: { gte: new Date(minDate) } },
+        { createdAt: { lte: new Date(maxDate) } },
+      ],
+      OR: [
+        {
+          tags: {
+            some: {
+              id: { in: [14, 10, 9, 5] },
+            },
+          },
+        },
+        {
+          tags: {
+            none: {},
+          },
+        },
+      ],
     },
     sum: {
       amount: true,
@@ -239,3 +259,5 @@ export const textExpenseByType = async ({ user }) => {
   })
   return result
 }
+
+//tag: provide selection for user to specify whether to include expense with no tags

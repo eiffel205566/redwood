@@ -13,6 +13,7 @@ module.exports = {
         'spin-slow': 'spin 2s linear infinite',
       },
       zIndex: {
+        '-1': '-1',
         '-10': '-10',
         '-11': '-11',
         '-12': '-12',

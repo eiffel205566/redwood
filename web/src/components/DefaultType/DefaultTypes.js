@@ -14,7 +14,7 @@ const DefaultTypes = ({ setIconType, currentType, id }) => {
           description={description}
           key={index}
           index={index}
-          parentClass="w-max justify-self-center cursor-pointer relative"
+          parentClass="w-full justify-self-center cursor-pointer relative"
           iconClass={
             description === currentType && !id
               ? 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto bg-green-300'
