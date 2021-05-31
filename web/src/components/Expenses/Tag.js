@@ -66,7 +66,7 @@ export const Tag = ({
       } cursor-pointer flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-16 sm:w-32 h-12 select-none`}
     >
       <span
-        className={`rounded-full py-1 px-2 ${
+        className={`whitespace-nowrap rounded-full py-1 px-2 ${
           isChosenTag
             ? `${
                 isDeletingTag

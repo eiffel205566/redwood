@@ -15,6 +15,7 @@ import Carousel from './Carousel'
 import { toast } from '@redwoodjs/web/toast'
 import { useMutation } from '@redwoodjs/web'
 import { Wrapper } from 'src/components/Misc/UtilityFunc'
+import { isTypeExpense } from 'src/components/DefaultType/Static'
 
 const ADD_TAGS_TO_ONE_EXPENSE = gql`
   mutation addTagsToOneExpense($input: ConnectTagsToExpenseInput!) {
@@ -189,18 +190,6 @@ const SingleExpense = ({
         variables: {
           input: input,
         },
-        // optimisticResponse: {
-        //   connectTagsToExpense: {
-        //     id,
-        //     __typename: 'Expense',
-        //     user,
-        //     tags: [
-        //       ...chosenTags.chosenTagIds.map((id) => {
-        //         return { id, __typename: 'Tag' }
-        //       }),
-        //     ],
-        //   },
-        // },
         update: (cache) => {
           cache.writeQuery({
             query: QUERY,
@@ -319,6 +308,7 @@ const SingleExpense = ({
             iconClass="mx-auto h-6 w-6 text-displayOnly"
             noHoverNeeded={true}
             textColor="text-displayOnly"
+            type={isTypeExpense(description) ? '' : 'income'}
           />
         </Wrapper>
 

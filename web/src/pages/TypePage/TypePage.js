@@ -7,7 +7,7 @@ import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
 import SideBar from '../../components/SideBar/SideBar'
 import { Spin } from 'src/components/Misc/svg'
 import { useEffect, useState } from 'react'
-import { iconTypes } from 'src/components/DefaultType/Static'
+import { iconTypes, incomeIconTypes } from 'src/components/DefaultType/Static'
 import { useQuery } from '@redwoodjs/web'
 import { WrappedUserTypes } from 'src/components/DefaultType/UserTypes'
 import DefaultForm from 'src/components/DefaultType/DefaultForm'
@@ -15,6 +15,7 @@ import Error from 'src/components/Error/Error'
 
 import { CREATE_TYPE, ALL_USER_ICONS } from 'src/components/Misc/Queries'
 import Confirmation from 'src/components/Confirmation/Confirmation'
+import Switcher from 'src/components/DefaultType/Switcher'
 
 const TypePage = () => {
   //--
@@ -82,6 +83,12 @@ const TypePage = () => {
   })
   const { sideBarShowed } = showSidebar
   //--
+
+  //checkState for expense/income type
+  const [checkState, setCheckState] = useState({
+    checked: false,
+  })
+  //
 
   //lifecycle: onmount
   useEffect(() => {
@@ -161,22 +168,34 @@ const TypePage = () => {
               </div>
             )}
           */}
-          <h3 className="absolute text-white text-sm sm:text-base mx-5 sm:mx-10">
-            Your Exp Types
-          </h3>
+          <div className="absolute w-30 flex mx-5 sm:mx-10 text-white text-sm sm:text-base">
+            <span>{`Your ${
+              checkState.checked ? 'Income' : 'Expense'
+            } Type`}</span>
+            <div className="h-full my-auto ml-2">
+              <Switcher
+                setIconType={setIconType}
+                checkState={checkState}
+                setCheckState={setCheckState}
+              />
+            </div>
+          </div>
           <div className="w-full">
             <WrappedUserTypes
               id={id}
               userTypes={userTypes}
               iconTypes={iconTypes}
+              incomeIconTypes={incomeIconTypes}
               setIconType={setIconType}
               allUserLoading={allUserLoading}
+              checkState={checkState}
             />
             <DefaultForm
               currentType={currentType}
               id={id}
               currentName={currentName}
               iconTypes={iconTypes}
+              incomeIconTypes={incomeIconTypes}
               setIconType={setIconType}
               user={user}
               userTypes={userTypes}
@@ -184,6 +203,7 @@ const TypePage = () => {
               typePageFormDesc={typePageFormDesc}
               setTypePageFormDesc={setTypePageFormDesc}
               setNeedConfirm={setNeedConfirm}
+              checkState={checkState}
             />
           </div>
         </div>

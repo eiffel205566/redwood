@@ -32,6 +32,7 @@ const DefaultForm = ({
   typePageFormDesc,
   setTypePageFormDesc,
   setNeedConfirm,
+  checkState,
 }) => {
   const formMethods = useForm({ mode: 'onBlur' })
   const { typePageDescription } = typePageFormDesc
@@ -244,7 +245,8 @@ const DefaultForm = ({
             {/*
 
             */}
-            <span className="absolute text-white right-0 top-0 text-gray-400 pr-1 sm:p-1 h-full">
+
+            <span className="absolute text-white right-0 top-1 sm:top-0 text-gray-400 pr-1 sm:p-1 h-full text-sm sm:text-sm md:text-base">
               {`${typePageFormDesc.typePageDescription.length}/10`}
             </span>
           </div>
@@ -294,6 +296,7 @@ const DefaultForm = ({
         setIconType={setIconType}
         currentType={currentType}
         id={id}
+        checkState={checkState}
       />
     </div>
   )

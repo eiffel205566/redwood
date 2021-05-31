@@ -18,6 +18,7 @@ import {
 import { QUERY } from 'src/components/ExpensesCell/ExpensesCell'
 import CommonConfirmation from 'src/components/Confirmation/CommonConfirmation'
 import { toast } from '@redwoodjs/web/toast'
+import { isTypeExpense } from 'src/components/DefaultType/Static'
 
 const NewExpense = ({
   user,
@@ -415,6 +416,9 @@ const NewExpense = ({
   return (
     <div
       className="backgroundOverlay bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50"
+      onKeyDown={() => {}}
+      tabIndex="0"
+      role="button"
       onClick={(e) => {
         //when user click anywhere else other than the overlaying NewExpense Component
         if (Array.from(e.target.classList).includes('backgroundOverlay')) {
@@ -464,6 +468,8 @@ const NewExpense = ({
                   newName={oneType.newName}
                   currentName={oneType.newName}
                   textColor="text-white"
+                  wrapperClass="w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 mx-auto"
+                  type={isTypeExpense(oneType.description) ? '' : 'income'}
                 />
               ))}
           </div>

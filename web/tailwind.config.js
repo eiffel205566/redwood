@@ -28,10 +28,12 @@ module.exports = {
         sideDark: '#252525',
         overlay: '#3a3a3a',
         danger: '#e3342f',
+        golden: '#ffda00',
       }),
       textColor: (theme) => ({
         ...theme('colors'),
         displayOnly: '#7e7e7e',
+        golden: '#ffda00',
       }),
       translate: {
         // '-5.5': '-1.498rem',

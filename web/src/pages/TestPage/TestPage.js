@@ -28,18 +28,18 @@ const TestPage = () => {
         ></div>
         <ClockLoading className="h-10 w-10" />
 
-        <Wrapper className="relative">
-          <Money className="text-yellow-300 absolute top-0 left-0 h-4 w-4" />
-          {React.createElement(Credit, {
-            className:
-              'relative h-12 w-12 bg-gray-400 rounded-full text-green-700 -z-1',
-          })}
-        </Wrapper>
+        <Switcher />
       </CommonLayout>
 
       {/*
+          <Wrapper className="relative">
+            <Money className="text-red-300 absolute top-0 left-0 h-4 w-4" />
+            {React.createElement(Credit, {
+              className:
+                'relative h-12 w-12 bg-gray-400 rounded-full text-golden -z-1',
+            })}
+          </Wrapper>
           <C />
-          <TestComp />
         <Puipui className="h-40 w-40 text-white border rounded-full bg-gray-300 footerGradient" />
         <Puipui className="h-40 w-40 text-white border rounded-full bg-gray-300 footerGradient" />
       */}
@@ -49,7 +49,7 @@ const TestPage = () => {
 
 export default TestPage
 
-const TestComp = () => {
+const Switcher = () => {
   const [checkState, setCheckState] = useState({
     checked: false,
   })
@@ -69,14 +69,14 @@ const TestComp = () => {
       tabIndex="0"
       role="button"
       className={`transform transition-all duration-500 ease-in-out parent relative h-5 w-12 rounded-full bg-${
-        checked ? 'green' : 'yellow'
-      }-${checked ? '500' : '500'} cursor-pointer`}
+        checked ? 'red' : 'golden'
+      }${checked ? '-500' : ''} cursor-pointer`}
     >
-      <span
+      <Money
         className={`translate-x-${
           checked ? '7' : '0'
-        } transform transition-all duration-500 ease-in-out absolute border-transparent rounded-full -inset-0 slider bg-gray-500 h-5 w-5 `}
-      ></span>
+        } text-gray-700 transform transition-all duration-500 ease-in-out absolute border-transparent rounded-full -inset-0 slider bg-transparent h-5 w-5 `}
+      ></Money>
     </div>
   )
 }
@@ -85,7 +85,7 @@ const C = () => {
   return <span className="absolute h-10 w-10 bg-red-300"></span>
 }
 
-const Wrapper = ({ children, className, ...rest }) => {
+export const Wrapper = ({ children, className, ...rest }) => {
   const { onClick, paddingLeft } = rest || {}
   return (
     <div
