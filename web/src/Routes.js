@@ -4,6 +4,7 @@ import TestPage from './pages/TestPage/TestPage'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/summary" page={SummaryPage} name="summary" />
       <Route path="/type" page={TypePage} name="type" />
       <Private unauthenticated="home">
         {/*

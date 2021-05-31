@@ -18,7 +18,14 @@ const SideBar = ({ className }) => {
             </Link>
           </li>
           <li className="flex flex-col justify-center bg-overlay text-center w-full h-10 my-1 text-white hover:bg-green-300 hover:text-gray-900 cursor-pointer">
-            <Link className="block">Setting</Link>
+            <Link to={routes.summary()} className="block">
+              Summary
+            </Link>
+          </li>
+          <li className="flex flex-col justify-center bg-overlay text-center w-full h-10 my-1 text-white hover:bg-green-300 hover:text-gray-900 cursor-pointer">
+            <Link to={routes.test()} className="block">
+              Test
+            </Link>
           </li>
         </ul>
       </div>
