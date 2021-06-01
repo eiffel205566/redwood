@@ -1,10 +1,18 @@
+import { timeTag } from 'src/components/Expenses/Expenses'
+import { ClockLoading } from 'src/components/Misc/svg'
 export const QUERY = gql`
   query TEST($user: String!) {
     textExpenseByType(user: $user)
   }
 `
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = ({ user }) => (
+  <div className="w-full mt-5 flex flex-col justify-center select-none">
+    <h1 className="text-white text-xl">
+      <ClockLoading className="h-8 w-8 cursor-not-allowed animate-spin inline p-1" />
+    </h1>
+  </div>
+)
 
 export const Empty = () => <div>Empty</div>
 

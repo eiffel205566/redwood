@@ -230,33 +230,56 @@ export const userExpensesSum = async ({ input }) => {
 export const textExpenseByType = async ({ user, maxDate, minDate }) => {
   minDate = minDate ? minDate : '1900-01-01'
   maxDate = maxDate ? maxDate : '9999-01-01'
+
+  /*
+    args: user, maxDate, minDate
+    sql:
+    select sum(amount) from db.expense
+    where createAt <= maxDate and createAt >= minDate
+    groupby expenseTypeId
+  */
+
+  //--
+  // const result = await db.expense.groupBy({
+  //   by: ['expenseTypeId'],
+  //   where: {
+  //     user,
+  //     AND: [
+  //       { createdAt: { gte: new Date(minDate) } },
+  //       { createdAt: { lte: new Date(maxDate) } },
+  //     ],
+  //     OR: [
+  //       {
+  //         tags: {
+  //           some: {
+  //             id: { in: [14, 10, 9, 5] },
+  //           },
+  //         },
+  //       },
+  //       {
+  //         tags: {
+  //           none: {},
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   sum: {
+  //     amount: true,
+  //   },
+  // })
+  // return result
+  //--
+
   const result = await db.expense.groupBy({
-    by: ['expenseTypeId'],
+    by: ['createdAt'],
     where: {
       user,
-      AND: [
-        { createdAt: { gte: new Date(minDate) } },
-        { createdAt: { lte: new Date(maxDate) } },
-      ],
-      OR: [
-        {
-          tags: {
-            some: {
-              id: { in: [14, 10, 9, 5] },
-            },
-          },
-        },
-        {
-          tags: {
-            none: {},
-          },
-        },
-      ],
     },
     sum: {
       amount: true,
     },
   })
+
   return result
 }
 

@@ -13,6 +13,7 @@ model Post {
   title    String
   body     String
   createAt DateTime @default(now())
+  c        DateTime @default(now()) @DS.Date
 }
 
 model Contact {
