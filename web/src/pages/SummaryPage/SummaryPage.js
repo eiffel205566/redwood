@@ -4,6 +4,7 @@ import { useQuery } from '@redwoodjs/web'
 import { Toaster } from 'react-hot-toast'
 import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
 import SummaryCell from 'src/components/SummaryCell/SummaryCell'
+import { USER_TYPES_QUERY } from '../ExpensesPage/UserTypesTagsQuery'
 
 const SummaryPage = () => {
   //side bar state
@@ -34,6 +35,29 @@ const SummaryPage = () => {
   const { email: user } = currentUser
   //--
 
+  //state controling each type category
+  const [typeCategoryState, setTypeCategoryState] = useState({
+    types: null,
+    typeToEdit: null,
+    chosenTags: [],
+  })
+
+  //USER_TYPES_QUERY
+  //Make User Types Query onMount and store in staet
+  const { data } = useQuery(USER_TYPES_QUERY, {
+    variables: { input: { user } },
+  })
+  const { userTypes } = data || {}
+
+  useEffect(() => {
+    setTypeCategoryState((state) => {
+      return {
+        ...state,
+        types: data ? [...userTypes] : null,
+      }
+    })
+  }, [data, userTypes])
+
   return (
     <Fragment>
       {grandMasterLoading ? (
@@ -42,7 +66,11 @@ const SummaryPage = () => {
 
       <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>
         <Toaster timeout={2000} />
-        <SummaryCell user={user} />
+        <SummaryCell
+          user={user}
+          typeCategoryState={typeCategoryState}
+          setTypeCategoryState={setTypeCategoryState}
+        />
       </CommonLayout>
     </Fragment>
   )

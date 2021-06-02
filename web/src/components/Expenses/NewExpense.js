@@ -208,10 +208,21 @@ const NewExpense = ({
           grandMasterLoading: true,
         }
       })
+
+      //find the description for the expenseType in newExpenseState.types
+      const expenseToEdit = _.find(newExpenseState.types, function (o) {
+        return o.id === newExpenseState.id
+      })
+      const isThisExpense = isTypeExpense(expenseToEdit.description)
       await createOneExpense({
+        //make negative when type is expense and make absolute when type is income
+        //by using isTypeExpense
+
         variables: {
           input: {
-            amount: Number(Number(newExpenseState.amount).toFixed(2)),
+            amount: isThisExpense
+              ? -1 * Math.abs(Number(Number(newExpenseState.amount).toFixed(2)))
+              : Math.abs(Number(Number(newExpenseState.amount).toFixed(2))),
             user,
             expenseType: { id: newExpenseState.id },
             tags: { ids: [...newExpenseState.chosenTags.map((tag) => tag.id)] },
@@ -358,11 +369,20 @@ const NewExpense = ({
           grandMasterLoading: true,
         }
       })
+
+      //find the description for the expenseType in newExpenseState.types
+      const expenseToEdit = _.find(newExpenseState.types, function (o) {
+        return o.id === newExpenseState.id
+      })
+      const isThisExpense = isTypeExpense(expenseToEdit.description)
+
       await updateOneExpense({
         variables: {
           input: {
             id: newExpenseState.expenseToEdit.id,
-            amount: Number(Number(newExpenseState.amount).toFixed(2)),
+            amount: isThisExpense
+              ? -1 * Math.abs(Number(Number(newExpenseState.amount).toFixed(2)))
+              : Math.abs(Number(Number(newExpenseState.amount).toFixed(2))),
             expenseType: { id: newExpenseState.id },
             tags: { ids: [...newExpenseState.chosenTags.map((tag) => tag.id)] },
             createdAt: newExpenseState.date,
@@ -647,7 +667,11 @@ const NewExpense = ({
                   className="h-8 m-1 bg-gray-500 text-white max-w-xs"
                   placeholder="Spending"
                   type="text"
-                  value={newExpenseState.amount ? newExpenseState.amount : ''}
+                  value={
+                    newExpenseState.amount
+                      ? Math.abs(newExpenseState.amount)
+                      : ''
+                  }
                 />
               </Wrapper>
             </div>

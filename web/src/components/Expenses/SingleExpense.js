@@ -295,7 +295,9 @@ const SingleExpense = ({
         </Wrapper>
 
         <Wrapper className="w-10 sm:w-20">
-          <span>{`$${+amount > 9999 ? '>9999' : amount}`}</span>
+          <span>{`$${
+            Math.abs(+amount) > 9999 ? '>9999' : Math.abs(+amount)
+          }`}</span>
         </Wrapper>
 
         <Wrapper className="hidden xs:block">

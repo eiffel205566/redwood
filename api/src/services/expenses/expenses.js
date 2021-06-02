@@ -240,40 +240,52 @@ export const textExpenseByType = async ({ user, maxDate, minDate }) => {
   */
 
   //--
-  // const result = await db.expense.groupBy({
-  //   by: ['expenseTypeId'],
-  //   where: {
-  //     user,
-  //     AND: [
-  //       { createdAt: { gte: new Date(minDate) } },
-  //       { createdAt: { lte: new Date(maxDate) } },
-  //     ],
-  //     OR: [
-  //       {
-  //         tags: {
-  //           some: {
-  //             id: { in: [14, 10, 9, 5] },
-  //           },
-  //         },
-  //       },
-  //       {
-  //         tags: {
-  //           none: {},
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   sum: {
-  //     amount: true,
-  //   },
-  // })
-  // return result
+  const result = await db.expense.groupBy({
+    by: ['expenseTypeId'],
+    where: {
+      user,
+      AND: [
+        { createdAt: { gte: new Date(minDate) } },
+        { createdAt: { lte: new Date(maxDate) } },
+      ],
+      OR: [
+        {
+          tags: {
+            some: {
+              id: { in: [14, 10, 9, 6] },
+            },
+          },
+        },
+        {
+          tags: {
+            none: {},
+          },
+        },
+      ],
+    },
+    sum: {
+      amount: true,
+    },
+  })
+  return result
   //--
+}
 
+//tag: provide selection for user to specify whether to include expense with no tags
+
+export const expenseByDate = async ({
+  user,
+  maxDate = '9999-01-01',
+  minDate = '1900-01-01',
+}) => {
   const result = await db.expense.groupBy({
     by: ['createdAt'],
     where: {
       user,
+      AND: [
+        { createdAt: { gte: new Date(minDate) } },
+        { createdAt: { lte: new Date(maxDate) } },
+      ],
     },
     sum: {
       amount: true,
@@ -282,5 +294,3 @@ export const textExpenseByType = async ({ user, maxDate, minDate }) => {
 
   return result
 }
-
-//tag: provide selection for user to specify whether to include expense with no tags

@@ -1,5 +1,6 @@
 import { timeTag } from 'src/components/Expenses/Expenses'
 import { ClockLoading } from 'src/components/Misc/svg'
+import Summary from '../Summary/Summary'
 export const QUERY = gql`
   query TEST($user: String!) {
     textExpenseByType(user: $user)
@@ -26,6 +27,16 @@ export const beforeQuery = ({ user }) => {
 
 export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
-export const Success = ({ textExpenseByType }) => {
-  return <h3 className="text-white">Summary Page</h3>
+export const Success = ({
+  textExpenseByType,
+  typeCategoryState,
+  setTypeCategoryState,
+}) => {
+  return (
+    <Summary
+      textExpenseByType={textExpenseByType}
+      typeCategoryState={typeCategoryState}
+      setTypeCategoryState={setTypeCategoryState}
+    />
+  )
 }
