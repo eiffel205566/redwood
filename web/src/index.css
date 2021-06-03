@@ -75,13 +75,6 @@ canvas {
   animation: moveRight 1s infinite;
 }
 
-/* #money:hover {
-  transition: all ease-in-out 0.6s;
-  transform: rotateY(180deg);
-  color: gold;
-  cursor: pointer
-} */
-
 #money {
   transition: all 0.6s;
   color: gold;
@@ -129,4 +122,12 @@ aside {
 
 .pageNumber {
   width: 24px;
+}
+
+.rankBarContent {
+  background: #10B981;
+  background-image: radial-gradient(black 1px, transparent 0);
+  background-size: 4px 4px;
+  /* background-position: -19px -19px; */
+  background-repeat: repeat;
 }
