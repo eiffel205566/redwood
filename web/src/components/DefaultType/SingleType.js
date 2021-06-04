@@ -47,7 +47,7 @@ const SingleType = ({
       <Wrapper className={`${wrapperClass} relative`}>
         <Money
           className={`text-${type ? 'red-500' : 'golden'} absolute top-0 ${
-            type ? 'right' : 'left'
+            type ? 'left' : 'left'
           }-0 h-3 w-3 sm:h-4 sm:w-4 bg-gray-900 rounded-full`}
         />
         {React.createElement(icon, {

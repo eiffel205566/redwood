@@ -15,7 +15,7 @@ export const schema = gql`
     expensePage(page: Int, user: String!): ExpensePage
     expenseCount(user: String!): Int!
     userExpensesSum(input: OneUserAllExpenseInput!): Float!
-    textExpenseByType(user: String!, maxDate: Date, minDate: Date): JSON!
+    expenseByType(user: String!, maxDate: Date, minDate: Date): JSON!
     expenseByDate(user: String!, maxDate: Date, mindDate: Date): JSON!
   }
 

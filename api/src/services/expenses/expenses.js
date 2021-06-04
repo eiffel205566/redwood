@@ -227,7 +227,7 @@ export const userExpensesSum = async ({ input }) => {
   return amount
 }
 
-export const textExpenseByType = async ({ user, maxDate, minDate }) => {
+export const expenseByType = async ({ user, maxDate, minDate }) => {
   minDate = minDate ? minDate : '1900-01-01'
   maxDate = maxDate ? maxDate : '9999-01-01'
 

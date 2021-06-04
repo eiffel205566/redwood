@@ -3,7 +3,7 @@ import { ClockLoading } from 'src/components/Misc/svg'
 import Summary from '../Summary/Summary'
 export const QUERY = gql`
   query TEST($user: String!) {
-    textExpenseByType(user: $user)
+    expenseByType(user: $user)
   }
 `
 
@@ -28,13 +28,13 @@ export const beforeQuery = ({ user }) => {
 export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({
-  textExpenseByType,
+  expenseByType,
   typeCategoryState,
   setTypeCategoryState,
 }) => {
   return (
     <Summary
-      textExpenseByType={textExpenseByType}
+      expenseByType={expenseByType}
       typeCategoryState={typeCategoryState}
       setTypeCategoryState={setTypeCategoryState}
     />

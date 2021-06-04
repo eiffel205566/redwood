@@ -4,14 +4,25 @@ import { Wrapper } from 'src/components/Misc/UtilityFunc'
 import SingleType from 'src/components/DefaultType/SingleType'
 import { iconTypes, isTypeExpense } from '../DefaultType/Static'
 import { Money } from '../Misc/svg'
+import { calculateWidth } from 'src/components/Misc/UtilityFunc'
 
 const Summary = ({
-  textExpenseByType,
+  expenseByType,
   typeCategoryState,
   setTypeCategoryState,
   ...rest
 }) => {
   const { types } = typeCategoryState
+  //need utility function to calculate width: calculateWidth
+  //need to get maxiumum value
+  const sortByAbsoluteValueExpenseByType = expenseByType
+    ? [...expenseByType].sort((a, b) => {
+        return Math.abs(b.sum.amount) - Math.abs(a.sum.amount)
+      })
+    : []
+  const maxExpenseValue = sortByAbsoluteValueExpenseByType[0]?.sum?.amount
+    ? sortByAbsoluteValueExpenseByType[0]?.sum?.amount
+    : 1
 
   return (
     <Fragment>
@@ -21,9 +32,9 @@ const Summary = ({
         <h1>xx</h1>
         <h1>xx</h1>
       </div>
-      <section className="numberInsightsection text-displayOnly flex">
+      <section className="numberInsightsection text-displayOnly flex flex-col md:flex-row">
         <div className="typeRank border border-yellow-300 max-h-96 flex-grow">
-          {textExpenseByType.map((oneType, index) => {
+          {sortByAbsoluteValueExpenseByType.map((oneType, index) => {
             const singleType = _.find(types, function (o) {
               return o.id === oneType.expenseTypeId
             })
@@ -57,11 +68,16 @@ const Summary = ({
                   {/*
                   <Money />
                 */}
-                  <div className="rank m-2 h-full w-80 border border-gray-500 ">
-                    <div className="rankBarContent w-20 h-full"></div>
+                  <div className="rank m-2 h-full w-60 border border-gray-500 ">
+                    <div
+                      className={`rankBarContent transform transition-all duration-500 hover:bg-green-300 cursor-pointer ease-in-out w-${calculateWidth(
+                        Math.abs(oneType.sum.amount),
+                        Math.abs(maxExpenseValue)
+                      )} h-full`}
+                    ></div>
                   </div>
                 </Wrapper>
-                <Wrapper>
+                <Wrapper className="flex-grow text-center">
                   <div>{` $ ${oneType.sum.amount}`}</div>
                 </Wrapper>
               </div>
