@@ -17,11 +17,11 @@ const Summary = ({
   //need to get maxiumum value
   const sortByAbsoluteValueExpenseByType = expenseByType
     ? [...expenseByType].sort((a, b) => {
-        return Math.abs(b.sum.amount) - Math.abs(a.sum.amount)
+        return Math.abs(b._sum.amount) - Math.abs(a._sum.amount)
       })
     : []
-  const maxExpenseValue = sortByAbsoluteValueExpenseByType[0]?.sum?.amount
-    ? sortByAbsoluteValueExpenseByType[0]?.sum?.amount
+  const maxExpenseValue = sortByAbsoluteValueExpenseByType[0]?._sum?.amount
+    ? sortByAbsoluteValueExpenseByType[0]?._sum?.amount
     : 1
 
   return (
@@ -71,14 +71,14 @@ const Summary = ({
                   <div className="rank m-2 h-full w-60 border border-gray-500 ">
                     <div
                       className={`rankBarContent transform transition-all duration-500 hover:bg-green-300 cursor-pointer ease-in-out w-${calculateWidth(
-                        Math.abs(oneType.sum.amount),
+                        Math.abs(oneType._sum.amount),
                         Math.abs(maxExpenseValue)
                       )} h-full`}
                     ></div>
                   </div>
                 </Wrapper>
                 <Wrapper className="flex-grow text-center">
-                  <div>{` $ ${oneType.sum.amount}`}</div>
+                  <div>{` $ ${oneType._sum.amount}`}</div>
                 </Wrapper>
               </div>
             )

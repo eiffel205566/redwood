@@ -263,7 +263,7 @@ export const expenseByType = async ({ user, maxDate, minDate }) => {
         },
       ],
     },
-    sum: {
+    _sum: {
       amount: true,
     },
   })
@@ -287,7 +287,7 @@ export const expenseByDate = async ({
         { createdAt: { lte: new Date(maxDate) } },
       ],
     },
-    sum: {
+    _sum: {
       amount: true,
     },
   })
