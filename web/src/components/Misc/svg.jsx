@@ -556,3 +556,16 @@ export const Puipui = ({ className, ...rest }) => {
         </svg>
 
 */
+
+const Test = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1920 1090"
+      width="1920"
+      height="1090"
+      preserveAspectRatio="xMidYMid meet"
+      style="width: 100%; height: 100%; transform: translate3d(0px, 0px, 0px);"
+    ></svg>
+  )
+}

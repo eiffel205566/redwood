@@ -54,7 +54,7 @@ const Summary = ({
                     newName={
                       singleType?.newName ? singleType?.newName : 'default'
                     }
-                    parentClass="w-16 sm:w-20"
+                    parentClass="w-12 sm:w-20"
                     iconClass="mx-auto h-6 w-6 text-displayOnly"
                     noHoverNeeded={true}
                     textColor="text-displayOnly"
@@ -78,15 +78,17 @@ const Summary = ({
                   </div>
                 </Wrapper>
                 <Wrapper className="flex-grow text-center">
-                  <div>{` $ ${oneType._sum.amount}`}</div>
+                  <div className="hidden sm:block">{` $ ${oneType._sum.amount}`}</div>
                 </Wrapper>
+                {/*
+                 */}
               </div>
             )
           })}
         </div>
         <div className="typeRank border border-blue-300 h-20 flex-grow">
           <Wrapper>
-            <div className="rankBar m-2 h-full w-80 border border-green-500 "></div>
+            <div className="rankBar m-2 h-full w-40 md:w-80 border border-green-500 "></div>
           </Wrapper>
         </div>
       </section>
