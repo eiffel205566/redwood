@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast'
 import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
 import SummaryCell from 'src/components/SummaryCell/SummaryCell'
 import { USER_TYPES_QUERY } from '../ExpensesPage/UserTypesTagsQuery'
+import SummarySettings from 'src/components/Summary/SummarySettings'
 
 const SummaryPage = () => {
   //side bar state
@@ -38,8 +39,10 @@ const SummaryPage = () => {
   //state controling each type category
   const [typeCategoryState, setTypeCategoryState] = useState({
     types: null,
+    availableTags: [],
+    id: null,
     typeToEdit: null,
-    chosenTags: [],
+    chosenTagIds: [],
   })
 
   //USER_TYPES_QUERY
@@ -48,12 +51,23 @@ const SummaryPage = () => {
     variables: { input: { user } },
   })
   const { userTypes } = data || {}
+  //* where availableTags stores all tag ids belong to the user so
+  //* by using tag ids stored in availableTags, we can make Query expenseByType based on chosen tag ids
+  const tagIds = data
+    ? userTypes
+        .reduce((prev, cur) => {
+          return [...prev, ...cur.tags]
+        }, [])
+        .map((tag) => tag.id)
+    : null
 
   useEffect(() => {
     setTypeCategoryState((state) => {
       return {
         ...state,
         types: data ? [...userTypes] : null,
+        availableTags: tagIds ? [...tagIds] : [],
+        chosenTagIds: tagIds ? [...tagIds] : [],
       }
     })
   }, [data, userTypes])
@@ -63,13 +77,19 @@ const SummaryPage = () => {
       {grandMasterLoading ? (
         <div className="masterLoadingOverlay select-none background bg-transparent absolute min-h-full min-w-full z-50"></div>
       ) : null}
-
+      {typeCategoryState.typeToEdit ? (
+        <SummarySettings
+          setTypeCategoryState={setTypeCategoryState}
+          typeCategoryState={typeCategoryState}
+        />
+      ) : null}
       <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>
         <Toaster timeout={2000} />
         <SummaryCell
           user={user}
           typeCategoryState={typeCategoryState}
           setTypeCategoryState={setTypeCategoryState}
+          chosenTagIds={typeCategoryState.chosenTagIds}
         />
       </CommonLayout>
     </Fragment>

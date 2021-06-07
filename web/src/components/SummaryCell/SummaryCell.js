@@ -2,8 +2,8 @@ import { timeTag } from 'src/components/Expenses/Expenses'
 import { ClockLoading } from 'src/components/Misc/svg'
 import Summary from '../Summary/Summary'
 export const QUERY = gql`
-  query TEST($user: String!) {
-    expenseByType(user: $user)
+  query TEST($user: String!, $chosenTagIds: [Int]) {
+    expenseByType(user: $user, chosenTagIds: $chosenTagIds)
   }
 `
 
@@ -17,9 +17,9 @@ export const Loading = ({ user }) => (
 
 export const Empty = () => <div>Empty</div>
 
-export const beforeQuery = ({ user }) => {
+export const beforeQuery = ({ user, chosenTagIds }) => {
   return {
-    variables: { user },
+    variables: { user, chosenTagIds },
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first',
   }
@@ -31,12 +31,14 @@ export const Success = ({
   expenseByType,
   typeCategoryState,
   setTypeCategoryState,
+  chosenTagIds,
 }) => {
   return (
     <Summary
       expenseByType={expenseByType}
       typeCategoryState={typeCategoryState}
       setTypeCategoryState={setTypeCategoryState}
+      chosenTagIds={chosenTagIds}
     />
   )
 }

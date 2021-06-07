@@ -68,7 +68,17 @@ const Summary = ({
                   {/*
                   <Money />
                 */}
-                  <div className="rank m-2 h-full w-60 border border-gray-500 ">
+                  <div
+                    onClick={() => {
+                      setTypeCategoryState((state) => {
+                        return { ...state, typeToEdit: oneType }
+                      })
+                    }}
+                    onKeyDown={() => {}}
+                    tabIndex="0"
+                    role="button"
+                    className="rank m-2 h-full w-60 border border-gray-500 "
+                  >
                     <div
                       className={`rankBarContent transform transition-all duration-500 hover:bg-green-300 cursor-pointer ease-in-out w-${calculateWidth(
                         Math.abs(oneType._sum.amount),
