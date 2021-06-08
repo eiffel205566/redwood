@@ -71,7 +71,10 @@ const Summary = ({
                   <div
                     onClick={() => {
                       setTypeCategoryState((state) => {
-                        return { ...state, typeToEdit: oneType }
+                        return {
+                          ...state,
+                          typeToEdit: oneType,
+                        }
                       })
                     }}
                     onKeyDown={() => {}}

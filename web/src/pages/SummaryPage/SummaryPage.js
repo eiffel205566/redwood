@@ -53,20 +53,20 @@ const SummaryPage = () => {
   const { userTypes } = data || {}
   //* where availableTags stores all tag ids belong to the user so
   //* by using tag ids stored in availableTags, we can make Query expenseByType based on chosen tag ids
-  const tagIds = data
-    ? userTypes
-        .reduce((prev, cur) => {
-          return [...prev, ...cur.tags]
-        }, [])
-        .map((tag) => tag.id)
+  const tags = data
+    ? userTypes.reduce((prev, cur) => {
+        return [...prev, ...cur.tags]
+      }, [])
     : null
+
+  const tagIds = data ? tags.map((tag) => tag.id) : null
 
   useEffect(() => {
     setTypeCategoryState((state) => {
       return {
         ...state,
         types: data ? [...userTypes] : null,
-        availableTags: tagIds ? [...tagIds] : [],
+        availableTags: tags ? [...tags] : [],
         chosenTagIds: tagIds ? [...tagIds] : [],
       }
     })
@@ -81,6 +81,7 @@ const SummaryPage = () => {
         <SummarySettings
           setTypeCategoryState={setTypeCategoryState}
           typeCategoryState={typeCategoryState}
+          userTypes={userTypes}
         />
       ) : null}
       <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>
