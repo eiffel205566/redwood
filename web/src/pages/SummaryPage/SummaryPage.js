@@ -38,11 +38,11 @@ const SummaryPage = () => {
 
   //state controling each type category
   const [typeCategoryState, setTypeCategoryState] = useState({
-    types: null,
+    types: [],
     availableTags: [],
     id: null,
     typeToEdit: null,
-    chosenTagIds: [],
+    chosenTags: [],
   })
 
   //USER_TYPES_QUERY
@@ -65,9 +65,10 @@ const SummaryPage = () => {
     setTypeCategoryState((state) => {
       return {
         ...state,
-        types: data ? [...userTypes] : null,
+        types: data ? [...userTypes] : [],
         availableTags: tags ? [...tags] : [],
-        chosenTagIds: tagIds ? [...tagIds] : [],
+        // chosenTags: tagIds ? [...tagIds] : [],
+        chosenTags: tags ? [...tags] : [],
       }
     })
   }, [data, userTypes])
@@ -90,7 +91,7 @@ const SummaryPage = () => {
           user={user}
           typeCategoryState={typeCategoryState}
           setTypeCategoryState={setTypeCategoryState}
-          chosenTagIds={typeCategoryState.chosenTagIds}
+          chosenTagIds={typeCategoryState.chosenTags.map((tag) => tag.id)}
         />
       </CommonLayout>
     </Fragment>

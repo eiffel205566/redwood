@@ -10,12 +10,44 @@ export const Tag = ({
   setTagEditState,
   tagBackground,
   isDeletingTag,
+  ...rest
 }) => {
+  //SummarySetting requires a new handler
+  const {
+    newTagClickHanlderNeeded,
+    setlocalChosenTagState,
+    typeCategoryState,
+  } = rest || {}
+  const onHandleTagClickOnSummarySettings = () => {
+    if (newTagClickHanlderNeeded) {
+      setlocalChosenTagState((state) => {
+        return {
+          ...state,
+          chosenTags: isTagChosen(state.chosenTags, tagId)
+            ? [...state.chosenTags.filter((tag) => tag.id !== tagId)]
+            : [
+                ...state.chosenTags,
+                _.find(
+                  _.find(typeCategoryState.types, function (o) {
+                    return o.id === id
+                  }).tags,
+                  function (o) {
+                    return o.id === tagId
+                  }
+                ),
+              ],
+        }
+      })
+    }
+  }
+
+  //Default TagClick hanlder: for: NewExpense and SingleExpense
   const onHandleTagClick = async () => {
     // add setTagEditState to set "editState",
     // need to check if any changed had been made to chosenTags
 
     if (setTagEditState) {
+      //when setTagEditState is null, it is SingleExpense
       //NewExpense component will not pass in this func
       await setTagEditState((state) => {
         return {
@@ -60,7 +92,14 @@ export const Tag = ({
 
   return (
     <div
-      onClick={onHandleTagClick}
+      onKeyDown={() => {}}
+      tabIndex="0"
+      role="button"
+      onClick={
+        newTagClickHanlderNeeded
+          ? onHandleTagClickOnSummarySettings
+          : onHandleTagClick
+      }
       className={`${
         content ? '' : 'text-displayOnly'
       } cursor-pointer flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-16 sm:w-32 h-12 select-none`}
