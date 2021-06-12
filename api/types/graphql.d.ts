@@ -258,7 +258,7 @@ export type Query = {
   __typename?: 'Query';
   contacts: Array<Contact>;
   expense?: Maybe<Expense>;
-  expenseByDate: Scalars['JSON'];
+  expenseByCategory: Scalars['JSON'];
   expenseByType: Scalars['JSON'];
   expenseCount: Scalars['Int'];
   expensePage?: Maybe<ExpensePage>;
@@ -281,10 +281,11 @@ export type QueryExpenseArgs = {
 };
 
 
-export type QueryExpenseByDateArgs = {
+export type QueryExpenseByCategoryArgs = {
   user: Scalars['String'];
   maxDate?: Maybe<Scalars['Date']>;
-  mindDate?: Maybe<Scalars['Date']>;
+  minDate?: Maybe<Scalars['Date']>;
+  chosenTagIds?: Maybe<Array<Maybe<Scalars['Int']>>>;
 };
 
 
@@ -648,7 +649,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   contacts?: Resolver<Array<ResolversTypes['Contact']>, ParentType, ContextType>;
   expense?: Resolver<Maybe<ResolversTypes['Expense']>, ParentType, ContextType, RequireFields<QueryExpenseArgs, 'id'>>;
-  expenseByDate?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<QueryExpenseByDateArgs, 'user'>>;
+  expenseByCategory?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<QueryExpenseByCategoryArgs, 'user'>>;
   expenseByType?: Resolver<ResolversTypes['JSON'], ParentType, ContextType, RequireFields<QueryExpenseByTypeArgs, 'user'>>;
   expenseCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<QueryExpenseCountArgs, 'user'>>;
   expensePage?: Resolver<Maybe<ResolversTypes['ExpensePage']>, ParentType, ContextType, RequireFields<QueryExpensePageArgs, 'user'>>;

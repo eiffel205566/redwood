@@ -21,7 +21,12 @@ export const schema = gql`
       minDate: Date
       chosenTagIds: [Int]
     ): JSON!
-    expenseByDate(user: String!, maxDate: Date, mindDate: Date): JSON!
+    expenseByCategory(
+      user: String!
+      maxDate: Date
+      minDate: Date
+      chosenTagIds: [Int]
+    ): JSON!
   }
 
   type ExpensePage {

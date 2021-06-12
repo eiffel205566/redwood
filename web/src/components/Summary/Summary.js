@@ -8,11 +8,13 @@ import { calculateWidth } from 'src/components/Misc/UtilityFunc'
 
 const Summary = ({
   expenseByType,
+  expenseByDate,
   typeCategoryState,
   setTypeCategoryState,
   ...rest
 }) => {
   const { types } = typeCategoryState
+  //* -- calculations and preparation for charts
   //need utility function to calculate width: calculateWidth
   //need to get maxiumum value
   const sortByAbsoluteValueExpenseByType = expenseByType
@@ -23,6 +25,20 @@ const Summary = ({
   const maxExpenseValue = sortByAbsoluteValueExpenseByType[0]?._sum?.amount
     ? sortByAbsoluteValueExpenseByType[0]?._sum?.amount
     : 1
+
+  const expenseByDateForChart = expenseByDate.map((summary) => {
+    return {
+      ...summary,
+      createdAt: summary.createdAt.split('T')[0],
+    }
+  })
+
+  //* --
+  {
+    /*
+    {"createdAt": "2021-05-11T00:00:00.000Z","_sum": {"amount": -110}},
+    */
+  }
 
   return (
     <Fragment>

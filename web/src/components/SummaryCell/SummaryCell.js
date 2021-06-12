@@ -3,7 +3,7 @@ import { ClockLoading } from 'src/components/Misc/svg'
 import Summary from '../Summary/Summary'
 export const QUERY = gql`
   query TEST($user: String!, $chosenTagIds: [Int]) {
-    expenseByType(user: $user, chosenTagIds: $chosenTagIds)
+    expenseByCategory(user: $user, chosenTagIds: $chosenTagIds)
   }
 `
 
@@ -28,14 +28,15 @@ export const beforeQuery = ({ user, chosenTagIds }) => {
 export const Failure = ({ error }) => <div>Error: {error.message}</div>
 
 export const Success = ({
-  expenseByType,
+  expenseByCategory,
   typeCategoryState,
   setTypeCategoryState,
   chosenTagIds,
 }) => {
   return (
     <Summary
-      expenseByType={expenseByType}
+      expenseByType={expenseByCategory[1]} //expenseByCategory index 1 is expenseByType
+      expenseByDate={expenseByCategory[0]} //expenseByCategory index 0 is expenseByDate
       typeCategoryState={typeCategoryState}
       setTypeCategoryState={setTypeCategoryState}
       chosenTagIds={chosenTagIds}
