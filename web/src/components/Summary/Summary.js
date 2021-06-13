@@ -5,6 +5,7 @@ import SingleType from 'src/components/DefaultType/SingleType'
 import { iconTypes, isTypeExpense } from '../DefaultType/Static'
 import { Money } from '../Misc/svg'
 import { calculateWidth } from 'src/components/Misc/UtilityFunc'
+import SummaryChart from './SummaryChart'
 
 const Summary = ({
   expenseByType,
@@ -15,8 +16,6 @@ const Summary = ({
 }) => {
   const { types } = typeCategoryState
   //* -- calculations and preparation for charts
-  //need utility function to calculate width: calculateWidth
-  //need to get maxiumum value
   const sortByAbsoluteValueExpenseByType = expenseByType
     ? [...expenseByType].sort((a, b) => {
         return Math.abs(b._sum.amount) - Math.abs(a._sum.amount)
@@ -26,12 +25,14 @@ const Summary = ({
     ? sortByAbsoluteValueExpenseByType[0]?._sum?.amount
     : 1
 
+  // -- expense by date prepared for displaying a chart
   const expenseByDateForChart = expenseByDate.map((summary) => {
     return {
-      ...summary,
       createdAt: summary.createdAt.split('T')[0],
+      flow: summary._sum.amount,
     }
   })
+  console.log(expenseByDateForChart)
 
   //* --
   {

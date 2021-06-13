@@ -7,6 +7,7 @@ import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
 import { defaultIcons } from 'src/components/DefaultType/Static'
 import { ClockLoading, Puipui } from 'src/components/Misc/svg'
 import { iconTypes, CREDIT_CARD } from 'src/components/DefaultType/Static'
+import SummaryChart from 'src/components/Summary/SummaryChart'
 
 //constant
 
@@ -92,6 +93,10 @@ const TestPage = () => {
               ></path>
             </g>
           </svg>
+          {/*
+
+            <SummaryChart />
+          */}
         </div>
       </CommonLayout>
 
