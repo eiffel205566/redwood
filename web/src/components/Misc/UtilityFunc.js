@@ -12,6 +12,9 @@ export const Wrapper = ({ children, className, ...rest }) => {
   return (
     <div
       onClick={onClick}
+      onKeyDown={() => {}}
+      tabIndex="0"
+      role="button"
       className={`${className} flex flex-col justify-center ${
         paddingLeft ? 'paddingLeft' : 'pl-1'
       } text-xs sm:text-sm md:text-base`}
@@ -40,4 +43,7 @@ export const calculateWidth = (cur, maximum) => {
   }
 
   return inner()
+}
+export const formatDecimal = (num) => {
+  return new Number(num).toPrecision(2)
 }

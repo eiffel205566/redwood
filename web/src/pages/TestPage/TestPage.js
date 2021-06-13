@@ -95,7 +95,6 @@ const TestPage = () => {
           </svg>
           {/*
 
-            <SummaryChart />
           */}
         </div>
       </CommonLayout>

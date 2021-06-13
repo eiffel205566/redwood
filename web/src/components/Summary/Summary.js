@@ -25,15 +25,6 @@ const Summary = ({
     ? sortByAbsoluteValueExpenseByType[0]?._sum?.amount
     : 1
 
-  // -- expense by date prepared for displaying a chart
-  const expenseByDateForChart = expenseByDate.map((summary) => {
-    return {
-      createdAt: summary.createdAt.split('T')[0],
-      flow: summary._sum.amount,
-    }
-  })
-  console.log(expenseByDateForChart)
-
   //* --
   {
     /*
@@ -43,24 +34,20 @@ const Summary = ({
 
   return (
     <Fragment>
-      <div className="textInsightSection text-white w-full max-h-24 border border-red-300 mb-1">
-        <h1>xx</h1>
-        <h1>xx</h1>
-        <h1>xx</h1>
-        <h1>xx</h1>
+      <div className="textInsightSection relative text-white w-full h-48 border border-red-300 mb-1">
+        <SummaryChart expenseByDate={expenseByDate} />
       </div>
       <section className="numberInsightsection text-displayOnly flex flex-col md:flex-row">
-        <div className="typeRank border border-yellow-300 max-h-96 flex-grow">
+        {/*
+
+        */}
+        <div className="typeRank max-h-96 flex-grow border border-yellow-300 overflow-x-hidden overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-500">
           {sortByAbsoluteValueExpenseByType.map((oneType, index) => {
             const singleType = _.find(types, function (o) {
               return o.id === oneType.expenseTypeId
             })
-
             return (
-              <div
-                className="flex border border-gray-300 m-1 bg-sideDark"
-                key={index}
-              >
+              <div className="flex sm:m-1 bg-sideDark" key={index}>
                 <Wrapper>
                   <SingleType
                     icon={
@@ -82,9 +69,6 @@ const Summary = ({
                 </Wrapper>
 
                 <Wrapper>
-                  {/*
-                  <Money />
-                */}
                   <div
                     onClick={() => {
                       setTypeCategoryState((state) => {
@@ -110,15 +94,14 @@ const Summary = ({
                 <Wrapper className="flex-grow text-center">
                   <div className="hidden sm:block">{` $ ${oneType._sum.amount}`}</div>
                 </Wrapper>
-                {/*
-                 */}
               </div>
             )
           })}
         </div>
-        <div className="typeRank border border-blue-300 h-20 flex-grow">
+
+        <div className="typeRank h-20 flex-grow border border-green-300">
           <Wrapper>
-            <div className="rankBar m-2 h-full w-40 md:w-80 border border-green-500 "></div>
+            <div className="rankBar m-2 h-full w-32 md:w-80 "></div>
           </Wrapper>
         </div>
       </section>
