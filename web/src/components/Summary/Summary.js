@@ -1,11 +1,13 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import * as _ from 'lodash'
 import { Wrapper } from 'src/components/Misc/UtilityFunc'
 import SingleType from 'src/components/DefaultType/SingleType'
 import { iconTypes, isTypeExpense } from '../DefaultType/Static'
-import { Money } from '../Misc/svg'
+import { Calender, Cog, Money, Spin } from '../Misc/svg'
 import { calculateWidth } from 'src/components/Misc/UtilityFunc'
 import SummaryChart from './SummaryChart'
+import { GrPowerReset } from 'react-icons/gr'
+const CALENDER = 'CALENDER'
 
 const Summary = ({
   expenseByType,
@@ -26,6 +28,13 @@ const Summary = ({
     : 1
 
   //* --
+
+  //* local state
+  const [settingButtonState, setSettingButtonState] = useState({
+    cogSpinning: false,
+    extendSettings: false,
+    resetSpinning: false,
+  })
   {
     /*
     {"createdAt": "2021-05-11T00:00:00.000Z","_sum": {"amount": -110}},
@@ -34,6 +43,88 @@ const Summary = ({
 
   return (
     <Fragment>
+      <div className="settingButtons flex w-full h-12 text-white">
+        <button
+          onMouseEnter={() => {
+            setSettingButtonState((state) => {
+              return {
+                ...state,
+                cogSpinning: true,
+              }
+            })
+          }}
+          onMouseLeave={() => {
+            setSettingButtonState((state) => {
+              return {
+                ...state,
+                cogSpinning: false,
+              }
+            })
+          }}
+          onClick={() => {
+            setSettingButtonState((state) => {
+              return {
+                ...state,
+                extendSettings: !state.extendSettings,
+              }
+            })
+          }}
+          className="bg-transparent w-10 h-full bg-displayOnly focus:outline-none text-gray-300 hover:text-green-500 border border-transparent hover:border-transparent rounded"
+        >
+          <Cog
+            className={`theSpin ${
+              settingButtonState.cogSpinning ? 'animate-spin' : ''
+            } w-6 h-full m-auto`}
+          />
+        </button>
+        {/*
+
+        */}
+        <div className="settingButtons relative h-full overflow-hidden flex-grow flex">
+          <button
+            onMouseEnter={() => {
+              setSettingButtonState((state) => {
+                return {
+                  ...state,
+                  resetSpinning: true,
+                }
+              })
+            }}
+            onMouseLeave={() => {
+              setSettingButtonState((state) => {
+                return {
+                  ...state,
+                  resetSpinning: false,
+                }
+              })
+            }}
+            className={`bg-transparent absolute ${
+              settingButtonState.extendSettings ? 'left-2' : '-left-10'
+            } transform transition-all duration-500 ease-in-out w-10 h-full bg-displayOnly focus:outline-none text-gray-300 hover:text-green-500 border border-transparent hover:border-transparent rounded`}
+          >
+            <Spin
+              className={`w-6 h-full m-auto ${
+                settingButtonState.resetSpinning ? 'animate-spin' : ''
+              }`}
+            />
+          </button>
+          <button
+            onClick={() => {
+              setTypeCategoryState((state) => {
+                return {
+                  ...state,
+                  typeToEdit: { CALENDER: true },
+                }
+              })
+            }}
+            className={`bg-transparent absolute ${
+              settingButtonState.extendSettings ? 'left-14' : '-left-20'
+            } transform transition-all duration-500 ease-in-out w-10 h-full bg-displayOnly focus:outline-none text-gray-300 hover:text-green-500 border border-transparent hover:border-transparent rounded`}
+          >
+            <Calender className="w-6 h-full m-auto" />
+          </button>
+        </div>
+      </div>
       <div className="textInsightSection relative text-white w-full h-48 border border-red-300 mb-1">
         <SummaryChart expenseByDate={expenseByDate} />
       </div>

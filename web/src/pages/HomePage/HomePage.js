@@ -3,6 +3,7 @@ import { Fragment } from 'react'
 import { Toaster } from 'react-hot-toast'
 import BlogLayout from '../../layouts/BlogLayout'
 import SummaryChart from 'src/components/Summary/SummaryChart'
+
 const HomePage = () => {
   return (
     <Fragment>

@@ -6,6 +6,7 @@ import { iconTypes, isTypeExpense } from '../DefaultType/Static'
 import { Wrapper } from '../Misc/UtilityFunc'
 import { Tag, isTagChosen } from '../Expenses/Tag'
 import { v4 as uuidv4 } from 'uuid'
+const CALENDER = 'CALENDER'
 
 const SummarySettings = ({
   typeCategoryState,
@@ -51,11 +52,15 @@ const SummarySettings = ({
       <Form className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-full xs:h-3/4 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-y-hidden">
         <div className="topSection flex-grow flex flex-col select-none">
           <div className="flex justify-between">
-            <h3 className="text-sm sm:text-base text-white">{`${
-              typeCategoryState.typeToEdit
-                ? 'Edit With New Type'
-                : 'Pick Expense Type For New Exp'
-            }`}</h3>
+            <Wrapper className="cursor-default">
+              <h3 className="text-sm sm:text-base text-white">{`${
+                typeCategoryState.typeToEdit
+                  ? Object.keys(typeCategoryState.typeToEdit).includes(CALENDER)
+                    ? 'Edit Date Range'
+                    : 'Edit With New Type'
+                  : 'Pick Expense Type For New Exp'
+              }`}</h3>
+            </Wrapper>
             <div className="block xs:hidden">
               <Cancel
                 onClick={() => {
@@ -78,19 +83,19 @@ const SummarySettings = ({
                 if (oneType.id === typeCategoryState.typeToEdit.expenseTypeId) {
                   return (
                     <SingleType
-                      id={oneType.id}
-                      currentId={typeCategoryState.id}
-                      key={oneType.id}
-                      icon={iconTypes[oneType.description]}
-                      description={oneType.description}
-                      index={oneType.id}
+                      id={oneType?.id}
+                      currentId={typeCategoryState?.id}
+                      key={oneType?.id}
+                      icon={iconTypes[oneType?.description]}
+                      description={oneType?.description}
+                      index={oneType?.id}
                       parentClass="w-20 justify-self-center"
                       iconClass="w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto bg-green-300"
                       newName={oneType.newName}
-                      currentName={oneType.newName}
+                      currentName={oneType?.newName}
                       textColor="text-white"
                       wrapperClass="w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 mx-auto"
-                      type={isTypeExpense(oneType.description) ? '' : 'income'}
+                      type={isTypeExpense(oneType?.description) ? '' : 'income'}
                     />
                   )
                 }
@@ -100,16 +105,16 @@ const SummarySettings = ({
           {/**/}
           <div className="description-w-buttons flex flex-row">
             <h3 className="text-sm sm:text-base text-white">
-              What Tags To Include For The Type?
+              {`${Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) ? "" : "What Tags To Include For The Type?"}`}
             </h3>
             <div className="buttons flex flex-row">
             </div>
           </div>
           <div className="tagsList border-b w-full flex flex-wrap h-24 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
-            {typeCategoryState.typeToEdit
+            {typeCategoryState.typeToEdit && !Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) //when SummarySetting showed up by user click Calender, typeToEdit is {} with no props
               ? _.find(typeCategoryState.types, function (o) {
                   return o.id === typeCategoryState.typeToEdit.expenseTypeId
-                }).tags.map((tag) => (
+                }).tags?.map((tag) => (
                   <Tag
                     id={typeCategoryState.typeToEdit.expenseTypeId}
                     key={tag.id ? tag.id : uuidv4()}
