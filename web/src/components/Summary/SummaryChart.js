@@ -1,9 +1,7 @@
 import React from 'react'
 
 import { Fragment } from 'react'
-import { Bar, Doughnut, Line } from 'react-chartjs-2'
-import { formatDecimal } from 'src/components/Misc/UtilityFunc'
-import { NIL } from 'uuid'
+import { Line } from 'react-chartjs-2'
 
 const SummaryChart = ({ expenseByDate }) => {
   // -- expense by date prepared for displaying a chart
@@ -41,7 +39,7 @@ const SummaryChart = ({ expenseByDate }) => {
           : [33, 53, 85, 41, 44, 65],
         fill: true,
         // backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-        borderColor: 'rgba(54, 162, 235, 1)',
+        borderColor: '#10B981',
       },
       // {
       //   label: 'Second dataset',

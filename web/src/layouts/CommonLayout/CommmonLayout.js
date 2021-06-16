@@ -11,6 +11,7 @@ const CommonLayout = ({
   logOut = () => {},
   isAuthenticated = false,
   currentUser = { email: 'fakeuser2.expinsight@gmail.com' },
+  ...rest
 }) => {
   const { sideBarShowed } = showSidebar
 
@@ -22,6 +23,9 @@ const CommonLayout = ({
       }
     })
   }
+
+  //-- for summary page
+  const { typeCategoryState } = rest || {}
 
   return (
     <Fragment>

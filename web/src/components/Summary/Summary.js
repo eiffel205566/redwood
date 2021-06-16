@@ -6,7 +6,7 @@ import { iconTypes, isTypeExpense } from '../DefaultType/Static'
 import { Calender, Cog, Money, Spin } from '../Misc/svg'
 import { calculateWidth } from 'src/components/Misc/UtilityFunc'
 import SummaryChart from './SummaryChart'
-import { GrPowerReset } from 'react-icons/gr'
+import BreakdownChart from './BreakdownChart'
 const CALENDER = 'CALENDER'
 
 const Summary = ({
@@ -139,7 +139,7 @@ const Summary = ({
             })
             return (
               <div className="flex sm:m-1 bg-sideDark" key={index}>
-                <Wrapper>
+                <Wrapper className="cursor-default">
                   <SingleType
                     icon={
                       singleType?.description
@@ -182,7 +182,10 @@ const Summary = ({
                     ></div>
                   </div>
                 </Wrapper>
-                <Wrapper className="flex-grow text-center">
+                <Wrapper
+                  className="flex-grow text-center cursor-default pr-5"
+                  paddingLeft="no"
+                >
                   <div className="hidden sm:block">{` $ ${oneType._sum.amount}`}</div>
                 </Wrapper>
               </div>
@@ -190,11 +193,18 @@ const Summary = ({
           })}
         </div>
 
-        <div className="typeRank h-20 flex-grow border border-green-300">
+        <div className="typeRank h-96 flex-grow border border-green-300 relative">
+          <BreakdownChart
+            expenseByType={expenseByType}
+            typeCategoryState={typeCategoryState}
+          />
+        </div>
+        {/*
           <Wrapper>
             <div className="rankBar m-2 h-full w-32 md:w-80 "></div>
           </Wrapper>
-        </div>
+
+        */}
       </section>
     </Fragment>
   )
