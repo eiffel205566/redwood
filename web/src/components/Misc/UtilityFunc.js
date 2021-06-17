@@ -47,3 +47,42 @@ export const calculateWidth = (cur, maximum) => {
 export const formatDecimal = (num) => {
   return new Number(num).toPrecision(2)
 }
+
+export const generateRandomColors = (n) => {
+  let r = 255
+  let g = 204
+  let b = 153
+
+  const result = Array(n)
+    .fill(null)
+    .map((each, index) => {
+      switch (index % 3) {
+        case 0:
+          if (r === 0) {
+            r = 255
+          } else {
+            r = r - 51
+          }
+          return `rgb(${r}, ${g}, ${b}, 0.7)`
+
+        case 1:
+          if (g === 255) {
+            g = 255
+          } else {
+            g = g - 51
+          }
+
+          return `rgb(${r}, ${g}, ${b}, 0.7)`
+        case 2:
+          if (b === 0) {
+            b = 255
+          } else {
+            b = b - 51
+          }
+          return `rgb(${r}, ${g}, ${b}, 0.7)`
+        default:
+          break
+      }
+    })
+  return result
+}

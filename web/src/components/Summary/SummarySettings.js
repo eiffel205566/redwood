@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Form } from '@redwoodjs/forms'
-import { Cancel, Check, Plus } from '../Misc/svg'
+import { Cancel, Check, Plus, Detail } from '../Misc/svg'
 import SingleType from '../DefaultType/SingleType'
 import { iconTypes, isTypeExpense } from '../DefaultType/Static'
 import { Wrapper } from '../Misc/UtilityFunc'
@@ -30,6 +30,11 @@ const SummarySettings = ({
     })
   }, [typeCategoryState.chosenTags])
 
+  //Local state to display expenses
+  const [displayState, setDisplayState] = useState({
+    displayExpenses: false,
+  })
+
   return (
     <div
       className="backgroundOverlay cursor-default bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50"
@@ -57,10 +62,41 @@ const SummarySettings = ({
                 typeCategoryState.typeToEdit
                   ? Object.keys(typeCategoryState.typeToEdit).includes(CALENDER)
                     ? 'Edit Date Range'
-                    : 'Edit With New Type'
+                    : `Total ${
+                        typeCategoryState.typeToEdit?._sum?.amount &&
+                        typeCategoryState.typeToEdit?._sum?.amount > 0
+                          ? 'Income'
+                          : 'Expense'
+                      }: $${
+                        typeCategoryState.typeToEdit?._sum?.amount
+                          ? typeCategoryState.typeToEdit?._sum?.amount
+                          : ''
+                      }`
                   : 'Pick Expense Type For New Exp'
               }`}</h3>
             </Wrapper>
+
+            {!Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) && (
+              <div className="h-full flex">
+                <Wrapper className="text-white">
+                  <h3 className="text-sm sm:text-base">Detail Lookup</h3>
+                </Wrapper>
+                <Wrapper
+                  onClick={() => {
+                    setDisplayState((state) => {
+                      return {
+                        ...state,
+                        displayExpenses: !state.displayExpenses,
+                      }
+                    })
+                  }}
+                  className="text-white hover:text-green-300"
+                >
+                  <Detail className="h-6 w-6 sm:h-8 sm:w-8" />
+                </Wrapper>
+              </div>
+            )}
+
             <div className="block xs:hidden">
               <Cancel
                 onClick={() => {
@@ -71,12 +107,14 @@ const SummarySettings = ({
                     }
                   })
                 }}
-                className="h-8 w-8 text-white"
+                className="h-6 w-6 sm:h-8 sm:w-8 text-white"
               />
             </div>
+            {/* eslint-disable */}
           </div>
-          {/* eslint-disable */}
-          <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+
+          {/* the type icon  */}
+          {!displayState.displayExpenses && <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
             {typeCategoryState.types &&
               typeCategoryState.types.length &&
               typeCategoryState.types.map((oneType) => {
@@ -100,17 +138,19 @@ const SummarySettings = ({
                   )
                 }
               })}
-          </div>
+          </div>}
 
           {/**/}
-          <div className="description-w-buttons flex flex-row">
+
+          {!displayState.displayExpenses && <div className="description-w-buttons flex flex-row">
             <h3 className="text-sm sm:text-base text-white">
               {`${Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) ? "" : "What Tags To Include For The Type?"}`}
             </h3>
             <div className="buttons flex flex-row">
             </div>
-          </div>
-          <div className="tagsList border-b w-full flex flex-wrap h-24 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+          </div>}
+
+          {!displayState.displayExpenses && <div className="tagsList border-b w-full flex flex-wrap h-24 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
             {typeCategoryState.typeToEdit && !Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) //when SummarySetting showed up by user click Calender, typeToEdit is {} with no props
               ? _.find(typeCategoryState.types, function (o) {
                   return o.id === typeCategoryState.typeToEdit.expenseTypeId
@@ -129,7 +169,8 @@ const SummarySettings = ({
                   />
                 ))
               : null}
-          </div>
+          </div>}
+
         </div>
 
         <div className="bottomButtons border-t text-white flex justify-between">
@@ -149,7 +190,7 @@ const SummarySettings = ({
                     })
                   }
                 }
-                className="h-8 w-8 hover:text-green-300 cursor-pointer"
+                className="h-6 w-6 sm:h-8 sm:w-8 hover:text-green-300 cursor-pointer"
               />
             ) : null
           }

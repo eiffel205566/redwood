@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import { Doughnut } from 'react-chartjs-2'
+import { generateRandomColors } from 'src/components/Misc/UtilityFunc'
 
 const BreakdownChart = ({ expenseByType, typeCategoryState }) => {
   const { types } = typeCategoryState || {}
@@ -39,12 +40,9 @@ const BreakdownChart = ({ expenseByType, typeCategoryState }) => {
           : [33, 53, 85, 41, 44, 65],
         fill: true,
         backgroundColor: [
-          'rgba(255, 255, 0, 0.7)',
-          'rgba(54, 162, 235, 0.7)',
-          'rgba(255, 206, 86, 0.7)',
-          'rgba(75, 192, 192, 0.7)',
-          'rgba(153, 102, 255, 0.7)',
-          'rgba(255, 159, 64, 0.7)',
+          ...generateRandomColors(
+            formattedData ? Object.keys(formattedData).length : 6
+          ),
         ],
         borderColor: '#C0C0C0',
       },

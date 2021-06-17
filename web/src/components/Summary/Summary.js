@@ -125,20 +125,20 @@ const Summary = ({
           </button>
         </div>
       </div>
-      <div className="textInsightSection relative text-white w-full h-48 border border-red-300 mb-1">
+      <div className="textInsightSection relative text-white w-full h-48 mb-1 border border-gray-500">
         <SummaryChart expenseByDate={expenseByDate} />
       </div>
       <section className="numberInsightsection text-displayOnly flex flex-col md:flex-row">
         {/*
 
         */}
-        <div className="typeRank max-h-96 flex-grow border border-yellow-300 overflow-x-hidden overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-500">
+        <div className="typeRank max-h-96 flex-grow overflow-x-hidden overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-500">
           {sortByAbsoluteValueExpenseByType.map((oneType, index) => {
             const singleType = _.find(types, function (o) {
               return o.id === oneType.expenseTypeId
             })
             return (
-              <div className="flex sm:m-1 bg-sideDark" key={index}>
+              <div className="flex sm:mb-1 bg-sideDark" key={index}>
                 <Wrapper className="cursor-default">
                   <SingleType
                     icon={
@@ -193,7 +193,7 @@ const Summary = ({
           })}
         </div>
 
-        <div className="typeRank h-96 flex-grow border border-green-300 relative">
+        <div className="typeRank h-96 flex-grow border border-gray-500 relative">
           <BreakdownChart
             expenseByType={expenseByType}
             typeCategoryState={typeCategoryState}

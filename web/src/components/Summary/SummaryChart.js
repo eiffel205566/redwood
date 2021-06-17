@@ -61,7 +61,7 @@ const SummaryChart = ({ expenseByDate }) => {
             color: 'rgba(54, 162, 235,0.2)',
           },
           ticks: {
-            fontColor: '#909090',
+            fontColor: 'white',
           },
         },
       ],
@@ -71,7 +71,7 @@ const SummaryChart = ({ expenseByDate }) => {
             display: false,
           },
           ticks: {
-            fontColor: '#909090',
+            fontColor: 'white',
           },
         },
       ],
@@ -86,7 +86,7 @@ const SummaryChart = ({ expenseByDate }) => {
     title: {
       display: true,
       text: 'Cash Balance By Date',
-      fontColor: '#909090',
+      fontColor: 'white',
     },
   }
   return (
