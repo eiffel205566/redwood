@@ -288,6 +288,7 @@ const SingleExpense = ({
                 chosenTagIds: [...state.originalChosenTagIds],
               }
             })
+            document.body.classList.add('overflow-hidden')
           }}
           className="hover:text-gray-300 cursor-pointer"
         >

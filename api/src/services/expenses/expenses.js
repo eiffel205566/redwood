@@ -1,5 +1,6 @@
 import { db } from 'src/lib/db'
-import { EXPENSENS_PER_PAGE } from 'web/src/components/Misc/Constant'
+const EXPENSENS_PER_PAGE = 5
+// import { EXPENSENS_PER_PAGE } from 'web/src/components/Misc/Constant'
 
 export const expensePage = ({ page = 1, user }) => {
   const offset = (page - 1) * EXPENSENS_PER_PAGE

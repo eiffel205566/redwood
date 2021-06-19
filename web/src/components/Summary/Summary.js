@@ -168,6 +168,7 @@ const Summary = ({
                           typeToEdit: oneType,
                         }
                       })
+                      document.body.classList.add('overflow-hidden')
                     }}
                     onKeyDown={() => {}}
                     tabIndex="0"

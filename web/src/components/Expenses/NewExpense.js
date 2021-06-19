@@ -295,6 +295,7 @@ const NewExpense = ({
         // },
       })
       toast.success('New Expense Added')
+      document.body.classList.remove('overflow-hidden')
     } catch (error) {
       console.log(error)
       setGrandMasterLoadingState((state) => {
@@ -303,6 +304,7 @@ const NewExpense = ({
           grandMasterLoading: false,
         }
       })
+      document.body.classList.remove('overflow-hidden')
     }
   }
 
@@ -390,6 +392,7 @@ const NewExpense = ({
         },
       })
       toast.success('Edit Expense Success!')
+      document.body.classList.remove('overflow-hidden')
     } catch (error) {
       console.log(error)
       setGrandMasterLoadingState((state) => {
@@ -398,6 +401,7 @@ const NewExpense = ({
           grandMasterLoading: false,
         }
       })
+      document.body.classList.remove('overflow-hidden')
     }
   }
 
@@ -435,7 +439,7 @@ const NewExpense = ({
 
   return (
     <div
-      className="backgroundOverlay bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50"
+      className="backgroundOverlay bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50 cursor-default"
       onKeyDown={() => {}}
       tabIndex="0"
       role="button"
@@ -443,6 +447,7 @@ const NewExpense = ({
         //when user click anywhere else other than the overlaying NewExpense Component
         if (Array.from(e.target.classList).includes('backgroundOverlay')) {
           resetAllState()
+          document.body.classList.remove('overflow-hidden')
         }
       }}
     >
@@ -450,121 +455,73 @@ const NewExpense = ({
         onSubmit={() => console.log(newExpenseState)}
         className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-full xs:h-5/6 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-y-hidden"
       >
-        <div className="topSection flex-grow flex flex-col select-none">
-          <div className="flex justify-between">
-            <h3 className="text-sm sm:text-base text-white">{`${
-              newExpenseState.expenseToEdit
-                ? 'Edit With New Type'
-                : 'Pick Expense Type For New Exp'
-            }`}</h3>
-            <div className="block xs:hidden">
-              <Cancel
-                onClick={() => {
-                  resetAllState()
-                }}
-                className="h-8 w-8 text-white"
-              />
-            </div>
-          </div>
+        <section className="h-full overflow-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+          <div className="topSection flex-grow flex flex-col select-none">
+            <div className="flex justify-between">
+              <Wrapper>
+                <h3 className="text-sm sm:text-base text-white">{`${
+                  newExpenseState.expenseToEdit
+                    ? 'Edit With New Type'
+                    : 'Pick Expense Type For New Exp'
+                }`}</h3>
+              </Wrapper>
 
-          <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
-            {userTypes &&
-              userTypes.map((oneType) => (
-                <SingleType
-                  id={oneType.id}
-                  currentId={newExpenseState.id}
-                  key={oneType.id}
-                  icon={iconTypes[oneType.description]}
-                  description={oneType.description}
-                  index={oneType.id}
-                  parentClass="w-20 justify-self-center cursor-pointer"
-                  iconClass={
-                    newExpenseState.id === oneType.id
-                      ? 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto bg-green-300'
-                      : 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto'
-                  }
-                  setIconType={setNewExpenseState}
-                  newExpenseState={newExpenseState}
-                  newName={oneType.newName}
-                  currentName={oneType.newName}
-                  textColor="text-white"
-                  wrapperClass="w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 mx-auto"
-                  type={isTypeExpense(oneType.description) ? '' : 'income'}
+              <div className="block xs:hidden">
+                <Cancel
+                  onClick={() => {
+                    resetAllState()
+                    document.body.classList.remove('overflow-hidden')
+                  }}
+                  className="h-8 w-8 text-white"
                 />
-              ))}
-          </div>
+              </div>
+            </div>
 
-          <div className="description-w-buttons flex flex-row">
-            <h3 className="text-sm sm:text-base text-white">{`${
-              newExpenseState.id
-                ? `${
-                    newExpenseState.isAddingTag
-                      ? 'Adding A New Tag'
-                      : `${
-                          newExpenseState.isDeletingTag
-                            ? 'Delete Tags'
-                            : 'Choose Your Tags'
-                        }`
-                  }`
-                : 'Pick a Tag'
-            }`}</h3>
-            <div className="buttons flex flex-row">
-              {newExpenseState.id &&
-              !newExpenseState.isAddingTag &&
-              !newExpenseState.isDeletingTag ? (
-                <Wrapper
-                  onClick={
-                    // addOneTagLoading ||
-                    // deleteTagsLoading ||
-                    // updateOneExpenseLoading ||
-                    // createOneExpenseLoading
-                    masterLoading
-                      ? () => {}
-                      : (e) => {
-                          e.stopPropagation()
-                          setNewExpenseState((state) => {
-                            return {
-                              ...state,
-                              isDeletingTag: false,
-                              isAddingTag: true,
-                            }
-                          })
-                        }
-                  }
-                  className="text-white hover:text-green-300 cursor-pointer"
-                >
-                  <Plus className="h-6 w-6" />
-                </Wrapper>
-              ) : null}
-              {newExpenseState.id &&
-              !newExpenseState.isAddingTag &&
-              !newExpenseState.isDeletingTag ? (
-                <Wrapper
-                  onClick={
-                    // addOneTagLoading ||
-                    // deleteTagsLoading ||
-                    // updateOneExpenseLoading ||
-                    // createOneExpenseLoading
-                    masterLoading
-                      ? () => {}
-                      : (e) => {
-                          e.stopPropagation()
-                          setNewExpenseState((state) => {
-                            return {
-                              ...state,
-                              isAddingTag: false,
-                              isDeletingTag: true,
-                            }
-                          })
-                        }
-                  }
-                  className="text-white hover:text-red-300 cursor-pointer"
-                >
-                  <Garbage className="h-6 w-6" />
-                </Wrapper>
-              ) : null}
-              {newExpenseState.isAddingTag || newExpenseState.isDeletingTag ? (
-                <Fragment>
+            <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+              {userTypes &&
+                userTypes.map((oneType) => (
+                  <SingleType
+                    id={oneType.id}
+                    currentId={newExpenseState.id}
+                    key={oneType.id}
+                    icon={iconTypes[oneType.description]}
+                    description={oneType.description}
+                    index={oneType.id}
+                    parentClass="w-20 justify-self-center cursor-pointer"
+                    iconClass={
+                      newExpenseState.id === oneType.id
+                        ? 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto bg-green-300'
+                        : 'w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 bg-gray-300 rounded-full p-2 mx-auto'
+                    }
+                    setIconType={setNewExpenseState}
+                    newExpenseState={newExpenseState}
+                    newName={oneType.newName}
+                    currentName={oneType.newName}
+                    textColor="text-white"
+                    wrapperClass="w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 mx-auto"
+                    type={isTypeExpense(oneType.description) ? '' : 'income'}
+                  />
+                ))}
+            </div>
+
+            <div className="description-w-buttons flex flex-row">
+              <h3 className="text-sm sm:text-base text-white">{`${
+                newExpenseState.id
+                  ? `${
+                      newExpenseState.isAddingTag
+                        ? 'Adding A New Tag'
+                        : `${
+                            newExpenseState.isDeletingTag
+                              ? 'Delete Tags'
+                              : 'Choose Your Tags'
+                          }`
+                    }`
+                  : 'Pick a Tag'
+              }`}</h3>
+              <div className="buttons flex flex-row">
+                {newExpenseState.id &&
+                !newExpenseState.isAddingTag &&
+                !newExpenseState.isDeletingTag ? (
                   <Wrapper
                     onClick={
                       // addOneTagLoading ||
@@ -573,14 +530,25 @@ const NewExpense = ({
                       // createOneExpenseLoading
                       masterLoading
                         ? () => {}
-                        : newExpenseState.isAddingTag
-                        ? onHandleTagEditSubmit
-                        : onHandleTagsDeleteSubmit
+                        : (e) => {
+                            e.stopPropagation()
+                            setNewExpenseState((state) => {
+                              return {
+                                ...state,
+                                isDeletingTag: false,
+                                isAddingTag: true,
+                              }
+                            })
+                          }
                     }
-                    className="text-white hover:text-gray-300 cursor-pointer"
+                    className="text-white hover:text-green-300 cursor-pointer"
                   >
-                    <Check className="h-6 w-6" />
+                    <Plus className="h-6 w-6" />
                   </Wrapper>
+                ) : null}
+                {newExpenseState.id &&
+                !newExpenseState.isAddingTag &&
+                !newExpenseState.isDeletingTag ? (
                   <Wrapper
                     onClick={
                       // addOneTagLoading ||
@@ -595,104 +563,150 @@ const NewExpense = ({
                               return {
                                 ...state,
                                 isAddingTag: false,
-                                newTagName: null,
-                                isDeletingTag: false,
-                                chosenTags: [],
+                                isDeletingTag: true,
                               }
                             })
                           }
                     }
-                    className="text-white hover:text-gray-300 cursor-pointer"
+                    className="text-white hover:text-red-300 cursor-pointer"
                   >
-                    <Cancel className="h-6 w-6" />
+                    <Garbage className="h-6 w-6" />
                   </Wrapper>
+                ) : null}
+                {newExpenseState.isAddingTag ||
+                newExpenseState.isDeletingTag ? (
+                  <Fragment>
+                    <Wrapper
+                      onClick={
+                        // addOneTagLoading ||
+                        // deleteTagsLoading ||
+                        // updateOneExpenseLoading ||
+                        // createOneExpenseLoading
+                        masterLoading
+                          ? () => {}
+                          : newExpenseState.isAddingTag
+                          ? onHandleTagEditSubmit
+                          : onHandleTagsDeleteSubmit
+                      }
+                      className="text-white hover:text-gray-300 cursor-pointer"
+                    >
+                      <Check className="h-6 w-6" />
+                    </Wrapper>
+                    <Wrapper
+                      onClick={
+                        // addOneTagLoading ||
+                        // deleteTagsLoading ||
+                        // updateOneExpenseLoading ||
+                        // createOneExpenseLoading
+                        masterLoading
+                          ? () => {}
+                          : (e) => {
+                              e.stopPropagation()
+                              setNewExpenseState((state) => {
+                                return {
+                                  ...state,
+                                  isAddingTag: false,
+                                  newTagName: null,
+                                  isDeletingTag: false,
+                                  chosenTags: [],
+                                }
+                              })
+                            }
+                      }
+                      className="text-white hover:text-gray-300 cursor-pointer"
+                    >
+                      <Cancel className="h-6 w-6" />
+                    </Wrapper>
+                  </Fragment>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="tagsList border-b w-full flex flex-wrap h-24 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+              {newExpenseState.isAddingTag || newExpenseState.isDeletingTag ? (
+                <Fragment>
+                  {!newExpenseState.isDeletingTag && (
+                    <Wrapper className="h-12">
+                      <input
+                        onChange={(e) => {
+                          setNewExpenseState((state) => {
+                            return {
+                              ...state,
+                              newTagName: e.target.value,
+                            }
+                          })
+                        }}
+                        className="rounded-full py-1 px-2 bg-gray-500 text-white w-16 sm:w-32"
+                        type="text"
+                        placeholder="New Tag"
+                        value={
+                          newExpenseState.newTagName
+                            ? newExpenseState.newTagName
+                            : ''
+                        }
+                      />
+                    </Wrapper>
+                  )}
                 </Fragment>
               ) : null}
-            </div>
-          </div>
-
-          <div className="tagsList border-b w-full flex flex-wrap h-24 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
-            {newExpenseState.isAddingTag || newExpenseState.isDeletingTag ? (
-              <Fragment>
-                {!newExpenseState.isDeletingTag && (
-                  <Wrapper className="h-12">
-                    <input
-                      onChange={(e) => {
-                        setNewExpenseState((state) => {
-                          return {
-                            ...state,
-                            newTagName: e.target.value,
-                          }
-                        })
-                      }}
-                      className="rounded-full py-1 px-2 bg-gray-500 text-white w-16 sm:w-32"
-                      type="text"
-                      placeholder="New Tag"
-                      value={
-                        newExpenseState.newTagName
-                          ? newExpenseState.newTagName
-                          : ''
-                      }
+              {newExpenseState.id
+                ? _.find(newExpenseState.types, function (o) {
+                    return o.id === newExpenseState.id
+                  }).tags.map((tag) => (
+                    <Tag
+                      id={newExpenseState.id}
+                      key={tag.id ? tag.id : uuidv4()} //comments!
+                      content={tag.tagName}
+                      isChosenTag={isTagChosen(
+                        newExpenseState.chosenTags,
+                        tag.id
+                      )}
+                      setChosenTags={setNewExpenseState}
+                      tagId={tag.id}
+                      tagBackground={'bg-gray-500'}
+                      isDeletingTag={newExpenseState.isDeletingTag}
                     />
-                  </Wrapper>
-                )}
-              </Fragment>
-            ) : null}
-            {newExpenseState.id
-              ? _.find(newExpenseState.types, function (o) {
-                  return o.id === newExpenseState.id
-                }).tags.map((tag) => (
-                  <Tag
-                    id={newExpenseState.id}
-                    key={tag.id ? tag.id : uuidv4()} //comments!
-                    content={tag.tagName}
-                    isChosenTag={isTagChosen(
-                      newExpenseState.chosenTags,
-                      tag.id
-                    )}
-                    setChosenTags={setNewExpenseState}
-                    tagId={tag.id}
-                    tagBackground={'bg-gray-500'}
-                    isDeletingTag={newExpenseState.isDeletingTag}
-                  />
-                ))
-              : null}
-          </div>
-          <div className="amount text-white">
-            <div className="twoH3Parent w-full flex flex-col">
-              <h3 className="text-sm sm:text-base m-1">How much you spend?</h3>
-              <Wrapper className="flex-grow" paddingLeft="pl-0">
-                <input
-                  onChange={onChange}
-                  className="h-8 m-1 bg-gray-500 text-white max-w-xs"
-                  placeholder="Spending"
-                  type="text"
-                  value={
-                    newExpenseState.amount
-                      ? Math.abs(newExpenseState.amount)
-                      : ''
-                  }
-                />
-              </Wrapper>
+                  ))
+                : null}
             </div>
-
-            {newExpenseState.expenseToEdit ? (
-              <div className="twoInput flex flex-col justify-between">
+            <div className="amount text-white">
+              <div className="twoH3Parent w-full flex flex-col">
                 <h3 className="text-sm sm:text-base m-1">
-                  When did you spend?
+                  How much you spend?
                 </h3>
                 <Wrapper className="flex-grow" paddingLeft="pl-0">
                   <input
+                    onChange={onChange}
                     className="h-8 m-1 bg-gray-500 text-white max-w-xs"
-                    type="date"
-                    value={newExpenseState.date ? newExpenseState.date : ''}
-                    onChange={onDateChange}
+                    placeholder="Spending"
+                    type="text"
+                    value={
+                      newExpenseState.amount
+                        ? Math.abs(newExpenseState.amount)
+                        : ''
+                    }
                   />
                 </Wrapper>
               </div>
-            ) : null}
+
+              {newExpenseState.expenseToEdit ? (
+                <div className="twoInput flex flex-col justify-between">
+                  <h3 className="text-sm sm:text-base m-1">
+                    When did you spend?
+                  </h3>
+                  <Wrapper className="flex-grow" paddingLeft="pl-0">
+                    <input
+                      className="h-8 m-1 bg-gray-500 text-white max-w-xs"
+                      type="date"
+                      value={newExpenseState.date ? newExpenseState.date : ''}
+                      onChange={onDateChange}
+                    />
+                  </Wrapper>
+                </div>
+              ) : null}
+            </div>
           </div>
-        </div>
+        </section>
 
         <div className="bottomButtons border-t text-white flex justify-between">
           {/*

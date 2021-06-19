@@ -103,6 +103,7 @@ const ExpensesList = ({
                 newTagState: true,
               }
             })
+            document.body.classList.add('overflow-hidden')
           }}
           className="mx-auto h-6 w-6 text-white hover:text-green-300 cursor-pointer"
         ></Plus>

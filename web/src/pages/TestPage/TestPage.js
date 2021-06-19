@@ -1,6 +1,6 @@
 import SideBar from '../../components/SideBar/SideBar'
 import { useEffect, useState } from 'react'
-import { Fragment } from 'react'
+import { Fragment, useRef } from 'react'
 import { Link, routes } from '@redwoodjs/router'
 import { Dots, Money, Sunshine } from '../../components/Misc/svg'
 import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
@@ -19,6 +19,29 @@ const TestPage = () => {
 
   const Credit = iconTypes[CREDIT_CARD]
 
+  let throttleTimeout = useRef(null)
+
+  const onHandleScroll = (e) => {
+    const callback = () => {
+      setTimeout(
+        () =>
+          console.log(
+            // `scrollHeight: ${e.target.scrollHeight} scrollTop: ${Math.abs(
+            //   e.target.scrollTop
+            // )} clientHeight: ${e.target.clientHeight}`
+            e.target.scrollHeight - Math.abs(e.target.scrollTop) ===
+              e.target.clientHeight
+          ),
+        500
+      )
+    }
+    if (!throttleTimeout.current) {
+      callback()
+      throttleTimeout.current = setTimeout(() => {
+        throttleTimeout.current = null
+      }, 500)
+    }
+  }
   return (
     <Fragment>
       <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>
@@ -35,6 +58,31 @@ const TestPage = () => {
           {/*
 
             */}
+        </div>
+
+        <div
+          onScroll={onHandleScroll}
+          id="pageTest"
+          className="paginationTesting h-48 w-48 border border-white overflow-y-scroll overflow-x-hidden"
+        >
+          <div className="h-10 w-full bg-gray-300 border border-red-500">1</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">2</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">3</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">4</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">5</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">6</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">1</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">2</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">3</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">4</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">5</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">6</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">1</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">2</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">3</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">4</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">5</div>
+          <div className="h-10 w-full bg-gray-300 border border-red-500">6</div>
         </div>
       </CommonLayout>
     </Fragment>

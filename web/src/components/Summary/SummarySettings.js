@@ -6,6 +6,7 @@ import { iconTypes, isTypeExpense } from '../DefaultType/Static'
 import { Wrapper } from '../Misc/UtilityFunc'
 import { Tag, isTagChosen } from '../Expenses/Tag'
 import { v4 as uuidv4 } from 'uuid'
+import { SummaryDetails } from './SummaryDetails'
 const CALENDER = 'CALENDER'
 
 const SummarySettings = ({
@@ -37,7 +38,7 @@ const SummarySettings = ({
 
   return (
     <div
-      className="backgroundOverlay cursor-default bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50"
+      className="backgroundOverlay cursor-default bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50 overflow-y-hidden"
       onKeyDown={() => {}}
       tabIndex="0"
       role="button"
@@ -51,11 +52,28 @@ const SummarySettings = ({
               typeToEdit: null,
             }
           })
+          document.body.classList.remove('overflow-hidden')
         }
       }}
     >
-      <Form className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-full xs:h-3/4 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-y-hidden">
-        <div className="topSection flex-grow flex flex-col select-none">
+      <Form
+        className={`flex flex-col ${
+          displayState.displayExpenses ? '' : 'justify-end'
+        } p-2 border border-transparent rounded-lg h-full xs:h-3/4 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+      >
+        {/*
+        <Form
+          className={`flex flex-col ${
+            displayState.displayExpenses ? '' : 'justify-end'
+          } p-2 border border-transparent rounded-lg h-full xs:h-3/4 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+        >
+
+      */}
+        <div
+          className={`topSection ${
+            displayState.displayExpenses ? '' : 'flex-grow'
+          } flex flex-col select-none`}
+        >
           <div className="flex justify-between">
             <Wrapper className="cursor-default">
               <h3 className="text-sm sm:text-base text-white">{`${
@@ -79,7 +97,11 @@ const SummarySettings = ({
             {!Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) && (
               <div className="h-full flex">
                 <Wrapper className="text-white">
-                  <h3 className="text-sm sm:text-base">Detail Lookup</h3>
+                  <h3 className="text-sm sm:text-base">
+                    {displayState.displayExpenses
+                      ? 'Back To Settings'
+                      : 'Detail Lookup'}
+                  </h3>
                 </Wrapper>
                 <Wrapper
                   onClick={() => {
@@ -106,6 +128,7 @@ const SummarySettings = ({
                       typeToEdit: null,
                     }
                   })
+                  document.body.classList.remove('overflow-hidden')
                 }}
                 className="h-6 w-6 sm:h-8 sm:w-8 text-white"
               />
@@ -114,7 +137,7 @@ const SummarySettings = ({
           </div>
 
           {/* the type icon  */}
-          {!displayState.displayExpenses && <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+          {!displayState.displayExpenses && <div className="types w-full flex flex-wrap h-16 md:h-24 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
             {typeCategoryState.types &&
               typeCategoryState.types.length &&
               typeCategoryState.types.map((oneType) => {
@@ -170,10 +193,16 @@ const SummarySettings = ({
                 ))
               : null}
           </div>}
-
         </div>
 
-        <div className="bottomButtons border-t text-white flex justify-between">
+        {/*
+          detail expense sections
+          <div className="h-6 w-full bg-green-300"></div>
+        */}
+
+        {displayState.displayExpenses ? <SummaryDetails /> : null}
+
+        {!displayState.displayExpenses && <div className="bottomButtons border-t text-white flex justify-between">
           {
             false ? (
               <ClockLoading className="h-8 w-8 cursor-not-allowed" />
@@ -188,15 +217,16 @@ const SummarySettings = ({
                         chosenTags: [...localChosenTagState.chosenTags]
                       }
                     })
+                    document.body.classList.remove('overflow-hidden')
                   }
                 }
                 className="h-6 w-6 sm:h-8 sm:w-8 hover:text-green-300 cursor-pointer"
               />
             ) : null
           }
-        </div>
-
+        </div>}
       </Form>
+
     </div>
   )
 }

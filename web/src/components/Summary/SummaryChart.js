@@ -62,6 +62,7 @@ const SummaryChart = ({ expenseByDate }) => {
           },
           ticks: {
             fontColor: 'white',
+            fontSize: 10,
           },
         },
       ],
@@ -72,6 +73,7 @@ const SummaryChart = ({ expenseByDate }) => {
           },
           ticks: {
             fontColor: 'white',
+            fontSize: 10,
           },
         },
       ],
