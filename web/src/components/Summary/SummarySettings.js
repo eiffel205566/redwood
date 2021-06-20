@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Form } from '@redwoodjs/forms'
-import { Cancel, Check, Plus, Detail } from '../Misc/svg'
+import { Cancel, Check, Plus, Detail, Back } from '../Misc/svg'
 import SingleType from '../DefaultType/SingleType'
 import { iconTypes, isTypeExpense } from '../DefaultType/Static'
 import { Wrapper } from '../Misc/UtilityFunc'
@@ -13,6 +13,7 @@ const SummarySettings = ({
   typeCategoryState,
   setTypeCategoryState,
   userTypes,
+  user,
 }) => {
   //start a localChosenTagState to store all tags information in SummarySettings
   //so get ability to control how user interact with Tag click
@@ -59,7 +60,9 @@ const SummarySettings = ({
       <Form
         className={`flex flex-col ${
           displayState.displayExpenses ? '' : 'justify-end'
-        } p-2 border border-transparent rounded-lg h-full xs:h-3/4 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+        } p-2 border border-transparent rounded-lg h-full xs:h-3/4 ${
+          displayState.displayExpenses ? 'w-80' : 'sm:w-1/2 w-80'
+        } absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2`}
       >
         {/*
         <Form
@@ -76,7 +79,7 @@ const SummarySettings = ({
         >
           <div className="flex justify-between">
             <Wrapper className="cursor-default">
-              <h3 className="text-sm sm:text-base text-white">{`${
+              <h3 className="text-xs sm:text-sm text-white">{`${
                 typeCategoryState.typeToEdit
                   ? Object.keys(typeCategoryState.typeToEdit).includes(CALENDER)
                     ? 'Edit Date Range'
@@ -96,11 +99,9 @@ const SummarySettings = ({
 
             {!Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) && (
               <div className="h-full flex">
-                <Wrapper className="text-white">
-                  <h3 className="text-sm sm:text-base">
-                    {displayState.displayExpenses
-                      ? 'Back To Settings'
-                      : 'Detail Lookup'}
+                <Wrapper className="text-white cursor-default">
+                  <h3 className="text-xs sm:text-sm">
+                    {displayState.displayExpenses ? 'Back' : 'Details'}
                   </h3>
                 </Wrapper>
                 <Wrapper
@@ -114,7 +115,11 @@ const SummarySettings = ({
                   }}
                   className="text-white hover:text-green-300"
                 >
-                  <Detail className="h-6 w-6 sm:h-8 sm:w-8" />
+                  {displayState.displayExpenses ? (
+                    <Back className="h-6 w-6 sm:h-8 sm:w-8" />
+                  ) : (
+                    <Detail className="h-6 w-6 sm:h-8 sm:w-8" />
+                  )}
                 </Wrapper>
               </div>
             )}
@@ -200,7 +205,7 @@ const SummarySettings = ({
           <div className="h-6 w-full bg-green-300"></div>
         */}
 
-        {displayState.displayExpenses ? <SummaryDetails /> : null}
+        {displayState.displayExpenses ? <SummaryDetails typeCategoryState={typeCategoryState} user={user}/> : null}
 
         {!displayState.displayExpenses && <div className="bottomButtons border-t text-white flex justify-between">
           {

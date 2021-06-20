@@ -43,6 +43,8 @@ const SummaryPage = () => {
     id: null,
     typeToEdit: null,
     chosenTags: [],
+    minDate: null,
+    maxDate: null,
   })
 
   //USER_TYPES_QUERY
@@ -83,6 +85,7 @@ const SummaryPage = () => {
           setTypeCategoryState={setTypeCategoryState}
           typeCategoryState={typeCategoryState}
           userTypes={userTypes}
+          user={user}
         />
       ) : null}
       <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>

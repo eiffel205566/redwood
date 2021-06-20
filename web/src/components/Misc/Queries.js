@@ -128,3 +128,16 @@ export const DELETE_ONE_EXPENSE = gql`
     }
   }
 `
+
+export const QUERY_USER_ONE_TYPE_ALL_EXPENSES = gql`
+  query queryUserOneTypeAllExpenses($input: QueryOneTypeAllExpensesInput) {
+    queryOneTypeAllExpenses(input: $input) {
+      expenses {
+        id
+        amount
+        createdAt
+      }
+      count
+    }
+  }
+`

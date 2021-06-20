@@ -118,6 +118,12 @@ export type ExpenseTypeWhereUniqueInput = {
   id: Scalars['Int'];
 };
 
+export type ExpensesDetail = {
+  __typename?: 'ExpensesDetail';
+  expenses: Array<Expense>;
+  count: Scalars['Int'];
+};
+
 export type ExpensesWhereUniqueInput = {
   ids: Array<Maybe<Scalars['Int']>>;
 };
@@ -269,6 +275,7 @@ export type Query = {
   oneContact?: Maybe<Contact>;
   post?: Maybe<Post>;
   posts: Array<Post>;
+  queryOneTypeAllExpenses?: Maybe<ExpensesDetail>;
   redwood?: Maybe<Redwood>;
   searchMessage: Array<Contact>;
   userExpensesSum: Scalars['Float'];
@@ -328,6 +335,11 @@ export type QueryPostArgs = {
 };
 
 
+export type QueryQueryOneTypeAllExpensesArgs = {
+  input?: Maybe<QueryOneTypeAllExpensesInput>;
+};
+
+
 export type QuerySearchMessageArgs = {
   message?: Maybe<Scalars['String']>;
 };
@@ -344,6 +356,15 @@ export type QueryUserTypesArgs = {
 
 export type QueryExpensesTypeInput = {
   user: Scalars['String'];
+};
+
+export type QueryOneTypeAllExpensesInput = {
+  user: Scalars['String'];
+  maxDate?: Maybe<Scalars['Date']>;
+  minDate?: Maybe<Scalars['Date']>;
+  expenseType: ExpenseTypeWhereUniqueInput;
+  chosenTagIds?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  page?: Maybe<Scalars['Int']>;
 };
 
 export type Redwood = {
@@ -494,6 +515,7 @@ export type ResolversTypes = {
   ExpensePage: ResolverTypeWrapper<ExpensePage>;
   ExpenseType: ResolverTypeWrapper<ExpenseType>;
   ExpenseTypeWhereUniqueInput: ExpenseTypeWhereUniqueInput;
+  ExpensesDetail: ResolverTypeWrapper<ExpensesDetail>;
   ExpensesWhereUniqueInput: ExpensesWhereUniqueInput;
   JSON: ResolverTypeWrapper<Scalars['JSON']>;
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>;
@@ -504,6 +526,7 @@ export type ResolversTypes = {
   Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
   QueryExpensesTypeInput: QueryExpensesTypeInput;
+  QueryOneTypeAllExpensesInput: QueryOneTypeAllExpensesInput;
   Redwood: ResolverTypeWrapper<Redwood>;
   Tag: ResolverTypeWrapper<Tag>;
   TagWhereInput: TagWhereInput;
@@ -539,6 +562,7 @@ export type ResolversParentTypes = {
   ExpensePage: ExpensePage;
   ExpenseType: ExpenseType;
   ExpenseTypeWhereUniqueInput: ExpenseTypeWhereUniqueInput;
+  ExpensesDetail: ExpensesDetail;
   ExpensesWhereUniqueInput: ExpensesWhereUniqueInput;
   JSON: Scalars['JSON'];
   JSONObject: Scalars['JSONObject'];
@@ -549,6 +573,7 @@ export type ResolversParentTypes = {
   Post: Post;
   Query: {};
   QueryExpensesTypeInput: QueryExpensesTypeInput;
+  QueryOneTypeAllExpensesInput: QueryOneTypeAllExpensesInput;
   Redwood: Redwood;
   Tag: Tag;
   TagWhereInput: TagWhereInput;
@@ -610,6 +635,12 @@ export type ExpenseTypeResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ExpensesDetailResolvers<ContextType = any, ParentType extends ResolversParentTypes['ExpensesDetail'] = ResolversParentTypes['ExpensesDetail']> = {
+  expenses?: Resolver<Array<ResolversTypes['Expense']>, ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
   name: 'JSON';
 }
@@ -660,6 +691,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   oneContact?: Resolver<Maybe<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<QueryOneContactArgs, 'input'>>;
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryPostArgs, 'id'>>;
   posts?: Resolver<Array<ResolversTypes['Post']>, ParentType, ContextType>;
+  queryOneTypeAllExpenses?: Resolver<Maybe<ResolversTypes['ExpensesDetail']>, ParentType, ContextType, RequireFields<QueryQueryOneTypeAllExpensesArgs, never>>;
   redwood?: Resolver<Maybe<ResolversTypes['Redwood']>, ParentType, ContextType>;
   searchMessage?: Resolver<Array<ResolversTypes['Contact']>, ParentType, ContextType, RequireFields<QuerySearchMessageArgs, never>>;
   userExpensesSum?: Resolver<ResolversTypes['Float'], ParentType, ContextType, RequireFields<QueryUserExpensesSumArgs, 'input'>>;
@@ -693,6 +725,7 @@ export type Resolvers<ContextType = any> = {
   Expense?: ExpenseResolvers<ContextType>;
   ExpensePage?: ExpensePageResolvers<ContextType>;
   ExpenseType?: ExpenseTypeResolvers<ContextType>;
+  ExpensesDetail?: ExpensesDetailResolvers<ContextType>;
   JSON?: GraphQLScalarType;
   JSONObject?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;

@@ -27,11 +27,26 @@ export const schema = gql`
       minDate: Date
       chosenTagIds: [Int]
     ): JSON!
+    queryOneTypeAllExpenses(input: QueryOneTypeAllExpensesInput): ExpensesDetail
   }
 
   type ExpensePage {
     myExpenses: [Expense!]!
     count: Int!
+  }
+
+  type ExpensesDetail {
+    expenses: [Expense!]!
+    count: Int!
+  }
+
+  input QueryOneTypeAllExpensesInput {
+    user: String!
+    maxDate: Date
+    minDate: Date
+    expenseType: ExpenseTypeWhereUniqueInput!
+    chosenTagIds: [Int]
+    page: Int
   }
 
   input CreateExpenseInput {

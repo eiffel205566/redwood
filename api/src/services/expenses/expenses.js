@@ -342,3 +342,53 @@ export const expenseByCategory = async ({
 
   return [byDateResult, byTypeResult]
 }
+
+export const queryOneTypeAllExpenses = async ({ input }) => {
+  const { user, maxDate, minDate, chosenTagIds, expenseType, page } = input
+  const { id: expenseTypeId } = expenseType
+  const offset = page ? (page - 1) * 5 : 0
+
+  const settings = {
+    where: {
+      user,
+      expenseType: {
+        is: {
+          id: expenseTypeId,
+        },
+      },
+      AND: [
+        { createdAt: { gte: new Date(minDate ? minDate : '1999-01-01') } },
+        { createdAt: { lte: new Date(maxDate ? maxDate : '9999-01-01') } },
+      ],
+      OR: [
+        {
+          tags: {
+            some: {
+              id: {
+                in: chosenTagIds ? [...chosenTagIds] : [25, 26, 27, 28, 29],
+              },
+            },
+          },
+        },
+        { tags: { none: {} } },
+      ],
+    },
+  }
+
+  const paginatedSettings = {
+    ...settings,
+    take: 5,
+    skip: offset,
+    orderBy: { createdAt: 'desc' },
+  }
+
+  const result = await db.expense.findMany({
+    ...paginatedSettings,
+  })
+  return {
+    expenses: result,
+    count: db.expense.count({
+      ...settings,
+    }),
+  }
+}

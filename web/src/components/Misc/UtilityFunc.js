@@ -24,6 +24,18 @@ export const Wrapper = ({ children, className, ...rest }) => {
   )
 }
 
+export const timeTag = (datetime) => {
+  return (
+    <Fragment>
+      <div className="h-full text-xs md:text-sm flex flex-col justify-center text-displayOnly px-0.5 sm:px-1 md:px-2">
+        <time>
+          {new Date(datetime).toDateString().split(' ').slice(1).join(' ')}
+        </time>
+      </div>
+    </Fragment>
+  )
+}
+
 export const calculateWidth = (cur, maximum) => {
   //scale is tailwind default width like w-1, w.15 etc
   //we want this function to return the closest representation width
