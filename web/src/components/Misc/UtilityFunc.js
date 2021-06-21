@@ -61,7 +61,7 @@ export const formatDecimal = (num) => {
 }
 
 export const generateRandomColors = (n) => {
-  let r = 255
+  let r = 51
   let g = 204
   let b = 153
 

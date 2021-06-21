@@ -45,6 +45,7 @@ const SummaryPage = () => {
     chosenTags: [],
     minDate: null,
     maxDate: null,
+    dataError: false,
   })
 
   //USER_TYPES_QUERY
@@ -95,6 +96,8 @@ const SummaryPage = () => {
           typeCategoryState={typeCategoryState}
           setTypeCategoryState={setTypeCategoryState}
           chosenTagIds={typeCategoryState.chosenTags.map((tag) => tag.id)}
+          maxDate={typeCategoryState.maxDate}
+          minDate={typeCategoryState.minDate}
         />
       </CommonLayout>
     </Fragment>

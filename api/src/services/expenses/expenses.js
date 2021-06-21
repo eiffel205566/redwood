@@ -280,10 +280,19 @@ export const expenseByType = async ({
 
 export const expenseByCategory = async ({
   user,
-  maxDate = '9999-01-01',
-  minDate = '1900-01-01',
+  maxDate,
+  minDate,
   chosenTagIds = [],
 }) => {
+  maxDate =
+    Object.is(maxDate, undefined) || Object.is(maxDate, null)
+      ? '9999-01-01'
+      : maxDate
+  minDate =
+    Object.is(minDate, undefined) || Object.is(minDate, null)
+      ? '1900-01-01'
+      : minDate
+
   const byDateResult = await db.expense.groupBy({
     by: ['createdAt'],
     where: {
@@ -344,9 +353,20 @@ export const expenseByCategory = async ({
 }
 
 export const queryOneTypeAllExpenses = async ({ input }) => {
-  const { user, maxDate, minDate, chosenTagIds, expenseType, page } = input
+  //* Constant
+  const entryPerQuery = 1
+  let { user, maxDate, minDate, chosenTagIds, expenseType, page } = input
   const { id: expenseTypeId } = expenseType
-  const offset = page ? (page - 1) * 5 : 0
+  const offset = page ? (page - 1) * entryPerQuery : 0 //! production: 20/query
+
+  maxDate =
+    Object.is(maxDate, undefined) || Object.is(maxDate, null)
+      ? '9999-01-01'
+      : maxDate
+  minDate =
+    Object.is(minDate, undefined) || Object.is(minDate, null)
+      ? '1900-01-01'
+      : minDate
 
   const settings = {
     where: {
@@ -357,8 +377,8 @@ export const queryOneTypeAllExpenses = async ({ input }) => {
         },
       },
       AND: [
-        { createdAt: { gte: new Date(minDate ? minDate : '1999-01-01') } },
-        { createdAt: { lte: new Date(maxDate ? maxDate : '9999-01-01') } },
+        { createdAt: { gte: new Date(minDate) } },
+        { createdAt: { lte: new Date(maxDate) } },
       ],
       OR: [
         {
@@ -377,7 +397,7 @@ export const queryOneTypeAllExpenses = async ({ input }) => {
 
   const paginatedSettings = {
     ...settings,
-    take: 5,
+    take: entryPerQuery,
     skip: offset,
     orderBy: { createdAt: 'desc' },
   }

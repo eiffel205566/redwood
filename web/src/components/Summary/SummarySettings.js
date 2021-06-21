@@ -37,6 +37,82 @@ const SummarySettings = ({
     displayExpenses: false,
   })
 
+  //* Local date state
+  const [dateState, setDateState] = useState({
+    minDate: typeCategoryState.minDate,
+    maxDate: typeCategoryState.maxDate,
+  })
+
+  //* date pick handle
+  const onDateChange = (e) => {
+    setDateState((state) => {
+      return {
+        ...state,
+        [e.target.name]: e.target.value,
+      }
+    })
+  }
+
+  //* handle Check button click
+  const onHandleCheckClickForDate = () => {
+    // make sure minDate is <= maxDate
+    if (
+      dateState.minDate !== null &&
+      dateState.minDate !== '' &&
+      dateState.maxDate !== null &&
+      dateState.maxDate !== ''
+    ) {
+      if (new Date(dateState.minDate) > new Date(dateState.maxDate)) {
+        setTypeCategoryState((state) => {
+          return {
+            ...state,
+            dataError: true,
+          }
+        })
+        return
+      }
+    }
+
+    if (dateState.minDate !== null && dateState.minDate !== '') {
+      setTypeCategoryState((state) => {
+        return {
+          ...state,
+          minDate: dateState.minDate,
+        }
+      })
+    }
+
+    if (dateState.maxDate !== null && dateState.maxDate !== '') {
+      setTypeCategoryState((state) => {
+        return {
+          ...state,
+          maxDate: dateState.maxDate,
+        }
+      })
+    }
+
+    setTypeCategoryState((state) => {
+      return {
+        ...state,
+        typeToEdit: null,
+        dataError: false,
+      }
+    })
+    document.body.classList.remove('overflow-hidden')
+  }
+
+  //* handle user picking tags
+  const onHandleTagChange = () => {
+    setTypeCategoryState((state) => {
+      return {
+        ...state,
+        typeToEdit: null,
+        chosenTags: [...localChosenTagState.chosenTags],
+      }
+    })
+    document.body.classList.remove('overflow-hidden')
+  }
+
   return (
     <div
       className="backgroundOverlay cursor-default bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50 overflow-y-hidden"
@@ -51,6 +127,7 @@ const SummarySettings = ({
             return {
               ...state,
               typeToEdit: null,
+              dataError: false,
             }
           })
           document.body.classList.remove('overflow-hidden')
@@ -131,6 +208,7 @@ const SummarySettings = ({
                     return {
                       ...state,
                       typeToEdit: null,
+                      dataError: false,
                     }
                   })
                   document.body.classList.remove('overflow-hidden')
@@ -142,7 +220,7 @@ const SummarySettings = ({
           </div>
 
           {/* the type icon  */}
-          {!displayState.displayExpenses && <div className="types w-full flex flex-wrap h-16 md:h-24 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+          {!displayState.displayExpenses && <div className={`types w-full flex flex-wrap ${Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) ? 'h-0 border-none' : 'h-16 md:h-24'} overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300`}>
             {typeCategoryState.types &&
               typeCategoryState.types.length &&
               typeCategoryState.types.map((oneType) => {
@@ -178,7 +256,7 @@ const SummarySettings = ({
             </div>
           </div>}
 
-          {!displayState.displayExpenses && <div className="tagsList border-b w-full flex flex-wrap h-24 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+          {!displayState.displayExpenses && <div className={`tagsList border-b w-full flex flex-wrap ${!Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) ? "h-24" : "h-0"} overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300`}>
             {typeCategoryState.typeToEdit && !Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) //when SummarySetting showed up by user click Calender, typeToEdit is {} with no props
               ? _.find(typeCategoryState.types, function (o) {
                   return o.id === typeCategoryState.typeToEdit.expenseTypeId
@@ -198,6 +276,29 @@ const SummarySettings = ({
                 ))
               : null}
           </div>}
+          {!displayState.displayExpenses &&  typeCategoryState.typeToEdit && Object.keys(typeCategoryState?.typeToEdit).includes(CALENDER) ? (
+            <section className="mt-3 w-full text-xs sm:text-sm">
+              <span className="ml-1 text-white">From:</span>
+              <input
+                id="fromDate"
+                name='minDate'
+                className="transform transition-all duration-500 ease-in-out h-8 m-1 bg-gray-500 text-white w-60 md:w-80 pl-1 focus:ring-2 focus:ring-green-300"
+                type="date"
+                value={dateState.minDate}
+                onChange={onDateChange}
+              />
+              <span className="ml-1 text-white">To:</span>
+              <input
+                id="toDate"
+                name='maxDate'
+                className="transform transition-all duration-500 ease-in-out h-8 m-1 bg-gray-500 text-white w-60 md:w-80 pl-1 focus:ring-2 focus:ring-green-300"
+                type="date"
+                value={dateState.maxDate}
+                onChange={onDateChange}
+              />
+              {typeCategoryState.dataError && <span className="pl-1 text-red-500">Error: From Date needs to be earlier than To Date</span>}
+            </section>
+          ) : null}
         </div>
 
         {/*
@@ -205,7 +306,16 @@ const SummarySettings = ({
           <div className="h-6 w-full bg-green-300"></div>
         */}
 
+        {/*
+          Detail expense section
+        */}
         {displayState.displayExpenses ? <SummaryDetails typeCategoryState={typeCategoryState} user={user}/> : null}
+
+        {/*
+          date pickers
+        */}
+
+
 
         {!displayState.displayExpenses && <div className="bottomButtons border-t text-white flex justify-between">
           {
@@ -213,19 +323,8 @@ const SummarySettings = ({
               <ClockLoading className="h-8 w-8 cursor-not-allowed" />
             ) : true ? (
               <Check
-                onClick={
-                  () => {
-                    setTypeCategoryState((state) => {
-                      return {
-                        ...state,
-                        typeToEdit: null,
-                        chosenTags: [...localChosenTagState.chosenTags]
-                      }
-                    })
-                    document.body.classList.remove('overflow-hidden')
-                  }
-                }
-                className="h-6 w-6 sm:h-8 sm:w-8 hover:text-green-300 cursor-pointer"
+                onClick={Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) ? onHandleCheckClickForDate : onHandleTagChange}
+                className={`h-6 w-6 sm:h-8 sm:w-8 hover:text-green-300 ${typeCategoryState.dataError ? 'cursor-pointer' : 'cursor-pointer'}`}
               />
             ) : null
           }

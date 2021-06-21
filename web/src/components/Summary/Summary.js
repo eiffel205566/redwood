@@ -41,6 +41,19 @@ const Summary = ({
     */
   }
 
+  //* reset button handler
+  const onHandleReset = (e) => {
+    setTypeCategoryState((state) => {
+      return {
+        ...state,
+        typeToEdit: null,
+        chosenTags: [...state.availableTags],
+        minDate: null,
+        maxDate: null,
+      }
+    })
+  }
+
   return (
     <Fragment>
       <div className="settingButtons flex w-full h-12 text-white">
@@ -82,6 +95,7 @@ const Summary = ({
         */}
         <div className="settingButtons relative h-full overflow-hidden flex-grow flex">
           <button
+            onClick={onHandleReset}
             onMouseEnter={() => {
               setSettingButtonState((state) => {
                 return {
@@ -116,6 +130,7 @@ const Summary = ({
                   typeToEdit: { CALENDER: true },
                 }
               })
+              document.body.classList.add('overflow-hidden')
             }}
             className={`bg-transparent absolute ${
               settingButtonState.extendSettings ? 'left-14' : '-left-20'
@@ -173,7 +188,7 @@ const Summary = ({
                     onKeyDown={() => {}}
                     tabIndex="0"
                     role="button"
-                    className="rank m-2 h-full w-60 border border-gray-500 "
+                    className="rank m-2 h-full w-60 border border-gray-500 pointer-default"
                   >
                     <div
                       className={`rankBarContent transform transition-all duration-500 hover:bg-green-300 cursor-pointer ease-in-out w-${calculateWidth(
@@ -187,7 +202,11 @@ const Summary = ({
                   className="flex-grow text-center cursor-default pr-5"
                   paddingLeft="no"
                 >
-                  <div className="hidden sm:block">{` $ ${oneType._sum.amount}`}</div>
+                  <div className="hidden sm:block">{` $${
+                    Math.abs(oneType._sum.amount) > 9999
+                      ? '>9999'
+                      : Math.abs(oneType._sum.amount)
+                  }`}</div>
                 </Wrapper>
               </div>
             )

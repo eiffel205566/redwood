@@ -677,7 +677,7 @@ const NewExpense = ({
                 <Wrapper className="flex-grow" paddingLeft="pl-0">
                   <input
                     onChange={onChange}
-                    className="h-8 m-1 bg-gray-500 text-white max-w-xs"
+                    className="h-8 m-1 bg-gray-500 text-white max-w-xs pl-1"
                     placeholder="Spending"
                     type="text"
                     value={
@@ -696,7 +696,7 @@ const NewExpense = ({
                   </h3>
                   <Wrapper className="flex-grow" paddingLeft="pl-0">
                     <input
-                      className="h-8 m-1 bg-gray-500 text-white max-w-xs"
+                      className="h-8 m-1 bg-gray-500 text-white max-w-xs pl-1"
                       type="date"
                       value={newExpenseState.date ? newExpenseState.date : ''}
                       onChange={onDateChange}
