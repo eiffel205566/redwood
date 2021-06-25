@@ -146,7 +146,7 @@ aside {
   from {opacity: 0; transform: translateY(50%)}
   to {opacity: 1; transform: translateY(0%)}
 } */
-@keyframes raising {
+/* @keyframes raising {
   0% {opacity: 0; transform: translateY(50%)}
   40% {opacity: 1; transform: translateY(0%)}
   50% {transform: scale(1)}
@@ -157,4 +157,106 @@ aside {
 
 .testingGroup {
   animation: raising 6s infinite;
+ } */
+
+ .theCircle {
+  stroke: #0074d9;
+  stroke-width: 100;
+  stroke-dasharray: 0 200;
+  transition: stroke-dasharray 2s ease;
+  animation: chartFill 24s infinite;
  }
+
+.theCircle2 {
+  stroke: red;
+  stroke-width: 100;
+  stroke-dasharray: 100 200;
+  transition: stroke-dasharray 2s ease;
+  animation: chartFill2 24s infinite;
+  transform-origin: 630px 140px;
+  transform: rotate(120deg);
+ }
+
+ .theCircle3 {
+  stroke: yellow;
+  stroke-width: 100;
+  stroke-dasharray: 100 200;
+  transition: stroke-dasharray 2s ease;
+  animation: chartFill3 24s infinite;
+  transform-origin: 630px 140px;
+  transform: rotate(240deg);
+ }
+
+ /* 1st circle */
+@keyframes chartFill {
+  0% { stroke-dasharray: 0 314 }
+  50% { stroke-dasharray: 0 314 }
+  55% { stroke-dasharray: 105 314 }
+  100% { stroke-dasharray: 105 314 }
+}
+
+/* 2nd circle */
+@keyframes chartFill2 {
+  0% { stroke-dasharray: 0 314 }
+  55% { stroke-dasharray: 0 314 }
+  60% { stroke-dasharray: 105 314 }
+  70% { stroke-dasharray: 105 314 }
+  100% { stroke-dasharray: 105 314 }
+}
+
+/* 3rd cirle */
+@keyframes chartFill3 {
+  0% { stroke-dasharray: 0 314 }
+  60% { stroke-dasharray: 0 314 }
+  65% { stroke-dasharray: 105 314 }
+  70% { stroke-dasharray: 105 314 }
+  100% { stroke-dasharray: 105 314 }
+}
+
+
+ .circleGroup {
+   transform-origin: 630px 140px;
+   transform: rotate(-90deg);
+ }
+
+
+@keyframes raising_1 {
+  0% {opacity: 0; transform: translateY(50%)}
+  5% {opacity: 1; transform: translateY(0%)}
+  50% {transform: scale(1)}
+  60% {transform: scale(1)}
+  70% {transform: scale(1)}
+  100% {transform: scale(1)}
+ }
+
+ .raising_1 {
+  animation: raising_1 24s infinite;
+ }
+
+
+@keyframes raising_2 {
+  0% {opacity: 0; transform: translateY(50%)}
+  15% {opacity: 0; transform: translateY(50%)}
+  20% {opacity: 1; transform: translateY(0%)}
+  60% {transform: scale(1)}
+  70% {transform: scale(1)}
+  100% {transform: scale(1)}
+ }
+
+ .raising_2 {
+  animation: raising_2 24s infinite;
+ }
+
+ @keyframes raising_3 {
+  0% {opacity: 0; transform: translateY(50%)}
+  30% {opacity: 0; transform: translateY(50%)}
+  35% {opacity: 1; transform: translateY(0%)}
+  60% {transform: scale(1)}
+  70% {transform: scale(1)}
+  100% {transform: scale(1)}
+ }
+
+ .raising_3 {
+  animation: raising_3 24s infinite;
+ }
+

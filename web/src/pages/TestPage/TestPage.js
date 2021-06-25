@@ -7,7 +7,7 @@ import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
 import { defaultIcons } from 'src/components/DefaultType/Static'
 import { ClockLoading, Puipui, Sunshining } from 'src/components/Misc/svg'
 import { iconTypes, CREDIT_CARD } from 'src/components/DefaultType/Static'
-import svgExtra from 'src/components/Misc/svgExtra'
+import { FrontPageAnimation } from 'src/components/Misc/svgExtra'
 
 //constant
 
@@ -55,34 +55,10 @@ const TestPage = () => {
         <Switcher />
         <div className="max-w-xl max-h-96 overflow-hidden relative border border-red-300">
           <Sunshining />
-          {/*
-
-            */}
         </div>
 
-        <div
-          onScroll={onHandleScroll}
-          id="pageTest"
-          className="paginationTesting h-48 w-48 border border-white overflow-y-scroll overflow-x-hidden"
-        >
-          <div className="h-10 w-full bg-gray-300 border border-red-500">1</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">2</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">3</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">4</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">5</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">6</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">1</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">2</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">3</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">4</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">5</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">6</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">1</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">2</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">3</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">4</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">5</div>
-          <div className="h-10 w-full bg-gray-300 border border-red-500">6</div>
+        <div className="max-w-xl max-h-96 overflow-hidden relative border border-red-300">
+          <FrontPageAnimation />
         </div>
       </CommonLayout>
     </Fragment>
