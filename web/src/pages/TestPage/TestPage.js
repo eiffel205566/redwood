@@ -8,6 +8,9 @@ import { defaultIcons } from 'src/components/DefaultType/Static'
 import { ClockLoading, Puipui, Sunshining } from 'src/components/Misc/svg'
 import { iconTypes, CREDIT_CARD } from 'src/components/DefaultType/Static'
 import { FrontPageAnimation } from 'src/components/Misc/svgExtra'
+// import {xx} from '../../resource/monitor_pic.png'
+import Monitor from '../TestPage/monitor_pic.png'
+import MonitorLarge from '../TestPage/monitorLarge.png'
 
 //constant
 
@@ -57,7 +60,10 @@ const TestPage = () => {
           <Sunshining />
         </div>
 
-        <div className="max-w-xl max-h-96 overflow-hidden relative border border-red-300">
+        <div className="relative max-w-xl max-h-96 overflow-hidden relative border border-red-300">
+          <div className="h-full w-full absolute -z-10">
+            <img className="h-full m-auto" src={MonitorLarge} alt="monitor" />
+          </div>
           <FrontPageAnimation />
         </div>
       </CommonLayout>
