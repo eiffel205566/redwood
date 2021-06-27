@@ -16,6 +16,14 @@ button, input, label, textarea {
   outline: none;
 }
 
+body {
+  overflow-x: hidden !important;
+}
+/* #redwood-app {
+  overflow-x: hidden;
+  width: 100vw;
+} */
+
 label {
   margin-top: 1rem;
 }
@@ -336,4 +344,39 @@ aside {
 .wiggle_3 {
   transform-origin: 130px 190px;
   animation: wiggle_3 24s infinite;
+}
+
+img {
+  max-width: none !important;
+}
+
+.pictures {
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+.pictureContainer_2 {
+  background-image: url("./pages/TestPage/pic_2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.pictureContainer_1 {
+  background-image: url("./pages/TestPage/pic_1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.pictureContainer_3 {
+  background-image: url("./pages/TestPage/pic_3.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.frontPageCarousel {
+  width: 300%;
 }

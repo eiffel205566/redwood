@@ -15,6 +15,8 @@ const CommonLayout = ({
 }) => {
   const { sideBarShowed } = showSidebar
 
+  const { maxWidth } = rest || {}
+
   const onHandleSideBar = () => {
     setShowSidebar((state) => {
       return {
@@ -43,7 +45,7 @@ const CommonLayout = ({
         <SideBar className="w-40" />
       </aside>
 
-      <header className="h-14 z-30 headerGradient text-gray-300 select-none">
+      <header className="h-14 z-30 headerGradient text-gray-300 select-none w-screen">
         {/*
 
         */}
@@ -53,6 +55,9 @@ const CommonLayout = ({
               <div
                 className="cursor-pointer bg-gray-400 w-10 flex flex-row justify-center z-10 headerGradient"
                 onClick={onHandleSideBar}
+                role="button"
+                onKeyDown={() => {}}
+                tabIndex="0"
               >
                 <Dots
                   className={
@@ -80,15 +85,15 @@ const CommonLayout = ({
               </div>
               <div className="flex flex-row justify-center headerGradient">
                 <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
-                  <Link className="m-auto">Login</Link>
+                  <Link className="m-auto font-sans italic">Login</Link>
                 </div>
                 <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
-                  <Link to={routes.home()} className="m-auto">
+                  <Link to={routes.home()} className="m-auto font-sans italic">
                     Home
                   </Link>
                 </div>
                 <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
-                  <Link to={routes.about()} className="m-auto">
+                  <Link to={routes.about()} className="m-auto font-sans italic">
                     About
                   </Link>
                 </div>
@@ -98,7 +103,9 @@ const CommonLayout = ({
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto">{children}</main>
+      <main className={`${maxWidth ? 'w-screen' : 'max-w-5xl mx-auto'}`}>
+        {children}
+      </main>
     </Fragment>
   )
 }

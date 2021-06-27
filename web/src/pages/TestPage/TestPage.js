@@ -45,27 +45,74 @@ const TestPage = () => {
       }, 500)
     }
   }
+
+  const [frontPageCarousel, setFrontPageCarousel] = useState({
+    translateX: 0,
+  })
+
+  const carouselAnimation = () => {
+    let timeId = setTimeout(function carouselDelayRun() {
+      setFrontPageCarousel((state) => {
+        return {
+          ...state,
+          translateX: state.translateX === 2 ? 0 : ++state.translateX,
+        }
+      })
+      timeId = setTimeout(carouselDelayRun, 5000)
+    }, 5000)
+  }
+  useEffect(() => {
+    carouselAnimation()
+  }, [])
+
   return (
     <Fragment>
-      <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>
+      {/*
+
+      */}
+      <CommonLayout
+        showSidebar={showSidebar}
+        setShowSidebar={setShowSidebar}
+        maxWidth="1"
+      >
+        {/*
+         */}
+        <div className="carouselPictureContainer absolute top-0 left-0 -z-10 w-screen overflow-x-hidden">
+          <ul
+            className={`allTagss frontPageCarousel h-screen w-screen flex transform transition-all duration-500 ease-in-out -translate-x-${frontPageCarousel.translateX}/3`}
+          >
+            <li className="flex flex-col pictureContainer_1 h-screen w-full transform transition-all duration-500 ease-in-out -z-10"></li>
+            <li className="flex flex-col pictureContainer_2 h-screen w-full transform transition-all duration-500 ease-in-out -z-10"></li>
+            <li className="flex flex-col pictureContainer_3 h-screen w-full transform transition-all duration-500 ease-in-out -z-10"></li>
+          </ul>
+        </div>
+
+        {/*
+          <ClockLoading className="h-10 w-10" />
+          <Switcher />
+          <div className="max-w-xl max-h-96 overflow-hidden relative border border-red-300">
+            <Sunshining />
+          </div>
+        */}
+        <div className="placeholder h-screen w-screen"></div>
         <div
           className={`${
             sideBarShowed ? 'ml-0 sm:ml-40' : 'ml-0'
           } transition-all duration-500 ease-in-out`}
         ></div>
-        <ClockLoading className="h-10 w-10" />
 
-        <Switcher />
-        <div className="max-w-xl max-h-96 overflow-hidden relative border border-red-300">
-          <Sunshining />
-        </div>
+        {/*
 
-        <div className="relative max-w-xl max-h-96 overflow-hidden relative border border-red-300">
+        */}
+        <div className="animationContainer relative max-w-xl max-h-96 overflow-hidden relative">
           <div className="h-full w-full absolute -z-10">
             <img className="h-full m-auto" src={MonitorLarge} alt="monitor" />
           </div>
           <FrontPageAnimation />
         </div>
+        {/*
+
+      */}
       </CommonLayout>
     </Fragment>
   )
