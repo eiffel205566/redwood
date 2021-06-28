@@ -346,6 +346,14 @@ aside {
   animation: wiggle_3 24s infinite;
 }
 
+/* ! testing*/
+/* .testClass {
+  fill: #0074d9 !important;
+} */
+
+
+/* * testing*/
+
 img {
   max-width: none !important;
 }
@@ -379,4 +387,54 @@ img {
 
 .frontPageCarousel {
   width: 300%;
+}
+
+.animationContainer_visible {
+  opacity: 1;
+  transform: translateX(0vw);
+  visibility: visible;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.animationContainer {
+  opacity: 0;
+  transform: translateX(-20vw);
+  visibility: visible;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  will-change: opacity, visibility;
+}
+
+.frontPageCarousel {
+  transition-property: translate, transform;
+}
+
+.textContainer_visible {
+  opacity: 1;
+  transform: translateX(0vw);
+  visibility: visible;
+  /* transition: opacity 0.5s ease-out, transform 0.5s ease-out; */
+}
+
+.textContainer_visible:nth-child(1) {
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.textContainer_visible:nth-child(2) {
+  transition: opacity 0.5s ease-out 0.1s, transform 0.5s ease-out 0.1s;
+}
+
+.textContainer_visible:nth-child(3) {
+  transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s;
+}
+
+.textContainer_visible:nth-child(4) {
+  transition: opacity 0.5s ease-out 0.3s, transform 0.5s ease-out 0.3s;
+}
+
+.textContainer {
+  opacity: 0;
+  transform: translateX(20vw);
+  visibility: visible;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  will-change: opacity, visibility;
 }
