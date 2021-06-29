@@ -2,16 +2,7 @@ import SideBar from '../../components/SideBar/SideBar'
 import { useEffect, useState } from 'react'
 import { Fragment, useRef } from 'react'
 import { Link, routes } from '@redwoodjs/router'
-import {
-  Dots,
-  Money,
-  Sunshine,
-  Calender,
-  Calculator,
-  BarChart,
-  PieChart,
-  ChevronRight,
-} from '../../components/Misc/svg'
+
 import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
 import { defaultIcons } from 'src/components/DefaultType/Static'
 import { ClockLoading, Puipui, Sunshining } from 'src/components/Misc/svg'
@@ -21,10 +12,21 @@ import { FrontPageAnimation } from 'src/components/Misc/svgExtra'
 import Monitor from '../TestPage/monitor_pic.png'
 import MonitorLarge from '../TestPage/monitorLarge.png'
 
-import { IoBarChartOutline } from 'react-icons/io5'
-import { FcCalculator, FcBarChart, FcList, FcPieChart } from 'react-icons/fc'
+import { AiOutlineDollarCircle } from 'react-icons/ai'
+import {
+  FcCalculator,
+  FcBarChart,
+  FcList,
+  FcPieChart,
+  FcShop,
+  FcBriefcase,
+  FcCurrencyExchange,
+  FcBullish,
+  FcCustomerSupport,
+} from 'react-icons/fc'
 import { Wrapper } from 'src/components/Misc/UtilityFunc'
 import SingleExpense from 'src/components/Expenses/SingleExpense'
+import SingleType from 'src/components/DefaultType/SingleType'
 
 //constant
 
@@ -83,12 +85,13 @@ const TestPage = () => {
 
   //! handling viewport visibility check with  IntersectionObserver
 
-  const container = document.getElementById('animationContainer')
-  const reference = useRef(container)
+  const animationContainer = document.getElementById('animationContainer')
+  const animationReference = useRef(animationContainer)
+  const textContainer = document.getElementById('textContainer')
 
   useEffect(() => {
-    if (container) {
-      // console.log(container)
+    if (animationContainer) {
+      // console.log(animationContainer)
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           // console.log(entry, entry.isIntersecting)
@@ -101,11 +104,11 @@ const TestPage = () => {
         })
       })
 
-      // console.log(reference.current)
-      observer.observe(reference.current)
+      // console.log(animationReference.current)
+      observer.observe(animationReference.current)
       return () => {
-        if (reference.current) {
-          observer.unobserve(reference.current)
+        if (animationReference.current) {
+          observer.unobserve(animationReference.current)
         }
       }
     }
@@ -128,7 +131,7 @@ const TestPage = () => {
             <div className="overlayBackground bg-gray-100 absolute min-h-full min-w-full bg-opacity-50 cursor-default z-10"></div>
            */}
           <ul
-            className={` allTagss frontPageCarousel h-screen w-screen flex transform transition-all duration-1000 ease-in-out -translate-x-${frontPageCarousel.translateX}/3`}
+            className={`allTagss frontPageCarousel h-screen w-screen flex transform transition-all duration-500 ease-in-out -translate-x-${frontPageCarousel.translateX}/3`}
           >
             <li className="flex flex-col pictureContainer_1 h-screen w-full "></li>
             <li className="flex flex-col pictureContainer_2 h-screen w-full "></li>
@@ -178,7 +181,7 @@ const TestPage = () => {
           <Switcher setFrontPageCarousel={setFrontPageCarousel} />
         */}
 
-        <div className="section_2 w-screen flex flex-col md:flex-row">
+        <div className="section_2 max-w-5xl mx-auto flex flex-col md:flex-row">
           <div
             onLoad={() => {
               setFrontPageCarousel((state) => {
@@ -189,7 +192,7 @@ const TestPage = () => {
               })
             }}
             id="animationContainer"
-            ref={reference}
+            ref={animationReference}
             className={`animationContainer${
               frontPageCarousel.animationX ? '' : '_visible'
             } relative max-w-xl max-h-96 overflow-hidden relative flex-grow`}
@@ -200,7 +203,7 @@ const TestPage = () => {
             <FrontPageAnimation />
           </div>
 
-          <div className="flex-grow">
+          <div id="textContainer" ref={textContainer} className="flex-grow">
             <div
               className={`textContainer${
                 frontPageCarousel.animationX ? '' : '_visible'
@@ -208,7 +211,7 @@ const TestPage = () => {
             >
               <FcCalculator className="h-full w-12" />
               <Wrapper>
-                <span className="text-white">
+                <span className="text-white md:text-xl">
                   How much did I spent on gummy bear?
                 </span>
               </Wrapper>
@@ -221,7 +224,7 @@ const TestPage = () => {
             >
               <FcBarChart className="h-full w-12" />
               <Wrapper>
-                <span className="text-white">
+                <span className="text-white md:text-xl">
                   What is my interests income last week?
                 </span>
               </Wrapper>
@@ -234,7 +237,7 @@ const TestPage = () => {
             >
               <FcList className="h-full w-12" />
               <Wrapper>
-                <span className="text-white">
+                <span className="text-white md:text-xl">
                   I want to know detail of my expanding?
                 </span>
               </Wrapper>
@@ -247,7 +250,7 @@ const TestPage = () => {
             >
               <FcPieChart className="h-full w-12" />
               <Wrapper>
-                <span className="text-white">
+                <span className="text-white md:text-xl">
                   What type of expense counts for most?
                 </span>
               </Wrapper>
@@ -264,14 +267,65 @@ const TestPage = () => {
             </div>
 
             <div className="placeholder h-screen w-screen"></div>
+            FcShop, FcBriefcase, FcCurrencyExchange, FcBullish, FcCustomerSupport
           */}
-        <div className="max-w-5xl mx-auto flex flex-col justify-center select-none">
-          <div className="singleExpense flex w-full h-12 bg-sideDark text-white my-1"></div>
-          <div className="singleExpense flex w-full h-12 bg-sideDark text-white my-1"></div>
-          <div className="singleExpense flex w-full h-12 bg-sideDark text-white my-1"></div>
-          <div className="singleExpense flex w-full h-12 bg-sideDark text-white my-1"></div>
-          <div className="singleExpense flex w-full h-12 bg-sideDark text-white my-1"></div>
+        <div className="section_3 max-w-5xl mx-auto flex flex-col md:flex-row select-none">
+          <div className="demoExpenses mx-auto w-3/4 sm:w-96 flex flex-col ">
+            <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
+              <FcShop className="h-full w-10" />
+              <Wrapper>
+                <AiOutlineDollarCircle className="h-1/2 w-10 text-yellow-300" />
+              </Wrapper>
+
+              <Wrapper>
+                <span className="text-white">$120</span>
+              </Wrapper>
+            </div>
+            <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
+              <FcBriefcase className="h-full w-10" />
+              <Wrapper>
+                <AiOutlineDollarCircle className="h-1/2 w-10 text-red-300" />
+              </Wrapper>
+              <Wrapper>
+                <span className="text-white">$20</span>
+              </Wrapper>
+            </div>
+            <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
+              <FcCurrencyExchange className="h-full w-10" />
+              <Wrapper>
+                <AiOutlineDollarCircle className="h-1/2 w-10 text-yellow-300" />
+              </Wrapper>
+              <Wrapper>
+                <span className="text-white">$15</span>
+              </Wrapper>
+            </div>
+            <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
+              <FcBullish className="h-full w-10" />
+              <Wrapper>
+                <AiOutlineDollarCircle className="h-1/2 w-10 text-red-300" />
+              </Wrapper>
+              <Wrapper>
+                <span className="text-white">$150</span>
+              </Wrapper>
+            </div>
+            <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
+              <FcCustomerSupport className="h-full w-10" />
+              <Wrapper>
+                <AiOutlineDollarCircle className="h-1/2 w-10 text-red-300" />
+              </Wrapper>
+              <Wrapper>
+                <span className="text-white">$23</span>
+              </Wrapper>
+            </div>
+          </div>
+
+          <div className="demoChart w-3/4 sm:w-96 h-72 border border-white mx-auto"></div>
+          {/*
+
+          */}
         </div>
+
+        <div className="h-96"></div>
       </CommonLayout>
     </Fragment>
   )
