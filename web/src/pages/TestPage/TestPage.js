@@ -24,9 +24,10 @@ import {
   FcBullish,
   FcCustomerSupport,
 } from 'react-icons/fc'
-import { Wrapper } from 'src/components/Misc/UtilityFunc'
+import { generateRandomColors, Wrapper } from 'src/components/Misc/UtilityFunc'
 import SingleExpense from 'src/components/Expenses/SingleExpense'
 import SingleType from 'src/components/DefaultType/SingleType'
+import { Doughnut } from 'react-chartjs-2'
 
 //constant
 
@@ -65,6 +66,7 @@ const TestPage = () => {
   const [frontPageCarousel, setFrontPageCarousel] = useState({
     translateX: 0,
     animationX: true,
+    textAnimationX: true,
     loaded: false,
   })
 
@@ -88,11 +90,12 @@ const TestPage = () => {
   const animationContainer = document.getElementById('animationContainer')
   const animationReference = useRef(animationContainer)
   const textContainer = document.getElementById('textContainer')
+  const textReference = useRef(textContainer)
 
   useEffect(() => {
     if (animationContainer) {
       // console.log(animationContainer)
-      const observer = new IntersectionObserver((entries) => {
+      const observerAnimation = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           // console.log(entry, entry.isIntersecting)
           setFrontPageCarousel((state) => {
@@ -104,17 +107,48 @@ const TestPage = () => {
         })
       })
 
+      const observerText = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          // console.log(entry, entry.isIntersecting)
+          setFrontPageCarousel((state) => {
+            return {
+              ...state,
+              textAnimationX: !entry.isIntersecting,
+            }
+          })
+        })
+      })
+
       // console.log(animationReference.current)
-      observer.observe(animationReference.current)
+      observerAnimation.observe(animationReference.current)
+      observerText.observe(textReference.current)
+
       return () => {
         if (animationReference.current) {
-          observer.unobserve(animationReference.current)
+          observerAnimation.unobserve(animationReference.current)
+        }
+
+        if (textReference.current) {
+          observerText.unobserve(textReference.current)
         }
       }
     }
   }, [frontPageCarousel.loaded])
 
   //! --
+
+  // ! local page tag state
+  const [tagState, setTagState] = useState({
+    Juice: true,
+    Coke: true,
+    Business: true,
+    Project: true,
+    'Bank Fee': true,
+    Dividend: true,
+    'Day Job': true,
+  })
+
+  // ! --
 
   return (
     <Fragment>
@@ -140,25 +174,15 @@ const TestPage = () => {
         </div>
 
         {/*
-          <ClockLoading className="h-10 w-10" />
-          <div className="max-w-xl max-h-96 overflow-hidden relative border border-red-300">
-          <Sunshining />
-          </div>
 
 
         */}
         <div className="placeholder relative h-screen w-screen">
           {/*
-            <div className="w-2/3 md:w-1/3 h-1/2 text-white transform translate-all translate-x-1/4 translate-y-2/3">
-              <h3 className="love text-2xl md:text-6xl italic">
-                Personal Expense & Income Tacker
-              </h3>
-              <div className="loginButton bg-green-300 w-40">Start Tracking</div>
-            </div>
-            ---
+
           */}
           <div className="max-w-5xl mx-auto h-full flex flex-col justify-center select-none">
-            <h3 className="love text-4xl sm:text-6xl md:text-8xl italic text-white transform -translate-y-1/2">
+            <h3 className="love text-5xl sm:text-6xl md:text-8xl italic text-white transform -translate-y-1/2">
               Personal Expense & Income Tacker
             </h3>
 
@@ -178,7 +202,6 @@ const TestPage = () => {
 
         {/*
 
-          <Switcher setFrontPageCarousel={setFrontPageCarousel} />
         */}
 
         <div className="section_2 max-w-5xl mx-auto flex flex-col md:flex-row">
@@ -203,10 +226,10 @@ const TestPage = () => {
             <FrontPageAnimation />
           </div>
 
-          <div id="textContainer" ref={textContainer} className="flex-grow">
+          <div id="textContainer" ref={textReference} className="flex-grow">
             <div
               className={`textContainer${
-                frontPageCarousel.animationX ? '' : '_visible'
+                frontPageCarousel.textAnimationX ? '' : '_visible'
               } h-12 flex transform translate-all justify-center`}
             >
               <FcCalculator className="h-full w-12" />
@@ -219,7 +242,7 @@ const TestPage = () => {
 
             <div
               className={`textContainer${
-                frontPageCarousel.animationX ? '' : '_visible'
+                frontPageCarousel.textAnimationX ? '' : '_visible'
               } h-12 flex transform translate-all justify-center`}
             >
               <FcBarChart className="h-full w-12" />
@@ -232,7 +255,7 @@ const TestPage = () => {
 
             <div
               className={`textContainer${
-                frontPageCarousel.animationX ? '' : '_visible'
+                frontPageCarousel.textAnimationX ? '' : '_visible'
               } h-12 flex transform translate-all justify-center`}
             >
               <FcList className="h-full w-12" />
@@ -245,7 +268,7 @@ const TestPage = () => {
 
             <div
               className={`textContainer${
-                frontPageCarousel.animationX ? '' : '_visible'
+                frontPageCarousel.textAnimationX ? '' : '_visible'
               } h-12 flex transform translate-all justify-center`}
             >
               <FcPieChart className="h-full w-12" />
@@ -258,68 +281,98 @@ const TestPage = () => {
           </div>
         </div>
         {/*
-            <div className="absolute h-10 w-10 top-0 right-10 bg-red-300"></div>
-            <div className="textContainer absolute top-0 right-0 text-white">
-              <h3>xxx</h3>
-              <h3>xxx</h3>
-              <h3>xxx</h3>
-              <h3>xxx</h3>
-            </div>
 
-            <div className="placeholder h-screen w-screen"></div>
-            FcShop, FcBriefcase, FcCurrencyExchange, FcBullish, FcCustomerSupport
           */}
         <div className="section_3 max-w-5xl mx-auto flex flex-col md:flex-row select-none">
           <div className="demoExpenses mx-auto w-3/4 sm:w-96 flex flex-col ">
             <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
               <FcShop className="h-full w-10" />
-              <Wrapper>
-                <AiOutlineDollarCircle className="h-1/2 w-10 text-yellow-300" />
+              <Wrapper className="cursor-default">
+                <AiOutlineDollarCircle className="h-1/2 w-6 text-yellow-300" />
               </Wrapper>
 
               <Wrapper>
-                <span className="text-white">$120</span>
+                <span className="text-white w-8 sm:w-10">$120</span>
               </Wrapper>
+
+              <LandingPageTag
+                content="Juice"
+                tagState={tagState}
+                setTagState={setTagState}
+              />
+              <LandingPageTag
+                content="Coke"
+                tagState={tagState}
+                setTagState={setTagState}
+              />
             </div>
             <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
               <FcBriefcase className="h-full w-10" />
-              <Wrapper>
-                <AiOutlineDollarCircle className="h-1/2 w-10 text-red-300" />
+              <Wrapper className="cursor-default">
+                <AiOutlineDollarCircle className="h-1/2 w-6 text-red-300" />
               </Wrapper>
               <Wrapper>
-                <span className="text-white">$20</span>
+                <span className="text-white w-8 sm:w-10">$20</span>
               </Wrapper>
+
+              <LandingPageTag
+                content="Business"
+                tagState={tagState}
+                setTagState={setTagState}
+              />
+              <LandingPageTag
+                content="Project"
+                tagState={tagState}
+                setTagState={setTagState}
+              />
             </div>
             <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
               <FcCurrencyExchange className="h-full w-10" />
-              <Wrapper>
-                <AiOutlineDollarCircle className="h-1/2 w-10 text-yellow-300" />
+              <Wrapper className="cursor-default">
+                <AiOutlineDollarCircle className="h-1/2 w-6 text-yellow-300" />
               </Wrapper>
               <Wrapper>
-                <span className="text-white">$15</span>
+                <span className="text-white w-8 sm:w-10">$15</span>
               </Wrapper>
+              <LandingPageTag
+                content="Bank Fee"
+                tagState={tagState}
+                setTagState={setTagState}
+              />
             </div>
             <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
               <FcBullish className="h-full w-10" />
-              <Wrapper>
-                <AiOutlineDollarCircle className="h-1/2 w-10 text-red-300" />
+              <Wrapper className="cursor-default">
+                <AiOutlineDollarCircle className="h-1/2 w-6 text-red-300" />
               </Wrapper>
               <Wrapper>
-                <span className="text-white">$150</span>
+                <span className="text-white w-8 sm:w-10">$150</span>
               </Wrapper>
+              <LandingPageTag
+                content="Dividend"
+                tagState={tagState}
+                setTagState={setTagState}
+              />
             </div>
             <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
               <FcCustomerSupport className="h-full w-10" />
-              <Wrapper>
-                <AiOutlineDollarCircle className="h-1/2 w-10 text-red-300" />
+              <Wrapper className="cursor-default">
+                <AiOutlineDollarCircle className="h-1/2 w-6 text-red-300" />
               </Wrapper>
               <Wrapper>
-                <span className="text-white">$23</span>
+                <span className="text-white w-8 sm:w-10">$23</span>
               </Wrapper>
+              <LandingPageTag
+                content="Day Job"
+                tagState={tagState}
+                setTagState={setTagState}
+              />
             </div>
           </div>
 
-          <div className="demoChart w-3/4 sm:w-96 h-72 border border-white mx-auto"></div>
+          <div className="demoChart w-3/4 sm:w-96 h-72 mx-auto">
+            <LandingPageChart tagState={tagState} />
+          </div>
           {/*
 
           */}
@@ -333,57 +386,95 @@ const TestPage = () => {
 
 export default TestPage
 
-/*
-
-const Switcher = ({ setFrontPageCarousel }) => {
-  const [checkState, setCheckState] = useState({
-    checked: false,
-  })
-  const { checked } = checkState
+const LandingPageTag = ({ content, tagState, setTagState }) => {
   return (
     <div
       onClick={() => {
-        console.log('click')
-        setCheckState((state) => {
+        setTagState((state) => {
           return {
             ...state,
-            checked: !state.checked,
-          }
-        })
-        setFrontPageCarousel((state) => {
-          return {
-            ...state,
-            animationX: !state.animationX,
+            [content]: !state[content],
           }
         })
       }}
-      onKeyDown={(e) => console.log(e.key)}
-      tabIndex="0"
+      className="flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-16 sm:w-32 h-12 select-none"
+      onKeyDown={() => {}}
       role="button"
-      className={`transform transition-all duration-500 ease-in-out parent relative h-5 w-12 rounded-full bg-${
-        checked ? 'red' : 'golden'
-      }${checked ? '-500' : ''} cursor-pointer`}
+      tabIndex="0"
     >
-      <Money
-        className={`translate-x-${
-          checked ? '7' : '0'
-        } text-gray-700 transform transition-all duration-500 ease-in-out absolute border-transparent rounded-full -inset-0 slider bg-transparent h-5 w-5 `}
-      ></Money>
+      <span
+        className={`whitespace-nowrap rounded-full py-1 px-2 ${
+          tagState[content]
+            ? 'bg-green-300 text-black hover:bg-green-400'
+            : 'bg-overlay text-white hover:bg-gray-500'
+        }`}
+      >
+        {content}
+      </span>
     </div>
   )
 }
-*/
 
-// export const Wrapper = ({ children, className, ...rest }) => {
-//   const { onClick, paddingLeft } = rest || {}
-//   return (
-//     <div
-//       onClick={onClick}
-//       className={`${className} flex flex-col justify-center relative ${
-//         paddingLeft ? 'paddingLeft' : 'pl-1'
-//       } text-xs sm:text-sm md:text-base`}
-//     >
-//       {children}
-//     </div>
-//   )
-// }
+const LandingPageChart = ({ ...props }) => {
+  const { tagState } = props
+  let Grocery = 60
+  let Business = 20
+  let Fee = 15
+  let Investment = 75
+  let Work = 23
+
+  if (!tagState['Juice']) {
+    Grocery = Grocery - 20
+  }
+
+  if (!tagState['Coke']) {
+    Grocery = Grocery - 15
+  }
+
+  if (!tagState['Business']) {
+    Business = Business - 5
+  }
+
+  if (!tagState['Project']) {
+    Business = Business - 7
+  }
+
+  if (!tagState['Bank Fee']) {
+    Fee = Fee - 7
+  }
+
+  if (!tagState['Dividend']) {
+    Investment = Investment - 28
+  }
+
+  if (!tagState['Day Job']) {
+    Work = Work - 23
+  }
+
+  const data = {
+    labels: ['Grocery', 'Business', 'Fee', 'Investment', 'Work'],
+    datasets: [
+      {
+        data: [Grocery, Business, Fee, Investment, Work],
+        fill: true,
+        backgroundColor: [...generateRandomColors(5)],
+        borderColor: '#C0C0C0',
+      },
+    ],
+  }
+
+  const options = {
+    maintainAspectRatio: false,
+    legend: {
+      labels: {
+        fontColor: '#909090',
+      },
+    },
+  }
+
+  return (
+    <Fragment>
+      <Doughnut data={data} options={options} />
+    </Fragment>
+  )
+}

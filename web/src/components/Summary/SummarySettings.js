@@ -284,7 +284,7 @@ const SummarySettings = ({
                 name='minDate'
                 className="transform transition-all duration-500 ease-in-out h-8 m-1 bg-gray-500 text-white w-60 md:w-80 pl-1 focus:ring-2 focus:ring-green-300"
                 type="date"
-                value={dateState.minDate}
+                value={dateState.minDate ? dateState.minDate : ''}
                 onChange={onDateChange}
               />
               <span className="ml-1 text-white">To:</span>
@@ -293,7 +293,7 @@ const SummarySettings = ({
                 name='maxDate'
                 className="transform transition-all duration-500 ease-in-out h-8 m-1 bg-gray-500 text-white w-60 md:w-80 pl-1 focus:ring-2 focus:ring-green-300"
                 type="date"
-                value={dateState.maxDate}
+                value={dateState.maxDate ? dateState.maxDate : ''}
                 onChange={onDateChange}
               />
               {typeCategoryState.dataError && <span className="pl-1 text-red-500">Error: From Date needs to be earlier than To Date</span>}

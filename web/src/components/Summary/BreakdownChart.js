@@ -32,7 +32,7 @@ const BreakdownChart = ({ expenseByType, typeCategoryState }) => {
   const data = {
     labels: formattedData
       ? Object.keys(formattedData)
-      : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      : ['Grocery', 'Business', 'Fee', 'Investment', 'Work'],
     datasets: [
       {
         data: formattedData

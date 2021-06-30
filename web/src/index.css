@@ -19,10 +19,9 @@ button, input, label, textarea {
 body {
   overflow-x: hidden !important;
 }
-/* #redwood-app {
-  overflow-x: hidden;
-  width: 100vw;
-} */
+#redwood-app {
+  overflow-x: hidden !important;
+}
 
 label {
   margin-top: 1rem;
