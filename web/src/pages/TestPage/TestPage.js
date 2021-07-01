@@ -4,12 +4,7 @@ import { Fragment, useRef } from 'react'
 import { Link, routes } from '@redwoodjs/router'
 
 import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
-import { defaultIcons } from 'src/components/DefaultType/Static'
-import { ClockLoading, Puipui, Sunshining } from 'src/components/Misc/svg'
-import { iconTypes, CREDIT_CARD } from 'src/components/DefaultType/Static'
 import { FrontPageAnimation } from 'src/components/Misc/svgExtra'
-// import {xx} from '../../resource/monitor_pic.png'
-import Monitor from '../TestPage/monitor_pic.png'
 import MonitorLarge from '../TestPage/monitorLarge.png'
 
 import { AiOutlineDollarCircle } from 'react-icons/ai'
@@ -25,8 +20,6 @@ import {
   FcCustomerSupport,
 } from 'react-icons/fc'
 import { generateRandomColors, Wrapper } from 'src/components/Misc/UtilityFunc'
-import SingleExpense from 'src/components/Expenses/SingleExpense'
-import SingleType from 'src/components/DefaultType/SingleType'
 import { Doughnut } from 'react-chartjs-2'
 
 //constant
@@ -37,53 +30,34 @@ const TestPage = () => {
   })
   const { sideBarShowed } = showSidebar
 
-  const Credit = iconTypes[CREDIT_CARD]
-
-  let throttleTimeout = useRef(null)
-
-  const onHandleScroll = (e) => {
-    const callback = () => {
-      setTimeout(
-        () =>
-          console.log(
-            // `scrollHeight: ${e.target.scrollHeight} scrollTop: ${Math.abs(
-            //   e.target.scrollTop
-            // )} clientHeight: ${e.target.clientHeight}`
-            e.target.scrollHeight - Math.abs(e.target.scrollTop) ===
-              e.target.clientHeight
-          ),
-        500
-      )
-    }
-    if (!throttleTimeout.current) {
-      callback()
-      throttleTimeout.current = setTimeout(() => {
-        throttleTimeout.current = null
-      }, 500)
-    }
-  }
-
   const [frontPageCarousel, setFrontPageCarousel] = useState({
+    timeId: null,
     translateX: 0,
     animationX: true,
     textAnimationX: true,
+    expenseX: true,
+    chartX: true,
     loaded: false,
   })
 
-  // const carouselAnimation = () => {
-  //   let timeId = setTimeout(function carouselDelayRun() {
-  //     setFrontPageCarousel((state) => {
-  //       return {
-  //         ...state,
-  //         translateX: state.translateX === 2 ? 0 : ++state.translateX,
-  //       }
-  //     })
-  //     timeId = setTimeout(carouselDelayRun, 5000)
-  //   }, 5000)
-  // }
-  // useEffect(() => {
-  //   carouselAnimation()
-  // }, [])
+  //! landingPage Picture Carousel animation
+  const carouselAnimation = () => {
+    frontPageCarousel.timeId = setTimeout(function carouselDelayRun() {
+      setFrontPageCarousel((state) => {
+        return {
+          ...state,
+          translateX: state.translateX === 2 ? 0 : ++state.translateX,
+        }
+      })
+      frontPageCarousel.timeId = setTimeout(carouselDelayRun, 5000)
+    }, 5000)
+  }
+  useEffect(() => {
+    carouselAnimation()
+    return () => {
+      clearTimeout(frontPageCarousel.timeId)
+    }
+  }, [])
 
   //! handling viewport visibility check with  IntersectionObserver
 
@@ -91,6 +65,10 @@ const TestPage = () => {
   const animationReference = useRef(animationContainer)
   const textContainer = document.getElementById('textContainer')
   const textReference = useRef(textContainer)
+  const expenseContainer = document.getElementById('expenseContainer')
+  const expenseReference = useRef(expenseContainer)
+  const chartContainer = document.getElementById('chartContainer')
+  const chartReference = useRef(chartContainer)
 
   useEffect(() => {
     if (animationContainer) {
@@ -109,7 +87,6 @@ const TestPage = () => {
 
       const observerText = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          // console.log(entry, entry.isIntersecting)
           setFrontPageCarousel((state) => {
             return {
               ...state,
@@ -119,9 +96,33 @@ const TestPage = () => {
         })
       })
 
+      const observerExpense = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          setFrontPageCarousel((state) => {
+            return {
+              ...state,
+              expenseX: !entry.isIntersecting,
+            }
+          })
+        })
+      })
+
+      const observerChart = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          setFrontPageCarousel((state) => {
+            return {
+              ...state,
+              chartX: !entry.isIntersecting,
+            }
+          })
+        })
+      })
+
       // console.log(animationReference.current)
       observerAnimation.observe(animationReference.current)
       observerText.observe(textReference.current)
+      observerExpense.observe(expenseReference.current)
+      observerChart.observe(chartReference.current)
 
       return () => {
         if (animationReference.current) {
@@ -130,6 +131,14 @@ const TestPage = () => {
 
         if (textReference.current) {
           observerText.unobserve(textReference.current)
+        }
+
+        if (expenseReference.current) {
+          observerExpense.unobserve(expenseReference.current)
+        }
+
+        if (chartReference.current) {
+          observerExpense.unobserve(chartReference.current)
         }
       }
     }
@@ -226,14 +235,18 @@ const TestPage = () => {
             <FrontPageAnimation />
           </div>
 
-          <div id="textContainer" ref={textReference} className="flex-grow">
+          <div
+            id="textContainer"
+            ref={textReference}
+            className="flex-grow select-none"
+          >
             <div
               className={`textContainer${
                 frontPageCarousel.textAnimationX ? '' : '_visible'
               } h-12 flex transform translate-all justify-center`}
             >
               <FcCalculator className="h-full w-12" />
-              <Wrapper>
+              <Wrapper className="cursor-default">
                 <span className="text-white md:text-xl">
                   How much did I spent on gummy bear?
                 </span>
@@ -246,7 +259,7 @@ const TestPage = () => {
               } h-12 flex transform translate-all justify-center`}
             >
               <FcBarChart className="h-full w-12" />
-              <Wrapper>
+              <Wrapper className="cursor-default">
                 <span className="text-white md:text-xl">
                   What is my interests income last week?
                 </span>
@@ -259,7 +272,7 @@ const TestPage = () => {
               } h-12 flex transform translate-all justify-center`}
             >
               <FcList className="h-full w-12" />
-              <Wrapper>
+              <Wrapper className="cursor-default">
                 <span className="text-white md:text-xl">
                   I want to know detail of my expanding?
                 </span>
@@ -272,7 +285,7 @@ const TestPage = () => {
               } h-12 flex transform translate-all justify-center`}
             >
               <FcPieChart className="h-full w-12" />
-              <Wrapper>
+              <Wrapper className="cursor-default">
                 <span className="text-white md:text-xl">
                   What type of expense counts for most?
                 </span>
@@ -284,15 +297,23 @@ const TestPage = () => {
 
           */}
         <div className="section_3 max-w-5xl mx-auto flex flex-col md:flex-row select-none">
-          <div className="demoExpenses mx-auto w-3/4 sm:w-96 flex flex-col ">
-            <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
+          <div
+            id="expenseContainer"
+            ref={expenseReference}
+            className="demoExpenses mx-auto w-3/4 sm:w-96 flex flex-col "
+          >
+            <div
+              className={`singleExpense expenseContainer${
+                frontPageCarousel.expenseX ? '' : '_visible'
+              } flex h-12 bg-sideDark text-white my-1`}
+            >
               <FcShop className="h-full w-10" />
               <Wrapper className="cursor-default">
                 <AiOutlineDollarCircle className="h-1/2 w-6 text-yellow-300" />
               </Wrapper>
 
               <Wrapper>
-                <span className="text-white w-8 sm:w-10">$120</span>
+                <span className="text-white w-8 sm:w-10">$38</span>
               </Wrapper>
 
               <LandingPageTag
@@ -306,7 +327,11 @@ const TestPage = () => {
                 setTagState={setTagState}
               />
             </div>
-            <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
+            <div
+              className={`singleExpense expenseContainer${
+                frontPageCarousel.expenseX ? '' : '_visible'
+              } flex h-12 bg-sideDark text-white my-1`}
+            >
               <FcBriefcase className="h-full w-10" />
               <Wrapper className="cursor-default">
                 <AiOutlineDollarCircle className="h-1/2 w-6 text-red-300" />
@@ -326,7 +351,11 @@ const TestPage = () => {
                 setTagState={setTagState}
               />
             </div>
-            <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
+            <div
+              className={`singleExpense expenseContainer${
+                frontPageCarousel.expenseX ? '' : '_visible'
+              } flex h-12 bg-sideDark text-white my-1`}
+            >
               <FcCurrencyExchange className="h-full w-10" />
               <Wrapper className="cursor-default">
                 <AiOutlineDollarCircle className="h-1/2 w-6 text-yellow-300" />
@@ -340,13 +369,17 @@ const TestPage = () => {
                 setTagState={setTagState}
               />
             </div>
-            <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
+            <div
+              className={`singleExpense expenseContainer${
+                frontPageCarousel.expenseX ? '' : '_visible'
+              } flex h-12 bg-sideDark text-white my-1`}
+            >
               <FcBullish className="h-full w-10" />
               <Wrapper className="cursor-default">
                 <AiOutlineDollarCircle className="h-1/2 w-6 text-red-300" />
               </Wrapper>
               <Wrapper>
-                <span className="text-white w-8 sm:w-10">$150</span>
+                <span className="text-white w-8 sm:w-10">$40</span>
               </Wrapper>
               <LandingPageTag
                 content="Dividend"
@@ -354,7 +387,11 @@ const TestPage = () => {
                 setTagState={setTagState}
               />
             </div>
-            <div className="singleExpense flex h-12 bg-sideDark text-white my-1">
+            <div
+              className={`singleExpense expenseContainer${
+                frontPageCarousel.expenseX ? '' : '_visible'
+              } flex h-12 bg-sideDark text-white my-1`}
+            >
               <FcCustomerSupport className="h-full w-10" />
               <Wrapper className="cursor-default">
                 <AiOutlineDollarCircle className="h-1/2 w-6 text-red-300" />
@@ -370,7 +407,13 @@ const TestPage = () => {
             </div>
           </div>
 
-          <div className="demoChart w-3/4 sm:w-96 h-72 mx-auto">
+          <div
+            id="chartContainer"
+            ref={chartReference}
+            className={`demoChart chartContainer${
+              frontPageCarousel.chartX ? '' : '_visible'
+            } w-3/4 sm:w-96 h-72 mx-auto`}
+          >
             <LandingPageChart tagState={tagState} />
           </div>
           {/*
@@ -417,10 +460,10 @@ const LandingPageTag = ({ content, tagState, setTagState }) => {
 
 const LandingPageChart = ({ ...props }) => {
   const { tagState } = props
-  let Grocery = 60
+  let Grocery = 38
   let Business = 20
   let Fee = 15
-  let Investment = 75
+  let Investment = 40
   let Work = 23
 
   if (!tagState['Juice']) {
