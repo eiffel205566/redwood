@@ -319,7 +319,14 @@ export const FrontPageAnimation = () => {
             ></path>
           </g>
         </g>
-        <rect x="170" y="55" width="200" height="40" fill="gray"></rect>
+        <rect
+          className="testClass"
+          x="170"
+          y="55"
+          width="200"
+          height="40"
+          fill="gray"
+        ></rect>
         <rect x="170" y="55" width="150" height="40" fill="green">
           <animate
             attributeName="width"
@@ -328,6 +335,7 @@ export const FrontPageAnimation = () => {
             fill="freeze"
             repeatCount="indefinite"
           />
+          )
         </rect>
 
         <g className="raising_2 transform transition-all duration-500 ease-in-out">

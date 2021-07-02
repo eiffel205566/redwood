@@ -2,6 +2,8 @@ import SideBar from '../../components/SideBar/SideBar'
 import { useEffect, useState } from 'react'
 import { Fragment, useRef } from 'react'
 import { Link, routes } from '@redwoodjs/router'
+import Letter from './Letter'
+import Footer from 'src/layouts/CommonLayout/Footer'
 
 import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
 import { FrontPageAnimation } from 'src/components/Misc/svgExtra'
@@ -19,10 +21,14 @@ import {
   FcBullish,
   FcCustomerSupport,
 } from 'react-icons/fc'
+import { AiOutlineRight, AiOutlinePause } from 'react-icons/ai'
 import { generateRandomColors, Wrapper } from 'src/components/Misc/UtilityFunc'
 import { Doughnut } from 'react-chartjs-2'
 
-//constant
+//! constant
+const FIRSTLINE = 'TRACK EXPENSE'
+const SECONDLINE = 'RECORD INCOME'
+//!--
 
 const TestPage = () => {
   const [showSidebar, setShowSidebar] = useState({
@@ -31,33 +37,53 @@ const TestPage = () => {
   const { sideBarShowed } = showSidebar
 
   const [frontPageCarousel, setFrontPageCarousel] = useState({
+    stopAnimation: false,
     timeId: null,
     translateX: 0,
     animationX: true,
     textAnimationX: true,
     expenseX: true,
     chartX: true,
+    bigTextFirstX: false,
+    bigTextSecondX: false,
     loaded: false,
   })
 
   //! landingPage Picture Carousel animation
   const carouselAnimation = () => {
+    let localState
     frontPageCarousel.timeId = setTimeout(function carouselDelayRun() {
       setFrontPageCarousel((state) => {
+        localState =
+          state.translateX === 4 ? { ...state, translateX: 0 } : state
         return {
           ...state,
-          translateX: state.translateX === 2 ? 0 : ++state.translateX,
+          translateX: state.translateX === 4 ? 0 : ++state.translateX,
         }
       })
-      frontPageCarousel.timeId = setTimeout(carouselDelayRun, 5000)
-    }, 5000)
+
+      if (localState.stopAnimation) {
+        clearTimeout(localState.timeId)
+        return
+      }
+
+      if (localState.translateX === 0) {
+        clearTimeout(frontPageCarousel.timeId)
+        frontPageCarousel.timeId = setTimeout(carouselDelayRun, 200)
+      } else {
+        frontPageCarousel.timeId = setTimeout(carouselDelayRun, 2000)
+      }
+    }, 2000)
   }
   useEffect(() => {
-    carouselAnimation()
+    if (!frontPageCarousel.stopAnimation) {
+      carouselAnimation()
+    }
+
     return () => {
       clearTimeout(frontPageCarousel.timeId)
     }
-  }, [])
+  }, [frontPageCarousel.stopAnimation])
 
   //! handling viewport visibility check with  IntersectionObserver
 
@@ -69,6 +95,10 @@ const TestPage = () => {
   const expenseReference = useRef(expenseContainer)
   const chartContainer = document.getElementById('chartContainer')
   const chartReference = useRef(chartContainer)
+  const bigTextFirstLine = document.getElementById('bigTextFirstLine')
+  const bigTextFirstLineRef = useRef(bigTextFirstLine)
+  const bigTextSecondLine = document.getElementById('bigTextSecondLine')
+  const bigTextSecondLineRef = useRef(bigTextSecondLine)
 
   useEffect(() => {
     if (animationContainer) {
@@ -118,11 +148,35 @@ const TestPage = () => {
         })
       })
 
+      const observerBigTextFirstLine = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          setFrontPageCarousel((state) => {
+            return {
+              ...state,
+              bigTextFirstX: entry.isIntersecting,
+            }
+          })
+        })
+      })
+
+      const observerBigTextSecondLine = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          setFrontPageCarousel((state) => {
+            return {
+              ...state,
+              bigTextSecondX: entry.isIntersecting,
+            }
+          })
+        })
+      })
+
       // console.log(animationReference.current)
       observerAnimation.observe(animationReference.current)
       observerText.observe(textReference.current)
       observerExpense.observe(expenseReference.current)
       observerChart.observe(chartReference.current)
+      observerBigTextFirstLine.observe(bigTextFirstLineRef.current)
+      observerBigTextSecondLine.observe(bigTextSecondLineRef.current)
 
       return () => {
         if (animationReference.current) {
@@ -139,6 +193,13 @@ const TestPage = () => {
 
         if (chartReference.current) {
           observerExpense.unobserve(chartReference.current)
+        }
+
+        if (bigTextFirstLineRef.current) {
+          observerBigTextFirstLine.unobserve(bigTextFirstLineRef.current)
+        }
+        if (bigTextSecondLineRef.current) {
+          observerBigTextSecondLine.unobserve(bigTextSecondLineRef.current)
         }
       }
     }
@@ -169,16 +230,24 @@ const TestPage = () => {
         setShowSidebar={setShowSidebar}
         maxWidth="1"
       >
-        <div className="carouselPictureContainer absolute top-0 left-0 -z-10 w-screen overflow-x-hidden select-none">
+        <div className="section_1 carouselPictureContainer absolute top-0 left-0 -z-10 w-screen overflow-x-hidden select-none">
           {/*
-            <div className="overlayBackground bg-gray-100 absolute min-h-full min-w-full bg-opacity-50 cursor-default z-10"></div>
+            >
            */}
           <ul
-            className={`allTagss frontPageCarousel h-screen w-screen flex transform transition-all duration-500 ease-in-out -translate-x-${frontPageCarousel.translateX}/3`}
+            className={`allTagss frontPageCarousel h-screen w-screen flex ${
+              frontPageCarousel.translateX === 0
+                ? ''
+                : 'transform transition-all duration-500 ease-in-out'
+            } -translate-x-${frontPageCarousel.translateX}/5`}
           >
             <li className="flex flex-col pictureContainer_1 h-screen w-full "></li>
             <li className="flex flex-col pictureContainer_2 h-screen w-full "></li>
             <li className="flex flex-col pictureContainer_3 h-screen w-full "></li>
+            <li className="flex flex-col pictureContainer_4 h-screen w-full "></li>
+            <li className="flex flex-col pictureContainer_1 h-screen w-full "></li>
+            {/*
+             */}
           </ul>
         </div>
 
@@ -191,12 +260,34 @@ const TestPage = () => {
 
           */}
           <div className="max-w-5xl mx-auto h-full flex flex-col justify-center select-none">
-            <h3 className="love text-5xl sm:text-6xl md:text-8xl italic text-white transform -translate-y-1/2">
+            <h3 className="love text-5xl sm:text-6xl md:text-8xl italic text-gray-100 font-semibold transform -translate-y-1/2">
               Personal Expense & Income Tacker
             </h3>
 
-            <div className="love cursor-pointer hover:text-black hover:bg-gray-100 text-white rounded-lg fontGrad italic loginButton border-2 border-green-300 h-10 w-40 text-4xl text-black text-center transform transition-all duration-500 ease-in-out">
-              Start Here...
+            <div className="buttonsContainer w-full flex">
+              <div className="love cursor-pointer hover:text-black hover:bg-gray-100 text-white rounded-lg fontGrad italic loginButton border-2 border-green-300 h-10 w-40 text-4xl text-black text-center transform transition-all duration-500 ease-in-out">
+                Starts Here...
+              </div>
+              <div
+                onClick={() => {
+                  setFrontPageCarousel((state) => {
+                    return {
+                      ...state,
+                      stopAnimation: !state.stopAnimation,
+                    }
+                  })
+                }}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex="0"
+                className="ml-1 relative w-10 h-full flex flex-col justify-center text-white hover:text-green-300 "
+              >
+                {frontPageCarousel.stopAnimation ? (
+                  <AiOutlineRight className="w-full h-full" />
+                ) : (
+                  <AiOutlinePause className="w-full h-full" />
+                )}
+              </div>
             </div>
           </div>
 
@@ -232,7 +323,9 @@ const TestPage = () => {
             <div className="h-full w-full absolute -z-10">
               <img className="h-full m-auto" src={MonitorLarge} alt="monitor" />
             </div>
-            <FrontPageAnimation />
+            {!frontPageCarousel.animationX && (
+              <FrontPageAnimation visible={!frontPageCarousel.animationX} />
+            )}
           </div>
 
           <div
@@ -420,8 +513,53 @@ const TestPage = () => {
 
           */}
         </div>
+        <div className="separator h-6"></div>
 
-        <div className="h-96"></div>
+        <div className="section_4 mx-auto relative w-screen h-screen overflow-hidden">
+          {/*
+
+          */}
+          <div className="pictureContainer_5 absolute w-full h-full z-30"></div>
+          <div className="pictureContainer_6 absolute w-full h-full z-20"></div>
+          <div className="bigTextContainer w-full h-full bg-overlay absolute text-white">
+            <div className="max-w-5xl mx-auto flex flex-col h-full">
+              <div className="h-full flex flex-col justify-center">
+                <h1
+                  id="bigTextFirstLine"
+                  ref={bigTextFirstLineRef}
+                  className="bigTextFirstLine text-4xl md:text-7xl text-center z-30 font-semibold"
+                >
+                  {frontPageCarousel.bigTextFirstX &&
+                    Array.from(FIRSTLINE).map((letter, index, arr) => (
+                      <Letter
+                        key={index}
+                        index={index}
+                        letter={letter}
+                        len={arr.length}
+                      />
+                    ))}
+                </h1>
+                <h1
+                  id="bigTextSecondLine"
+                  ref={bigTextSecondLineRef}
+                  className="bigTextSecondLine text-4xl md:text-7xl text-center z-30 font-semibold"
+                >
+                  {frontPageCarousel.bigTextSecondX &&
+                    Array.from(SECONDLINE).map((letter, index, arr) => (
+                      <Letter
+                        key={index}
+                        index={index}
+                        letter={letter}
+                        len={arr.length}
+                      />
+                    ))}
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="h-12"></div>
+        <Footer />
       </CommonLayout>
     </Fragment>
   )

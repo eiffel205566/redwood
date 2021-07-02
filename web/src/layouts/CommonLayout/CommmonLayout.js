@@ -35,7 +35,7 @@ const CommonLayout = ({
         <div className="masterLoadingOverlay select-none background bg-transparent absolute min-h-full min-w-full z-50"></div>
        */}
 
-      <div className="cover h-screen min-w-full fixed bg-overlay -z-10 overflow-y-hidden"></div>
+      <div className="cover h-screen w-screen fixed bg-overlay -z-10 overflow-hidden"></div>
 
       <aside
         className={`sidebarContainer transform ${
