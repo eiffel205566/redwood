@@ -47,6 +47,7 @@ const TestPage = () => {
     bigTextFirstX: false,
     bigTextSecondX: false,
     loaded: false,
+    sectionFourChart: false,
   })
 
   //! landingPage Picture Carousel animation
@@ -99,6 +100,10 @@ const TestPage = () => {
   const bigTextFirstLineRef = useRef(bigTextFirstLine)
   const bigTextSecondLine = document.getElementById('bigTextSecondLine')
   const bigTextSecondLineRef = useRef(bigTextSecondLine)
+  const sectionFour = document.getElementById('section_4')
+  const sectionFourRef = useRef(sectionFour)
+
+  const option = { threshold: 0.3 }
 
   useEffect(() => {
     if (animationContainer) {
@@ -113,7 +118,7 @@ const TestPage = () => {
             }
           })
         })
-      })
+      }, option)
 
       const observerText = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -124,7 +129,7 @@ const TestPage = () => {
             }
           })
         })
-      })
+      }, option)
 
       const observerExpense = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -135,7 +140,7 @@ const TestPage = () => {
             }
           })
         })
-      })
+      }, option)
 
       const observerChart = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -146,7 +151,7 @@ const TestPage = () => {
             }
           })
         })
-      })
+      }, option)
 
       const observerBigTextFirstLine = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -170,6 +175,20 @@ const TestPage = () => {
         })
       })
 
+      const observerSectionFour = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            setFrontPageCarousel((state) => {
+              return {
+                ...state,
+                sectionFourChart: entry.isIntersecting,
+              }
+            })
+          })
+        },
+        { threshold: 0.4 }
+      )
+
       // console.log(animationReference.current)
       observerAnimation.observe(animationReference.current)
       observerText.observe(textReference.current)
@@ -177,6 +196,7 @@ const TestPage = () => {
       observerChart.observe(chartReference.current)
       observerBigTextFirstLine.observe(bigTextFirstLineRef.current)
       observerBigTextSecondLine.observe(bigTextSecondLineRef.current)
+      observerSectionFour.observe(sectionFourRef.current)
 
       return () => {
         if (animationReference.current) {
@@ -200,6 +220,9 @@ const TestPage = () => {
         }
         if (bigTextSecondLineRef.current) {
           observerBigTextSecondLine.unobserve(bigTextSecondLineRef.current)
+        }
+        if (sectionFourRef.current) {
+          observerSectionFour.unobserve(sectionFourRef.current)
         }
       }
     }
@@ -515,14 +538,30 @@ const TestPage = () => {
         </div>
         <div className="separator h-6"></div>
 
-        <div className="section_4 mx-auto relative w-screen h-screen overflow-hidden">
+        <div
+          id="section_4"
+          ref={sectionFourRef}
+          className="section_4 mx-auto relative w-screen h-screen overflow-hidden"
+        >
           {/*
 
           */}
-          <div className="pictureContainer_5 absolute w-full h-full z-30"></div>
-          <div className="pictureContainer_6 absolute w-full h-full z-20"></div>
+          <div
+            className={`pictureContainer_5 ${
+              frontPageCarousel.sectionFourChart
+                ? ''
+                : 'pictureContainer_5_not_visible'
+            } absolute w-full h-full z-30 transform transition-all duration-500 ease-in-out`}
+          ></div>
+          <div
+            className={`pictureContainer_6 ${
+              frontPageCarousel.sectionFourChart
+                ? ''
+                : 'pictureContainer_6_not_visible'
+            } absolute w-full h-full z-20 transform transition-all duration-500 ease-in-out`}
+          ></div>
           <div className="bigTextContainer w-full h-full bg-overlay absolute text-white">
-            <div className="max-w-5xl mx-auto flex flex-col h-full">
+            <div className="max-w-5xl mx-auto flex flex-col h-full select-none">
               <div className="h-full flex flex-col justify-center">
                 <h1
                   id="bigTextFirstLine"

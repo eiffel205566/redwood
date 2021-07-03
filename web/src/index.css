@@ -397,6 +397,13 @@ img {
   background-size: cover;
   background-position-x: center;
   clip-path: polygon(60% 0%, 100% 0%, 100% 100%, 45% 100%);
+  transform: translateY(0vh);
+  opacity: 1;
+}
+
+.pictureContainer_5_not_visible {
+  transform: translateY(-20vh) translateX(3vw);
+  opacity: 0;
 }
 
 .pictureContainer_6 {
@@ -405,6 +412,13 @@ img {
   background-size: cover;
   background-position-x: center;
   clip-path: polygon(0 0, 60% 0, 45% 100%, 0 100%);
+  transform: translateY(0vh);
+  opacity: 1;
+}
+
+.pictureContainer_6_not_visible {
+  transform: translateY(20vh) translateX(-3vw);
+  opacity: 0;
 }
 
 
