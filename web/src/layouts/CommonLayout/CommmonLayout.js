@@ -41,38 +41,40 @@ const CommonLayout = ({
 
       <div className="cover h-screen w-screen fixed bg-overlay -z-10 overflow-hidden"></div>
 
-      <aside
-        className={`sidebarContainer transform ${
-          sideBarShowed ? 'left-0' : '-left-40'
-        } transition-all duration-500 ease-in-out min-h-screen fixed w-40 bg-sideDark`}
-      >
-        <SideBar className="w-40" />
-      </aside>
+      {/*
+        <aside
+          className={`sidebarContainer transform ${
+            sideBarShowed ? 'left-0' : '-left-40'
+          } transition-all duration-500 ease-in-out min-h-screen fixed w-40 bg-sideDark`}
+        >
+          <SideBar className="w-40" />
+          </aside>
+          {false && (
+            <div
+              className="cursor-pointer bg-gray-400 w-10 flex flex-row justify-center z-10 headerGradient"
+              onClick={onHandleSideBar}
+              role="button"
+              onKeyDown={() => {}}
+              tabIndex="0"
+            >
+              <Dots
+                className={
+                  sideBarShowed
+                    ? 'h-full w-6 transition duration-500 ease-in-out transform hover:text-gray-900'
+                    : 'h-full w-6 transition duration-500 ease-in-out transform rotate-90 hover:text-gray-900'
+                }
+              />
+            </div>
+          )}
+      */}
 
       <header className="h-14 z-30 headerGradient text-gray-300 select-none w-screen">
         {/*
 
         */}
-        <div className="h-full max-w-5xl mx-auto">
+        <div className="h-full max-w-5xl mx-auto z-30">
           <div className="z-30 bg-gray-400">
             <nav className="h-14 min-w-full flex flex-row z-20">
-              {false && (
-                <div
-                  className="cursor-pointer bg-gray-400 w-10 flex flex-row justify-center z-10 headerGradient"
-                  onClick={onHandleSideBar}
-                  role="button"
-                  onKeyDown={() => {}}
-                  tabIndex="0"
-                >
-                  <Dots
-                    className={
-                      sideBarShowed
-                        ? 'h-full w-6 transition duration-500 ease-in-out transform hover:text-gray-900'
-                        : 'h-full w-6 transition duration-500 ease-in-out transform rotate-90 hover:text-gray-900'
-                    }
-                  />
-                </div>
-              )}
               <div className="pl-2 sm:pl-0 text-center flex-grow flex-col flex justify-center z-10 bg-gray-400 headerGradient">
                 <h1 className="text-xl md:text-3xl font-semibold tracking-tight flex flex-row">
                   <span className="love">{'Exp '}</span>
@@ -89,7 +91,31 @@ const CommonLayout = ({
                   <span className="love">ight</span>
                 </h1>
               </div>
+              {/*
+                <section className="profilePic h-full w-14 headerGradient">
+                  <div className="h-full flex flex-col justify-center">
+                    <div className="border bg-green-300 rounded-full w-10 h-10 m-auto text-center text-black">
+                      <span className="wrapper h-full flex flex-col justify-center">
+                        <span>FA</span>
+                      </span>
+                    </div>
+                  </div>
+                </section>
+              */}
+              {isAuthenticated && (
+                <section className="welcomeMessage h-full headerGradient flex flex-col justify-center text-sm">
+                  <span>{`Hello! ${
+                    currentUser?.user_metadata?.full_name
+                      ? currentUser?.user_metadata?.full_name
+                      : 'Friend'
+                  }`}</span>
+                </section>
+              )}
               <div className="navButtons flex flex-row justify-center headerGradient relative w-24">
+                {/* logged-in status indicator */}
+                {isAuthenticated && (
+                  <div className="logStatusIndicator absolute h-2 w-2 bg-green-300 top-3 right-8 border rounded-full"></div>
+                )}
                 <div
                   onClick={() => {
                     setBurgerState((state) => {
@@ -99,20 +125,26 @@ const CommonLayout = ({
                   onKeyDown={() => {}}
                   role="button"
                   tabIndex="0"
-                  className="h-full flex flex-col justify-center burgerlineContainer"
+                  className="h-full w-full flex flex-col justify-center burgerlineContainer z-50 headerGradient"
                 >
                   <div
                     className={`burgerline ${burgerState ? 'open' : ''}`}
                   ></div>
                 </div>
+                {/*
+                 */}
                 <div
-                  className={`h-80 w-24 absolute top-12 right-0 z-10 bg-gray-500 transform transition-all duration-500 ease-in-out translate-x-${
-                    burgerState ? '0' : '40 bg-opacity-0 text-transparent'
+                  className={`h-${
+                    isAuthenticated ? '80' : '40'
+                  } w-24 absolute top-14 right-0 bg-gray-500 transform transition-all duration-500 ease-in-out -translate-y-${
+                    burgerState
+                      ? '0 z-10'
+                      : '40 bg-opacity-0 text-transparent -z-10'
                   }`}
                 >
                   <div
                     className={`h-8 w-20 z-30 absolute top-4 right-2 bg-overlay z-20 text-center ${
-                      burgerState ? '' : 'bg-opacity-0'
+                      burgerState ? '' : 'bg-opacity-0 -z-10'
                     }`}
                   >
                     {burgerState && (
@@ -126,16 +158,34 @@ const CommonLayout = ({
                   </div>
                   <div
                     className={`h-8 w-20 z-30 absolute top-16 right-2 bg-overlay z-20 text-center ${
-                      burgerState ? '' : 'bg-opacity-0'
+                      burgerState ? '' : 'bg-opacity-0 -z-10'
                     }`}
                   >
-                    <span className={'h-full flex flex-col justify-center'}>
-                      Login
-                    </span>
+                    {burgerState && (
+                      <div
+                        role="button"
+                        tabIndex="0"
+                        onKeyDown={() => {}}
+                        onClick={
+                          isAuthenticated
+                            ? () => {
+                                logOut()
+                              }
+                            : () => {
+                                logIn()
+                              }
+                        }
+                        className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
+                      >
+                        <span className="text-center">{`${
+                          isAuthenticated ? 'Logout' : 'Login'
+                        }`}</span>
+                      </div>
+                    )}
                   </div>
                   <div
                     className={`h-8 w-20 z-30 absolute top-28 right-2 bg-overlay z-20 text-center ${
-                      burgerState ? '' : 'bg-opacity-0'
+                      burgerState ? '' : 'bg-opacity-0 -z-10'
                     }`}
                   >
                     {burgerState && (
@@ -147,72 +197,55 @@ const CommonLayout = ({
                       </Link>
                     )}
                   </div>
-                  <div
-                    className={`h-8 w-20 z-30 absolute top-40 right-2 bg-overlay z-20 text-center ${
-                      burgerState ? '' : 'bg-opacity-0'
-                    }`}
-                  >
-                    {burgerState && (
-                      <Link
-                        to={routes.type()}
-                        className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
-                      >
-                        <span className="text-center">Type</span>
-                      </Link>
-                    )}
-                  </div>
-                  <div
-                    className={`h-8 w-20 z-30 absolute top-52 right-2 bg-overlay z-20 text-center ${
-                      burgerState ? '' : 'bg-opacity-0'
-                    }`}
-                  >
-                    {burgerState && (
-                      <Link
-                        to={routes.expenses()}
-                        className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
-                      >
-                        <span className="text-center">Expense</span>
-                      </Link>
-                    )}
-                  </div>
-                  <div
-                    className={`h-8 w-20 z-30 absolute top-64 right-2 bg-overlay z-20 text-center ${
-                      burgerState ? '' : 'bg-opacity-0'
-                    }`}
-                  >
-                    {burgerState && (
-                      <Link
-                        to={routes.summary()}
-                        className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
-                      >
-                        <span className="text-center">Summary</span>
-                      </Link>
-                    )}
-                  </div>
+                  {isAuthenticated && (
+                    <div
+                      className={`h-8 w-20 z-30 absolute top-40 right-2 bg-overlay z-20 text-center ${
+                        burgerState ? '' : 'bg-opacity-0 -z-10'
+                      }`}
+                    >
+                      {burgerState && (
+                        <Link
+                          to={routes.type()}
+                          className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
+                        >
+                          <span className="text-center">Type</span>
+                        </Link>
+                      )}
+                    </div>
+                  )}
+                  {isAuthenticated && (
+                    <div
+                      className={`h-8 w-20 z-30 absolute top-52 right-2 bg-overlay z-20 text-center ${
+                        burgerState ? '' : 'bg-opacity-0 -z-10'
+                      }`}
+                    >
+                      {burgerState && (
+                        <Link
+                          to={routes.expenses()}
+                          className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
+                        >
+                          <span className="text-center">Expense</span>
+                        </Link>
+                      )}
+                    </div>
+                  )}
+                  {isAuthenticated && (
+                    <div
+                      className={`h-8 w-20 z-30 absolute top-64 right-2 bg-overlay z-20 text-center ${
+                        burgerState ? '' : 'bg-opacity-0 -z-10'
+                      }`}
+                    >
+                      {burgerState && (
+                        <Link
+                          to={routes.summary()}
+                          className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
+                        >
+                          <span className="text-center">Summary</span>
+                        </Link>
+                      )}
+                    </div>
+                  )}
                 </div>
-                {/*
-                  <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
-                    <Link className="font-sans italic h-full flex flex-col justify-center">
-                      <span className="text-center">Login</span>
-                    </Link>
-                  </div>
-                  <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
-                    <Link
-                      to={routes.home()}
-                      className="font-sans italic h-full flex flex-col justify-center"
-                    >
-                      <span className="text-center">Home</span>
-                    </Link>
-                  </div>
-                  <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
-                    <Link
-                      to={routes.about()}
-                      className="font-sans italic h-full flex flex-col justify-center"
-                    >
-                      <span className="text-center">About</span>
-                    </Link>
-                  </div>
-                */}
               </div>
             </nav>
           </div>

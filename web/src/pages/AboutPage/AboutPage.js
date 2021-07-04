@@ -16,12 +16,19 @@ import { FcComboChart } from 'react-icons/fc'
 
 const AboutPage = () => {
   const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+
+  //* testing logged-in user
+
   return (
     <CommonLayout
       isLandingPage={true}
       showSidebar={{}}
       setShowSidebar={() => {}}
       maxWidth="1"
+      logIn={logIn}
+      logOut={logOut}
+      isAuthenticated={isAuthenticated}
+      currentUser={currentUser}
     >
       <div className="aboutPageContainer max-w-5xl mx-auto px-2 overflow-hidden text-white min-h-screen select-none">
         <section className="aboutPageTextContainer pt-10 sm:px-0 flex flex-col">

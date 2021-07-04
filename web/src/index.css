@@ -72,6 +72,10 @@ canvas {
   transform: translateY(-50%);
 }
 
+.logStatusIndicator {
+  z-index: 99;
+}
+
 .chevronright {
   position: absolute;
   color: transparent
@@ -129,7 +133,7 @@ aside {
 }
 
 .footerGradient {
-  background-image: linear-gradient(to top, #aaaaaa, #8c8c8c, #6f6f6f, #545454, #3a3a3a);
+  background-image: linear-gradient(to top, #8c8c8c, #6f6f6f, #545454, #3a3a3a);
 }
 
 .pageNumber {
@@ -550,7 +554,7 @@ img {
   display: block;
   position: relative;
   top: 0%;
-  width: 100%;
+  width: 30px;
   background: #fff;
   margin: auto;
   height: 2px;

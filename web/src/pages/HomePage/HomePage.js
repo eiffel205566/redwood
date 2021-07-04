@@ -2,6 +2,7 @@ import SideBar from '../../components/SideBar/SideBar'
 import { useEffect, useState } from 'react'
 import { Fragment, useRef } from 'react'
 import { Link, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
 import Letter from './Letter'
 import Footer from 'src/layouts/CommonLayout/Footer'
 import { LandingPageTag } from 'src/components/Misc/UtilityFunc'
@@ -31,7 +32,10 @@ const FIRSTLINE = 'TRACK EXPENSE'
 const SECONDLINE = 'RECORD INCOME'
 //!--
 
-const TestPage = () => {
+const LandingPage = () => {
+  //! Login Logout
+  const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+  //!--
   const [showSidebar, setShowSidebar] = useState({
     sideBarShowed: false,
   })
@@ -254,6 +258,10 @@ const TestPage = () => {
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
         maxWidth="1"
+        logIn={logIn}
+        logOut={logOut}
+        isAuthenticated={isAuthenticated}
+        currentUser={currentUser}
       >
         <div className="section_1 carouselPictureContainer absolute top-0 left-0 -z-10 w-screen overflow-x-hidden select-none">
           {/*
@@ -289,7 +297,15 @@ const TestPage = () => {
             </h3>
 
             <div className="buttonsContainer w-full flex">
-              <div className="love cursor-pointer hover:text-black hover:bg-gray-100 text-white rounded-lg fontGrad italic loginButton border-2 border-green-300 h-10 w-40 text-4xl text-black text-center transform transition-all duration-500 ease-in-out">
+              <div
+                onClick={() => {
+                  logIn()
+                }}
+                onKeyDown={() => {}}
+                tabIndex="0"
+                role="button"
+                className="love cursor-pointer hover:text-black bg-green-500 text-white rounded-lg fontGrad italic loginButton h-10 w-40 text-4xl text-black text-center transform transition-all duration-500 ease-in-out"
+              >
                 Starts Here...
               </div>
               <div
@@ -613,7 +629,7 @@ const TestPage = () => {
   )
 }
 
-export default TestPage
+export default LandingPage
 
 const LandingPageChart = ({ ...props }) => {
   const { tagState } = props

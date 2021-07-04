@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 const Footer = () => {
   return (
     <Fragment>
-      <footer className="w-screen h-14 bg-sideDark">
+      <footer className="w-screen h-14 bg-sideDark footerGradient">
         <div className="max-w-5xl mx-auto footerTextContainer h-full text-white text-xs sm:text-sm select-none">
           <div className="h-full flex flex-col justify-center">
             <h3 className="w-full text-center">

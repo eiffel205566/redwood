@@ -49,7 +49,7 @@ export const Wrapper = (Component) => {
           allUserLoading
             ? 'overflow-hidden'
             : 'overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300'
-        }  max-h-44 p-1 border rounded z-10 border-transparent`}
+        }  max-h-44 p-1 border rounded border-transparent`}
       >
         {allUserLoading ? (
           <Fragment>
