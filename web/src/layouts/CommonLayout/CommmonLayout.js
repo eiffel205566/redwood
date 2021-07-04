@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import SideBar from '../../components/SideBar/SideBar'
 import { Dots, Money } from '../../components/Misc/svg'
 import { Link, routes } from '@redwoodjs/router'
+import { useState } from 'react'
 
 const CommonLayout = ({
   children,
@@ -27,7 +28,10 @@ const CommonLayout = ({
   }
 
   //-- for summary page
-  const { typeCategoryState } = rest || {}
+  const { typeCategoryState, isLandingPage } = rest || {}
+
+  //-- burger
+  const [burgerState, setBurgerState] = useState(false)
 
   return (
     <Fragment>
@@ -52,22 +56,24 @@ const CommonLayout = ({
         <div className="h-full max-w-5xl mx-auto">
           <div className="z-30 bg-gray-400">
             <nav className="h-14 min-w-full flex flex-row z-20">
-              <div
-                className="cursor-pointer bg-gray-400 w-10 flex flex-row justify-center z-10 headerGradient"
-                onClick={onHandleSideBar}
-                role="button"
-                onKeyDown={() => {}}
-                tabIndex="0"
-              >
-                <Dots
-                  className={
-                    sideBarShowed
-                      ? 'h-full w-6 transition duration-500 ease-in-out transform hover:text-gray-900'
-                      : 'h-full w-6 transition duration-500 ease-in-out transform rotate-90 hover:text-gray-900'
-                  }
-                />
-              </div>
-              <div className="text-center flex-grow flex-col flex justify-center z-10 bg-gray-400 headerGradient">
+              {false && (
+                <div
+                  className="cursor-pointer bg-gray-400 w-10 flex flex-row justify-center z-10 headerGradient"
+                  onClick={onHandleSideBar}
+                  role="button"
+                  onKeyDown={() => {}}
+                  tabIndex="0"
+                >
+                  <Dots
+                    className={
+                      sideBarShowed
+                        ? 'h-full w-6 transition duration-500 ease-in-out transform hover:text-gray-900'
+                        : 'h-full w-6 transition duration-500 ease-in-out transform rotate-90 hover:text-gray-900'
+                    }
+                  />
+                </div>
+              )}
+              <div className="pl-2 sm:pl-0 text-center flex-grow flex-col flex justify-center z-10 bg-gray-400 headerGradient">
                 <h1 className="text-xl md:text-3xl font-semibold tracking-tight flex flex-row">
                   <span className="love">{'Exp '}</span>
                   <span> </span>
@@ -83,20 +89,130 @@ const CommonLayout = ({
                   <span className="love">ight</span>
                 </h1>
               </div>
-              <div className="flex flex-row justify-center headerGradient">
-                <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
-                  <Link className="m-auto font-sans italic">Login</Link>
+              <div className="navButtons flex flex-row justify-center headerGradient relative w-24">
+                <div
+                  onClick={() => {
+                    setBurgerState((state) => {
+                      return !state
+                    })
+                  }}
+                  onKeyDown={() => {}}
+                  role="button"
+                  tabIndex="0"
+                  className="h-full flex flex-col justify-center burgerlineContainer"
+                >
+                  <div
+                    className={`burgerline ${burgerState ? 'open' : ''}`}
+                  ></div>
                 </div>
-                <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
-                  <Link to={routes.home()} className="m-auto font-sans italic">
-                    Home
-                  </Link>
+                <div
+                  className={`h-80 w-24 absolute top-12 right-0 z-10 bg-gray-500 transform transition-all duration-500 ease-in-out translate-x-${
+                    burgerState ? '0' : '40 bg-opacity-0 text-transparent'
+                  }`}
+                >
+                  <div
+                    className={`h-8 w-20 z-30 absolute top-4 right-2 bg-overlay z-20 text-center ${
+                      burgerState ? '' : 'bg-opacity-0'
+                    }`}
+                  >
+                    {burgerState && (
+                      <Link
+                        to={routes.home()}
+                        className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
+                      >
+                        <span className="text-center">Home</span>
+                      </Link>
+                    )}
+                  </div>
+                  <div
+                    className={`h-8 w-20 z-30 absolute top-16 right-2 bg-overlay z-20 text-center ${
+                      burgerState ? '' : 'bg-opacity-0'
+                    }`}
+                  >
+                    <span className={'h-full flex flex-col justify-center'}>
+                      Login
+                    </span>
+                  </div>
+                  <div
+                    className={`h-8 w-20 z-30 absolute top-28 right-2 bg-overlay z-20 text-center ${
+                      burgerState ? '' : 'bg-opacity-0'
+                    }`}
+                  >
+                    {burgerState && (
+                      <Link
+                        to={routes.about()}
+                        className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
+                      >
+                        <span className="text-center">About</span>
+                      </Link>
+                    )}
+                  </div>
+                  <div
+                    className={`h-8 w-20 z-30 absolute top-40 right-2 bg-overlay z-20 text-center ${
+                      burgerState ? '' : 'bg-opacity-0'
+                    }`}
+                  >
+                    {burgerState && (
+                      <Link
+                        to={routes.type()}
+                        className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
+                      >
+                        <span className="text-center">Type</span>
+                      </Link>
+                    )}
+                  </div>
+                  <div
+                    className={`h-8 w-20 z-30 absolute top-52 right-2 bg-overlay z-20 text-center ${
+                      burgerState ? '' : 'bg-opacity-0'
+                    }`}
+                  >
+                    {burgerState && (
+                      <Link
+                        to={routes.expenses()}
+                        className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
+                      >
+                        <span className="text-center">Expense</span>
+                      </Link>
+                    )}
+                  </div>
+                  <div
+                    className={`h-8 w-20 z-30 absolute top-64 right-2 bg-overlay z-20 text-center ${
+                      burgerState ? '' : 'bg-opacity-0'
+                    }`}
+                  >
+                    {burgerState && (
+                      <Link
+                        to={routes.summary()}
+                        className="font-sans italic h-full flex flex-col justify-center hover:bg-green-300 hover:text-gray-700"
+                      >
+                        <span className="text-center">Summary</span>
+                      </Link>
+                    )}
+                  </div>
                 </div>
-                <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
-                  <Link to={routes.about()} className="m-auto font-sans italic">
-                    About
-                  </Link>
-                </div>
+                {/*
+                  <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
+                    <Link className="font-sans italic h-full flex flex-col justify-center">
+                      <span className="text-center">Login</span>
+                    </Link>
+                  </div>
+                  <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
+                    <Link
+                      to={routes.home()}
+                      className="font-sans italic h-full flex flex-col justify-center"
+                    >
+                      <span className="text-center">Home</span>
+                    </Link>
+                  </div>
+                  <div className="w-0 sm:w-16 hidden sm:flex hover:bg-gray-700 flex-col justify-center cursor-pointer">
+                    <Link
+                      to={routes.about()}
+                      className="font-sans italic h-full flex flex-col justify-center"
+                    >
+                      <span className="text-center">About</span>
+                    </Link>
+                  </div>
+                */}
               </div>
             </nav>
           </div>

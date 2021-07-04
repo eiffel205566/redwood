@@ -4,6 +4,7 @@ import { Fragment, useRef } from 'react'
 import { Link, routes } from '@redwoodjs/router'
 import Letter from './Letter'
 import Footer from 'src/layouts/CommonLayout/Footer'
+import { LandingPageTag } from 'src/components/Misc/UtilityFunc'
 
 import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
 import { FrontPageAnimation } from 'src/components/Misc/svgExtra'
@@ -249,6 +250,7 @@ const TestPage = () => {
 
       */}
       <CommonLayout
+        isLandingPage={true}
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
         maxWidth="1"
@@ -275,7 +277,6 @@ const TestPage = () => {
         </div>
 
         {/*
-
 
         */}
         <div className="placeholder relative h-screen w-screen">
@@ -346,8 +347,16 @@ const TestPage = () => {
             <div className="h-full w-full absolute -z-10">
               <img className="h-full m-auto" src={MonitorLarge} alt="monitor" />
             </div>
-            {!frontPageCarousel.animationX && (
-              <FrontPageAnimation visible={!frontPageCarousel.animationX} />
+            <FrontPageAnimation visible={!frontPageCarousel.animationX} />
+            {frontPageCarousel.animationX && (
+              <svg
+                width="100%"
+                height="100%"
+                viewBox="0 0 752 342"
+                fill="none"
+                className="placeholder"
+                preserveAspectRatio="xMidYMid meet"
+              ></svg>
             )}
           </div>
 
@@ -605,35 +614,6 @@ const TestPage = () => {
 }
 
 export default TestPage
-
-const LandingPageTag = ({ content, tagState, setTagState }) => {
-  return (
-    <div
-      onClick={() => {
-        setTagState((state) => {
-          return {
-            ...state,
-            [content]: !state[content],
-          }
-        })
-      }}
-      className="flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-16 sm:w-32 h-12 select-none"
-      onKeyDown={() => {}}
-      role="button"
-      tabIndex="0"
-    >
-      <span
-        className={`whitespace-nowrap rounded-full py-1 px-2 ${
-          tagState[content]
-            ? 'bg-green-300 text-black hover:bg-green-400'
-            : 'bg-overlay text-white hover:bg-gray-500'
-        }`}
-      >
-        {content}
-      </span>
-    </div>
-  )
-}
 
 const LandingPageChart = ({ ...props }) => {
   const { tagState } = props

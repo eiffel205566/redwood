@@ -329,16 +329,18 @@ export const FrontPageAnimation = ({ visible }) => {
               height="40"
               fill="gray"
             ></rect>
-            <rect x="170" y="55" width="150" height="40" fill="green">
-              <animate
-                attributeName="width"
-                values="0;0;0;0;75;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150"
-                dur="24s"
-                fill="freeze"
-                repeatCount="indefinite"
-              />
-              )
-            </rect>
+
+            {visible && (
+              <rect x="170" y="55" width="150" height="40" fill="green">
+                <animate
+                  attributeName="width"
+                  values="0;0;0;0;75;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150;150"
+                  dur="24s"
+                  fill="freeze"
+                  repeatCount="indefinite"
+                />
+              </rect>
+            )}
 
             <g className="raising_2 transform transition-all duration-500 ease-in-out">
               <svg

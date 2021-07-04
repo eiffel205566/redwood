@@ -98,3 +98,81 @@ export const generateRandomColors = (n) => {
     })
   return result
 }
+
+export const LandingPageTag = ({ content, tagState, setTagState }) => {
+  return (
+    <div
+      onClick={
+        setTagState
+          ? () => {
+              setTagState((state) => {
+                return {
+                  ...state,
+                  [content]: !state[content],
+                }
+              })
+            }
+          : () => {}
+      }
+      className="flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-16 sm:w-32 h-12 select-none"
+      onKeyDown={() => {}}
+      role="button"
+      tabIndex="0"
+    >
+      {tagState ? (
+        <span
+          className={`whitespace-nowrap rounded-full py-1 px-2 ${
+            tagState[content]
+              ? 'bg-green-300 text-black hover:bg-green-400'
+              : 'bg-overlay text-white hover:bg-gray-500'
+          }`}
+        >
+          {content}
+        </span>
+      ) : (
+        <span className="whitespace-nowrap rounded-full py-1 px-2 bg-green-300 text-black hover:bg-green-400">
+          {content}
+        </span>
+      )}
+    </div>
+  )
+}
+
+export const Letter = ({ letter, index, len, direction }) => {
+  let ms
+  let style
+
+  if (Object.is(undefined, direction) || direction === 'forward') {
+    //forward
+    ms = index * 100 + 'ms'
+    style = {
+      opacity: '0',
+      animationName: 'letterOpacity',
+      animationTimingFunction: 'ease-in-out',
+      animationDuration: '1s',
+      animationDelay: ms,
+      animationIterationCount: 1,
+      animationDirection: 'normal',
+      animationFillMode: 'forwards',
+    }
+  } else {
+    //backwards
+    ms = (len - index) * 10 + 'ms'
+    style = {
+      opacity: '1',
+      animationName: 'letterOpacityBack',
+      animationTimingFunction: 'ease-in-out',
+      animationDuration: '0.2s',
+      animationDelay: ms,
+      animationIterationCount: 1,
+      animationDirection: 'normal',
+      animationFillMode: 'forwards',
+    }
+  }
+
+  return (
+    <span index={index} style={{ ...style }} className="letter">
+      {letter}
+    </span>
+  )
+}

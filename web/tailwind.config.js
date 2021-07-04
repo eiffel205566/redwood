@@ -12,6 +12,10 @@ module.exports = {
       animation: {
         'spin-slow': 'spin 2s linear infinite',
       },
+      top: {
+        22: '5.5rem',
+        30: '7.5rem',
+      },
       zIndex: {
         '-1': '-1',
         '-10': '-10',
