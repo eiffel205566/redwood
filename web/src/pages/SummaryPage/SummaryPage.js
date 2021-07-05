@@ -6,6 +6,7 @@ import CommonLayout from 'src/layouts/CommonLayout/CommmonLayout'
 import SummaryCell from 'src/components/SummaryCell/SummaryCell'
 import { USER_TYPES_QUERY } from '../ExpensesPage/UserTypesTagsQuery'
 import SummarySettings from 'src/components/Summary/SummarySettings'
+import Footer from 'src/layouts/CommonLayout/Footer'
 
 const SummaryPage = () => {
   //side bar state
@@ -19,7 +20,7 @@ const SummaryPage = () => {
   })
   const { grandMasterLoading } = grandMasterLoadingState
 
-  // fake user
+  //! fake user
   const currentUser = {
     app_metadata: {
       provider: 'email',
@@ -34,7 +35,7 @@ const SummaryPage = () => {
   }
   const isAuthenticated = true
   const { email: user } = currentUser
-  //--
+  //!--
 
   //state controling each type category
   const [typeCategoryState, setTypeCategoryState] = useState({

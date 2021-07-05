@@ -304,7 +304,7 @@ const LandingPage = () => {
                 onKeyDown={() => {}}
                 tabIndex="0"
                 role="button"
-                className="love cursor-pointer hover:text-black bg-green-500 text-white rounded-lg fontGrad italic loginButton h-10 w-40 text-4xl text-black text-center transform transition-all duration-500 ease-in-out"
+                className="love border cursor-pointer hover:text-black font-semibold text-white rounded-lg fontGrad italic loginButton h-10 w-40 text-4xl text-black text-center transform transition-all duration-500 ease-in-out"
               >
                 Starts Here...
               </div>

@@ -26,7 +26,7 @@ const Summary = ({
   const maxExpenseValue = sortByAbsoluteValueExpenseByType[0]?._sum?.amount
     ? sortByAbsoluteValueExpenseByType[0]?._sum?.amount
     : 1
-
+  const isSomethingToShow = Boolean(sortByAbsoluteValueExpenseByType.length) //whether there is data to show
   //* --
 
   //* local state
@@ -34,6 +34,7 @@ const Summary = ({
     cogSpinning: false,
     extendSettings: false,
     resetSpinning: false,
+    editCalenderSetting: false,
   })
   {
     /*
@@ -56,7 +57,7 @@ const Summary = ({
 
   return (
     <Fragment>
-      <div className="settingButtons flex w-full h-12 text-white">
+      <div className="settingButtons relative flex w-full h-12 text-white">
         <button
           onMouseEnter={() => {
             setSettingButtonState((state) => {
@@ -132,6 +133,22 @@ const Summary = ({
               })
               document.body.classList.add('overflow-hidden')
             }}
+            onMouseEnter={() => {
+              setSettingButtonState((state) => {
+                return {
+                  ...state,
+                  editCalenderSetting: true,
+                }
+              })
+            }}
+            onMouseLeave={() => {
+              setSettingButtonState((state) => {
+                return {
+                  ...state,
+                  editCalenderSetting: false,
+                }
+              })
+            }}
             className={`bg-transparent absolute ${
               settingButtonState.extendSettings ? 'left-14' : '-left-20'
             } transform transition-all duration-500 ease-in-out w-10 h-full bg-displayOnly focus:outline-none text-gray-300 hover:text-green-500 border border-transparent hover:border-transparent rounded`}
@@ -139,7 +156,29 @@ const Summary = ({
             <Calender className="w-6 h-full m-auto" />
           </button>
         </div>
+
+        <div className="tooltip text-white absolute top-0 left-36 h-full flex flex-col justify-center">
+          <span>
+            {settingButtonState.cogSpinning
+              ? settingButtonState.extendSettings
+                ? 'Hide Settings'
+                : 'View Settings'
+              : settingButtonState.resetSpinning
+              ? 'Reset Settings'
+              : settingButtonState.editCalenderSetting
+              ? 'Edit Date Range'
+              : ''}
+          </span>
+        </div>
       </div>
+
+      {!isSomethingToShow && (
+        <div className="emptyInfoMessage text-red-500">
+          No Insight, please go to Expense page to add new entry for the
+          period...
+        </div>
+      )}
+
       <div className="textInsightSection relative text-white w-full h-48 mb-1 border border-gray-500">
         <SummaryChart expenseByDate={expenseByDate} />
       </div>

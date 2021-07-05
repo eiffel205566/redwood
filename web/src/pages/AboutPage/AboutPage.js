@@ -104,6 +104,13 @@ const AboutPage = () => {
           <p className="text-3xl">Incoming Features:</p>
           <div className="h-12">
             <div className="h-full flex flex-col justify-center">
+              <p className="text-md sm:text-xl">
+                - Global State Management w/ Redux Saga
+              </p>
+            </div>
+          </div>
+          <div className="h-12">
+            <div className="h-full flex flex-col justify-center">
               <p className="text-md sm:text-xl">- CSV File Upload</p>
             </div>
           </div>

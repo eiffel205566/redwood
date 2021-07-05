@@ -354,7 +354,7 @@ export const expenseByCategory = async ({
 
 export const queryOneTypeAllExpenses = async ({ input }) => {
   //* Constant
-  const entryPerQuery = 1
+  const entryPerQuery = 25
   let { user, maxDate, minDate, chosenTagIds, expenseType, page } = input
   const { id: expenseTypeId } = expenseType
   const offset = page ? (page - 1) * entryPerQuery : 0 //! production: 20/query

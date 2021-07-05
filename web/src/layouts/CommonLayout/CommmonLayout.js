@@ -125,7 +125,7 @@ const CommonLayout = ({
                   onKeyDown={() => {}}
                   role="button"
                   tabIndex="0"
-                  className="h-full w-full flex flex-col justify-center burgerlineContainer z-50 headerGradient"
+                  className="h-full w-full flex flex-col justify-center burgerlineContainer z-30 headerGradient"
                 >
                   <div
                     className={`burgerline ${burgerState ? 'open' : ''}`}

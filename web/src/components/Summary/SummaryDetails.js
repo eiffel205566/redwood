@@ -7,7 +7,7 @@ import { SummaryDetailItem, ManyMany, EndOfLine } from './SummaryDetailItem'
 
 export const SummaryDetails = ({ typeCategoryState, user }) => {
   //* Constant
-  const entryPerQuery = 1
+  const entryPerQuery = 25
 
   //* Expenses details state local storage
   const [expenseDetails, setExpenseDetails] = useState({
@@ -87,6 +87,7 @@ export const SummaryDetails = ({ typeCategoryState, user }) => {
       onScroll={onHandleScroll}
       className="h-full scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-400 overflow-y-scroll pr-3"
     >
+      {/* -- for testing
       <ManyMany />
       <ManyMany />
       <ManyMany />
@@ -109,6 +110,7 @@ export const SummaryDetails = ({ typeCategoryState, user }) => {
       <ManyMany />
       <ManyMany />
       <ManyMany />
+    */}
       {expenseDetails.expenses &&
         expenseDetails.expenses.map((expense, index) => (
           <SummaryDetailItem

@@ -115,7 +115,7 @@ const SummarySettings = ({
 
   return (
     <div
-      className="backgroundOverlay cursor-default bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50 overflow-y-hidden"
+      className="backgroundOverlay cursor-default bg-gray-100 absolute min-h-full min-w-full z-50 bg-opacity-50 overflow-y-hidden"
       onKeyDown={() => {}}
       tabIndex="0"
       role="button"
@@ -249,7 +249,7 @@ const SummarySettings = ({
           {/**/}
 
           {!displayState.displayExpenses && <div className="description-w-buttons flex flex-row">
-            <h3 className="text-sm sm:text-base text-white">
+            <h3 className="text-xs sm:text-sm text-white">
               {`${Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) ? "" : "What Tags To Include For The Type?"}`}
             </h3>
             <div className="buttons flex flex-row">
