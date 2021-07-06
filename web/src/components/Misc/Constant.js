@@ -1,1 +1,1 @@
-export const EXPENSENS_PER_PAGE = 5
+export const EXPENSENS_PER_PAGE = 10

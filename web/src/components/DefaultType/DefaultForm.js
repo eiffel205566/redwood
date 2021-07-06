@@ -3,6 +3,7 @@ import DefaultTypes from './DefaultTypes'
 import { useForm } from 'react-hook-form'
 import { Customize, Spin } from 'src/components/Misc/svg'
 import { useQuery, useMutation } from '@redwoodjs/web'
+import { TiArrowRightOutline } from 'react-icons/ti'
 
 import {
   Form,
@@ -206,8 +207,11 @@ const DefaultForm = ({
   }
 
   return (
-    <div className="select-none mx-5 sm:mx-10 h-64 sm:h-96 bg-sideDark border border-transparent rounded-xl p-1 grid grid-cols-2 sm:grid-cols-3 overflow-hidden">
-      <div className="flex flex-col">
+    <div className="relative select-none mx-5 sm:mx-10 h-64 sm:h-96 bg-sideDark border border-transparent rounded-xl p-1 grid grid-cols-2 sm:grid-cols-3 overflow-hidden">
+      <div className="flex flex-col relative">
+        {!currentType && (
+          <TiArrowRightOutline className="h-6 w-6 absolute text-green-300 right-0 animatedArrow top-1 md:top-3 lg:top-5" />
+        )}
         {currentType ? (
           React.createElement(iconTypes[currentType], {
             className:

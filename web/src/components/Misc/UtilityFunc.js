@@ -60,10 +60,10 @@ export const formatDecimal = (num) => {
   return new Number(num).toPrecision(2)
 }
 
-export const generateRandomColors = (n) => {
-  let r = 51
-  let g = 204
-  let b = 153
+export const generateRandomColors = (n, r = 51, g = 204, b = 153) => {
+  // let r = 51
+  // let g = 204
+  // let b = 153
 
   const result = Array(n)
     .fill(null)

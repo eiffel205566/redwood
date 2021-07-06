@@ -12,7 +12,7 @@ import {
   BiDesktop,
   BiTrophy,
 } from 'react-icons/bi'
-import { FcComboChart } from 'react-icons/fc'
+import { FcComboChart, FcInspection, FcDoughnutChart } from 'react-icons/fc'
 
 const AboutPage = () => {
   const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
@@ -92,10 +92,32 @@ const AboutPage = () => {
           </div>
           <div className="graphLine w-full flex h-12">
             <div className="h-full flex flex-col justify-center">
+              <p className="text-md sm:text-xl">
+                {' '}
+                - Enter Dollar Amount & Pick Date
+              </p>
+            </div>
+            <div className="wrapper h-full flex flex-col justify-center">
+              <FcInspection className="h-8 w-8 sm:h-10 sm:w-10" />
+            </div>
+          </div>
+          <div className="graphLine w-full flex h-12">
+            <div className="h-full flex flex-col justify-center">
               <p className="text-md sm:text-xl"> - View Your Cash Balance</p>
             </div>
-            <div className="wrapper h-full flex flex-col justify-cente">
+            <div className="wrapper h-full flex flex-col justify-center">
               <FcComboChart className="h-8 w-8 sm:h-10 sm:w-10" />
+            </div>
+          </div>
+          <div className="graphLine w-full flex h-12">
+            <div className="h-full flex flex-col justify-center">
+              <p className="text-md sm:text-xl">
+                {' '}
+                - View Your Income/Exp Breakdown
+              </p>
+            </div>
+            <div className="wrapper h-full flex flex-col justify-center">
+              <FcDoughnutChart className="h-8 w-8 sm:h-10 sm:w-10" />
             </div>
           </div>
         </section>

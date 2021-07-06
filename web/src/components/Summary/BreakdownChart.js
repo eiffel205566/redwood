@@ -27,7 +27,7 @@ const BreakdownChart = ({ expenseByType, typeCategoryState }) => {
     ? formatData(typeToNameMap, expenseByType)
     : null
 
-  //! try to separate expense from income
+  //! try to separate expense from income any number > 0 goes to positive (income), otherwise go to negative(expense)
   const separateData = (obj) => {
     let positive = {}
     let negative = {}
@@ -39,17 +39,10 @@ const BreakdownChart = ({ expenseByType, typeCategoryState }) => {
         negative[k] = obj[k]
       }
     }
-
-    // if (Object.keys(positive).length === 0) {
-    //   positive = {}
-    // }
-
-    // if (Object.keys(negative).length === 0) {
-    //   negative = {}
-    // }
     return [positive, negative]
   }
 
+  //! check for null
   const formattedAndSeparatedData = formattedData
     ? separateData(formattedData)
     : null
@@ -59,7 +52,7 @@ const BreakdownChart = ({ expenseByType, typeCategoryState }) => {
   const formattedExpenseData = formattedAndSeparatedData
     ? formattedAndSeparatedData[1]
     : null
-  console.log(formattedIncomeData, formattedExpenseData)
+  // console.log(formattedIncomeData, formattedExpenseData)
 
   //* formatted data:
   // const data = {
@@ -82,18 +75,10 @@ const BreakdownChart = ({ expenseByType, typeCategoryState }) => {
   //   ],
   // }
 
-  //! TRY lable in array, [[label_1], [label_2]]
-  let labels = formattedAndSeparatedData
-    ? [
-        [...Object.keys(formattedExpenseData)],
-        [...Object.keys(formattedIncomeData)],
-      ]
-    : ['Grocery', 'Business', 'Fee', 'Investment', 'Work']
-
   const data = {
-    // labels,
     datasets: [
       {
+        label: 'Expense',
         data: formattedExpenseData
           ? Object.values(formattedExpenseData)
           : [33, 53, 85, 41, 44, 65],
@@ -106,13 +91,17 @@ const BreakdownChart = ({ expenseByType, typeCategoryState }) => {
         borderColor: '#C0C0C0',
       },
       {
+        label: 'Income',
         data: formattedIncomeData
           ? Object.values(formattedIncomeData)
           : [33, 53, 85, 41, 44, 65],
         fill: true,
         backgroundColor: [
           ...generateRandomColors(
-            formattedIncomeData ? Object.keys(formattedIncomeData).length : 6
+            formattedIncomeData ? Object.keys(formattedIncomeData).length : 6,
+            100,
+            200,
+            200
           ),
         ],
         borderColor: '#C0C0C0',
@@ -128,22 +117,30 @@ const BreakdownChart = ({ expenseByType, typeCategoryState }) => {
       },
     },
     //* tooltips possbly used for stacked bar chart
-    // tooltips: {
-    //   callbacks: {
-    //     label: function (tooltipItem, data) {
-    //       var dataset = data.datasets[tooltipItem.datasetIndex]
-    //       var total = dataset.data.reduce(function (
-    //         previousValue,
-    //         currentValue
-    //       ) {
-    //         return previousValue + currentValue
-    //       })
-    //       var currentValue = dataset.data[tooltipItem.index]
-    //       var percentage = Math.floor((currentValue / total) * 100 + 0.5)
-    //       return percentage + '%'
-    //     },
-    //   },
-    // },
+    tooltips: {
+      callbacks: {
+        label: function (tooltipItem, data) {
+          let dataset = data.datasets[tooltipItem.datasetIndex]
+          let total = dataset.data.reduce((prev, cur) => {
+            return prev + cur
+          }, 0)
+
+          let currentValue = dataset.data[tooltipItem.index]
+          let percentage = Math.floor((currentValue / total) * 100 + 0.5)
+          let innerDataLabels =
+            tooltipItem.datasetIndex === 0
+              ? Object.keys(formattedExpenseData) //Outter circle of chart is Expenses, 1st dataset, position 0
+              : Object.keys(formattedIncomeData) //Inner circle of chart is Income, 2nd dataset, position 1
+          return (
+            `${
+              innerDataLabels[tooltipItem.index]
+            } $${currentValue} counts for ` +
+            percentage +
+            `% ${currentValue > 0 ? 'Income' : 'Expense'}`
+          )
+        },
+      },
+    },
   }
 
   return (

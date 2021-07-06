@@ -24,7 +24,7 @@ const TypePage = () => {
     app_metadata: {
       provider: 'email',
     },
-    email: 'fakeuser2.expinsight@gmail.com',
+    email: 'fakeuser.expinsight@gmail.com',
     exp: 1616348450,
     sub: '3cff8205-96d0-464a-a6c2-31043649f687',
     user_metadata: {

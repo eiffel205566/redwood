@@ -22,6 +22,9 @@ export const SummaryDetails = ({ typeCategoryState, user }) => {
     variables: {
       input: {
         user,
+        //! adding date parameters
+        maxDate: typeCategoryState.maxDate,
+        minDate: typeCategoryState.minDate,
         page: expenseDetails.page,
         expenseType: { id: typeCategoryState.typeToEdit.expenseTypeId },
         chosenTagIds: typeCategoryState.chosenTags

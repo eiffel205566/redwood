@@ -274,11 +274,31 @@ const LandingPage = () => {
                 : 'transform transition-all duration-500 ease-in-out'
             } -translate-x-${frontPageCarousel.translateX}/5`}
           >
-            <li className="flex flex-col pictureContainer_1 h-screen w-full "></li>
-            <li className="flex flex-col pictureContainer_2 h-screen w-full "></li>
-            <li className="flex flex-col pictureContainer_3 h-screen w-full "></li>
-            <li className="flex flex-col pictureContainer_4 h-screen w-full "></li>
-            <li className="flex flex-col pictureContainer_1 h-screen w-full "></li>
+            <li
+              className={`flex flex-col pictureContainer_1${
+                [0, 1].includes(frontPageCarousel.translateX) ? '' : 'noshow'
+              } h-screen w-full `}
+            ></li>
+            <li
+              className={`flex flex-col pictureContainer_2${
+                [1, 2].includes(frontPageCarousel.translateX) ? '' : 'noshow'
+              } h-screen w-full `}
+            ></li>
+            <li
+              className={`flex flex-col pictureContainer_3${
+                [2, 3].includes(frontPageCarousel.translateX) ? '' : 'noshow'
+              } h-screen w-full `}
+            ></li>
+            <li
+              className={`flex flex-col pictureContainer_4${
+                [3, 4].includes(frontPageCarousel.translateX) ? '' : 'noshow'
+              } h-screen w-full `}
+            ></li>
+            <li
+              className={`flex flex-col pictureContainer_1${
+                [0, 4].includes(frontPageCarousel.translateX) ? '' : 'noshow'
+              } h-screen w-full `}
+            ></li>
             {/*
              */}
           </ul>

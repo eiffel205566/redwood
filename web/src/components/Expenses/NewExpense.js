@@ -478,7 +478,7 @@ const NewExpense = ({
             </div>
 
             <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
-              {userTypes &&
+              {userTypes ? (
                 userTypes.map((oneType) => (
                   <SingleType
                     id={oneType.id}
@@ -501,7 +501,13 @@ const NewExpense = ({
                     wrapperClass="w-8 h-8 sm:h-12 sm:w-12 md:w-16 md:h-16 mx-auto"
                     type={isTypeExpense(oneType.description) ? '' : 'income'}
                   />
-                ))}
+                ))
+              ) : (
+                <span className="text-green-300">
+                  Please Go To Type Page to Create Your Own Type, it helps you
+                  to categorize your income and expenses!
+                </span>
+              )}
             </div>
 
             <div className="description-w-buttons flex flex-row">

@@ -6,10 +6,11 @@ import {
   defaultIcons,
   defaultIncomeIcons,
 } from 'src/components/DefaultType/Static'
+//
 
 const DefaultTypes = ({ setIconType, currentType, id, checkState }) => {
   return (
-    <div className="col-span-1 sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 overflow-y-scroll m-h-96 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+    <div className="relative col-span-1 sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 overflow-y-scroll m-h-96 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
       {!checkState.checked
         ? defaultIcons.map(([icon, description], index) => (
             <SingleType

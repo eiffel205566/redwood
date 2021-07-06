@@ -8,6 +8,7 @@ import { USER_TYPES_QUERY } from './UserTypesTagsQuery'
 import { useQuery } from '@redwoodjs/web'
 import { iconTypes } from 'src/components/DefaultType/Static'
 import { useLocation } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
 
 const ExpensesPage = ({ page = 1 }) => {
   //side bar state
@@ -16,20 +17,24 @@ const ExpensesPage = ({ page = 1 }) => {
   })
   //--
 
-  // fake user
-  const currentUser = {
-    app_metadata: {
-      provider: 'email',
-    },
-    email: 'fakeuser2.expinsight@gmail.com',
-    exp: 1616348450,
-    sub: '3cff8205-96d0-464a-a6c2-31043649f687',
-    user_metadata: {
-      full_name: 'Fake User',
-    },
-    roles: [],
-  }
-  const isAuthenticated = true
+  //! fake user
+  // const currentUser = {
+  //   app_metadata: {
+  //     provider: 'email',
+  //   },
+  //   email: 'fakeuser2.expinsight@gmail.com',
+  //   exp: 1616348450,
+  //   sub: '3cff8205-96d0-464a-a6c2-31043649f687',
+  //   user_metadata: {
+  //     full_name: 'Fake User',
+  //   },
+  //   roles: [],
+  // }
+  // const isAuthenticated = true
+
+  //* real user:
+  const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+
   const { email: user } = currentUser
   //--
 
@@ -100,7 +105,14 @@ const ExpensesPage = ({ page = 1 }) => {
           setGrandMasterLoadingState={setGrandMasterLoadingState}
         />
       ) : null}
-      <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>
+      <CommonLayout
+        logIn={logIn}
+        logOut={logOut}
+        isAuthenticated={isAuthenticated}
+        currentUser={currentUser}
+        showSidebar={showSidebar}
+        setShowSidebar={setShowSidebar}
+      >
         <Toaster timeout={2000} />
         <ExpensesCell
           input={user}

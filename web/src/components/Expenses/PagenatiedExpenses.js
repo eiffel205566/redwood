@@ -5,7 +5,7 @@ import { Left, Right } from 'src/components/Misc/svg'
 import { Wrapper } from 'src/components/Misc/UtilityFunc'
 
 const PagenatiedExpenses = ({ count, className }) => {
-  const { search } = useLocation()
+  const { search } = useLocation() //search: ?page=1 hook to grab page number
   const currentPageNum = Number(search.split('=')[1]) || 1 //by default no page #, always display 1st page
 
   const [translateX, setTranslateX] = useState({
@@ -28,7 +28,9 @@ const PagenatiedExpenses = ({ count, className }) => {
         }
         className="absolute right-32 text-white h-full hover:text-green-300 cursor-pointer"
       >
-        <Left className="w-5" />
+        {Math.ceil(count / EXPENSENS_PER_PAGE) > 4 ? (
+          <Left className="w-5" />
+        ) : null}
       </Wrapper>
       <div
         className={`smallCarousel h-full overflow-hidden absolute right-7 text-white flex ${className}`}
@@ -71,7 +73,9 @@ const PagenatiedExpenses = ({ count, className }) => {
         }
         className="cursor-pointer hover:text-green-300 text-white"
       >
-        <Right className="w-5" />
+        {Math.ceil(count / EXPENSENS_PER_PAGE) > 4 ? (
+          <Right className="w-5" />
+        ) : null}
       </Wrapper>
     </Fragment>
   )

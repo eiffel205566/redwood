@@ -53,11 +53,9 @@ export const QUERY = gql`
 `
 
 export const Loading = ({ user }) => (
-  <div className="w-full mt-5 flex flex-col justify-center select-none overflow-hidden">
-    <h1 className="text-white text-xl">
-      {timeTag(new Date())}
-      <ClockLoading className="h-8 w-8 cursor-not-allowed animate-spin inline p-1" />
-    </h1>
+  <div className="w-full mt-5 select-none overflow-hidden h-screen">
+    <h1 className="text-white text-xl">{timeTag(new Date())}</h1>
+    <ClockLoading className="h-8 w-8 cursor-not-allowed animate-spin inline p-1" />
   </div>
 )
 

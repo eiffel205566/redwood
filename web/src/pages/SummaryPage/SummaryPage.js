@@ -7,6 +7,7 @@ import SummaryCell from 'src/components/SummaryCell/SummaryCell'
 import { USER_TYPES_QUERY } from '../ExpensesPage/UserTypesTagsQuery'
 import SummarySettings from 'src/components/Summary/SummarySettings'
 import Footer from 'src/layouts/CommonLayout/Footer'
+import { useAuth } from '@redwoodjs/auth'
 
 const SummaryPage = () => {
   //side bar state
@@ -20,20 +21,22 @@ const SummaryPage = () => {
   })
   const { grandMasterLoading } = grandMasterLoadingState
 
+  //* real user
+  const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
   //! fake user
-  const currentUser = {
-    app_metadata: {
-      provider: 'email',
-    },
-    email: 'fakeuser2.expinsight@gmail.com',
-    exp: 1616348450,
-    sub: '3cff8205-96d0-464a-a6c2-31043649f687',
-    user_metadata: {
-      full_name: 'Fake User',
-    },
-    roles: [],
-  }
-  const isAuthenticated = true
+  // const currentUser = {
+  //   app_metadata: {
+  //     provider: 'email',
+  //   },
+  //   email: 'fakeuser2.expinsight@gmail.com',
+  //   exp: 1616348450,
+  //   sub: '3cff8205-96d0-464a-a6c2-31043649f687',
+  //   user_metadata: {
+  //     full_name: 'Fake User',
+  //   },
+  //   roles: [],
+  // }
+  // const isAuthenticated = true
   const { email: user } = currentUser
   //!--
 
@@ -90,7 +93,14 @@ const SummaryPage = () => {
           user={user}
         />
       ) : null}
-      <CommonLayout showSidebar={showSidebar} setShowSidebar={setShowSidebar}>
+      <CommonLayout
+        logIn={logIn}
+        logOut={logOut}
+        isAuthenticated={isAuthenticated}
+        currentUser={currentUser}
+        showSidebar={showSidebar}
+        setShowSidebar={setShowSidebar}
+      >
         <Toaster timeout={2000} />
         <SummaryCell
           user={user}

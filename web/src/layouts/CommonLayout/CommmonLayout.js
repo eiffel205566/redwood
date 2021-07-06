@@ -26,6 +26,20 @@ const CommonLayout = ({
       }
     })
   }
+  //* calculating Morning or Afternoon
+  const now = new Date()
+  const secondsTillTomorrow =
+    new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1) - now
+  const greetings =
+    secondsTillTomorrow < 86400000 / 4
+      ? 'Evening'
+      : secondsTillTomorrow < 86400000 / 2
+      ? 'Morning'
+      : secondsTillTomorrow < (86400000 * 3) / 4
+      ? 'Afternoon'
+      : 'Evening'
+
+  //* --
 
   //-- for summary page
   const { typeCategoryState, isLandingPage } = rest || {}
@@ -104,11 +118,7 @@ const CommonLayout = ({
               */}
               {isAuthenticated && (
                 <section className="welcomeMessage h-full headerGradient flex flex-col justify-center text-sm">
-                  <span>{`Hello! ${
-                    currentUser?.user_metadata?.full_name
-                      ? currentUser?.user_metadata?.full_name
-                      : 'Friend'
-                  }`}</span>
+                  <span>{`Good ${greetings}!`} </span>
                 </section>
               )}
               <div className="navButtons flex flex-row justify-center headerGradient relative w-24">
@@ -125,7 +135,7 @@ const CommonLayout = ({
                   onKeyDown={() => {}}
                   role="button"
                   tabIndex="0"
-                  className="h-full w-full flex flex-col justify-center burgerlineContainer z-30 headerGradient"
+                  className="h-full w-full flex flex-col justify-center burgerlineContainer z-20 headerGradient"
                 >
                   <div
                     className={`burgerline ${burgerState ? 'open' : ''}`}

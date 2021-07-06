@@ -601,3 +601,16 @@ img {
   transform: translateY(10px) rotate(-45deg);
 }
 
+.expensePageContainer {
+  min-height: calc(100vh - 3.5rem);
+}
+
+@keyframes arrowAnimaiton {
+  from {transform: translateX(-2.5rem);}
+  to {transform: translateX(0rem);}
+}
+
+.animatedArrow {
+  transition: all 0.6s;
+  animation: arrowAnimaiton 1s infinite;
+}
