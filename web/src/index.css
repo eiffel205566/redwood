@@ -21,6 +21,11 @@ body {
 }
 #redwood-app {
   overflow-x: hidden !important;
+  min-height: 100vh;
+}
+
+main {
+  min-height: calc(100vh - 7rem);
 }
 
 label {
@@ -613,4 +618,17 @@ img {
 .animatedArrow {
   transition: all 0.6s;
   animation: arrowAnimaiton 1s infinite;
+}
+
+
+@media (max-width: 640px) {
+  input:placeholder-shown {
+    font-size: x-small;
+  }
+}
+
+@media (min-width: 640px) {
+  input:placeholder-shown {
+    font-size: small;
+  }
 }

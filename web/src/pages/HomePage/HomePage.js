@@ -643,7 +643,6 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="h-12"></div>
-        <Footer />
       </CommonLayout>
     </Fragment>
   )

@@ -45,7 +45,7 @@ export const Wrapper = (Component) => {
     const { userTypes, allUserLoading } = props
     return (
       <div
-        className={`border border-transparent rounded-xl mt-7 mb-5 ml-5 mr-5 sm:mx-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-sideDark ${
+        className={`border border-transparent rounded-xl mt-7 mb-0 ml-5 mb-2 mr-5 sm:mx-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-sideDark ${
           allUserLoading
             ? 'overflow-hidden'
             : 'overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300'
@@ -61,7 +61,7 @@ export const Wrapper = (Component) => {
             <Component {...props} />
           ) : (
             <Fragment>
-              <div className="text-xs sm:text-sm md:text-base col-span-3 text-white">
+              <div className="text-xs sm:text-sm md:text-base col-span-3 text-green-300 select-none">
                 Add Your Own Expense Type to Start!
               </div>
             </Fragment>

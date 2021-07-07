@@ -3,6 +3,7 @@ import SideBar from '../../components/SideBar/SideBar'
 import { Dots, Money } from '../../components/Misc/svg'
 import { Link, routes } from '@redwoodjs/router'
 import { useState } from 'react'
+import Footer from 'src/layouts/CommonLayout/Footer'
 
 const CommonLayout = ({
   children,
@@ -265,6 +266,7 @@ const CommonLayout = ({
       <main className={`${maxWidth ? 'w-screen' : 'max-w-5xl mx-auto'}`}>
         {children}
       </main>
+      <Footer />
     </Fragment>
   )
 }

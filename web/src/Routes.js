@@ -4,8 +4,8 @@ import TestPage from './pages/TestPage/TestPage'
 const Routes = () => {
   return (
     <Router>
-      <Route path="/type" page={TypePage} name="type" />
       <Private unauthenticated="home">
+        <Route path="/type" page={TypePage} name="type" />
         <Route path="/summary" page={SummaryPage} name="summary" />
         <Route path="/expenses" page={ExpensesPage} name="expenses" />
         {/*

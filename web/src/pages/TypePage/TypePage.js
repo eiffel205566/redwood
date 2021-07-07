@@ -19,20 +19,20 @@ import Switcher from 'src/components/DefaultType/Switcher'
 
 const TypePage = () => {
   //--
-  const { logIn, logOut } = useAuth()
-  const currentUser = {
-    app_metadata: {
-      provider: 'email',
-    },
-    email: 'fakeuser.expinsight@gmail.com',
-    exp: 1616348450,
-    sub: '3cff8205-96d0-464a-a6c2-31043649f687',
-    user_metadata: {
-      full_name: 'Fake User',
-    },
-    roles: [],
-  }
-  const isAuthenticated = true
+  const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
+  // const currentUser = {
+  //   app_metadata: {
+  //     provider: 'email',
+  //   },
+  //   email: 'fakeuser2.expinsight@gmail.com',
+  //   exp: 1616348450,
+  //   sub: '3cff8205-96d0-464a-a6c2-31043649f687',
+  //   user_metadata: {
+  //     full_name: 'Fake User',
+  //   },
+  //   roles: [],
+  // }
+  // const isAuthenticated = true
   const { email: user } = currentUser
 
   //--
@@ -137,11 +137,12 @@ const TypePage = () => {
         )}
       */}
       <CommonLayout
-        setShowSidebar={setShowSidebar}
-        showSidebar={showSidebar}
         logIn={logIn}
         logOut={logOut}
         isAuthenticated={isAuthenticated}
+        currentUser={currentUser}
+        showSidebar={showSidebar}
+        setShowSidebar={setShowSidebar}
       >
         <div
           className={`${
@@ -149,29 +150,14 @@ const TypePage = () => {
           } transition-all duration-500 ease-in-out flex`}
         >
           {/*
-            {sideBarShowed && <div className="w-0 md:w-40 -z-10"></div>}
            */}
-          {/*
-            // try to cheese with overlay sidebar
-            {sideBarShowed && (
-              <div className="md:hidden">
-                <Confirmation
-                  setTypePageFormDesc={setTypePageFormDesc}
-                  currentName={currentName}
-                  setTypePageErrorState={setTypePageErrorState}
-                  setIconType={setIconType}
-                  setNeedConfirm={setNeedConfirm}
-                  id={id}
-                  user={user}
-                  userTypes={userTypes}
-                />
-              </div>
-            )}
-          */}
-          <div className="absolute w-30 flex mx-5 sm:mx-10 text-white text-sm sm:text-base">
-            <span>{`Your ${
-              checkState.checked ? 'Income' : 'Expense'
-            } Type`}</span>
+
+          <div className="absolute w-30 flex mx-5 sm:mx-10 text-sm sm:text-base">
+            <span
+              className={`${
+                checkState.checked ? 'text-red-500' : 'text-yellow-300'
+              } Type`}
+            >{`${checkState.checked ? 'Income' : 'Expense'} Type`}</span>
             <div className="h-full my-auto ml-2">
               <Switcher
                 setIconType={setIconType}
@@ -190,6 +176,7 @@ const TypePage = () => {
               allUserLoading={allUserLoading}
               checkState={checkState}
             />
+            <section className="helpfulText text-white h-6 max-w-5xl mx-10 flex justify-between"></section>
             <DefaultForm
               currentType={currentType}
               id={id}

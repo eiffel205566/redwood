@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Customize, Spin } from 'src/components/Misc/svg'
 import { useQuery, useMutation } from '@redwoodjs/web'
 import { TiArrowRightOutline } from 'react-icons/ti'
+import { ClockLoading } from '../Misc/svg'
 
 import {
   Form,
@@ -74,9 +75,8 @@ const DefaultForm = ({
   }
 
   //create new user type
-  const [createType, { loading: createTypeLoading }] = useMutation(
-    CREATE_TYPE,
-    {
+  const [createType, { loading: createTypeLoading, error: createTypeError }] =
+    useMutation(CREATE_TYPE, {
       onCompleted: () => {
         setIconType((state) => {
           return { ...state, currentType: '', id: null, currentName: '' }
@@ -84,8 +84,7 @@ const DefaultForm = ({
         formMethods.reset()
         formMethods.clearErrors()
       },
-    }
-  )
+    })
 
   const onSubmit = async (data) => {
     //update, when id (in state) is present
@@ -128,11 +127,14 @@ const DefaultForm = ({
           return { ...state, typePageDescription: '' }
         })
       } catch (error) {
-        console.log(error)
+        // console.log(error)
         setTypePageErrorState((state) => {
           return {
             ...state,
             errorState: true,
+            errorMessage: error.message.includes('Unique constraint failed')
+              ? 'Duplicated Type, Pleas Enter New Name'
+              : 'Error: Please Try Again', //'Please select an icon',
           }
         })
       }
@@ -163,12 +165,14 @@ const DefaultForm = ({
           return { ...state, typePageDescription: '' }
         })
       } catch (error) {
-        console.log(error.message)
+        // console.log(error.message)
         setTypePageErrorState((state) => {
           return {
             ...state,
             errorState: true,
-            errorMessage: 'Please select an icon',
+            errorMessage: error.message.includes('Unique constraint failed')
+              ? 'Duplicated Type, Pleas Enter New Name'
+              : 'Error: Please Try Again', //'Please select an icon',
           }
         })
       }
@@ -209,9 +213,9 @@ const DefaultForm = ({
   return (
     <div className="relative select-none mx-5 sm:mx-10 h-64 sm:h-96 bg-sideDark border border-transparent rounded-xl p-1 grid grid-cols-2 sm:grid-cols-3 overflow-hidden">
       <div className="flex flex-col relative">
-        {!currentType && (
+        {/*!currentType && (
           <TiArrowRightOutline className="h-6 w-6 absolute text-green-300 right-0 animatedArrow top-1 md:top-3 lg:top-5" />
-        )}
+        )*/}
         {currentType ? (
           React.createElement(iconTypes[currentType], {
             className:
@@ -229,12 +233,17 @@ const DefaultForm = ({
           <FormError
             wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
           />
-          <Label className="text-white text-xs sm:text-sm md:text-base mb-1 sm:mb-5">
+          <Label className="text-white text-xs sm:text-sm md:text-base mb-1 sm:mb-5 relative">
             {!currentType
               ? 'Pick A Icon to Start'
               : !id
-              ? 'Adding New Exp Type'
-              : 'Rename Your Exp Type'}
+              ? 'Adding New Type'
+              : 'Rename Your Type'}
+            {!currentType && (
+              <div className="h-full w-full absolute top-0  hidden sm:block sm:-right-full animatedArrow">
+                <TiArrowRightOutline className="h-6 w-6 text-green-300" />
+              </div>
+            )}
           </Label>
           <div className="relative">
             <TextField
@@ -248,11 +257,16 @@ const DefaultForm = ({
             ></TextField>
             {/*
 
+              <span className="absolute text-white right-0 top-1 sm:top-0 text-gray-400 pr-1 sm:p-1 h-full text-sm sm:text-sm md:text-base">
+                {`${typePageFormDesc.typePageDescription.length}/10`}
+              </span>
             */}
 
-            <span className="absolute text-white right-0 top-1 sm:top-0 text-gray-400 pr-1 sm:p-1 h-full text-sm sm:text-sm md:text-base">
-              {`${typePageFormDesc.typePageDescription.length}/10`}
-            </span>
+            <div className="absolute h-full top-0 right-0 flex flex-col justify-center pr-1">
+              <span className="text-gray-400 text-xs">
+                {`${typePageFormDesc.typePageDescription.length}/10`}
+              </span>
+            </div>
           </div>
 
           {currentType ? (
@@ -265,14 +279,20 @@ const DefaultForm = ({
 
             */}
 
-          <div className="mt-2 sm:mt-5 flex flex-col">
+          <div className="flex flex-col">
             <Submit
-              className="bg-gray-400 hover:bg-green-300 text-gray py-2 sm:px-4 rounded w-28 mt-5 min-w-full max-w-full text-xs sm:text-sm md:text-base"
+              className={`${
+                createTypeLoading || updateTypeLoading
+                  ? 'cursor-not-allowed'
+                  : ''
+              } bg-gray-400 hover:bg-green-300 text-gray py-2 sm:px-4 rounded w-28 mt-5 min-w-full max-w-full text-xs sm:text-sm md:text-base`}
               disabled={createTypeLoading || updateTypeLoading}
             >
-              {createTypeLoading || updateTypeLoading
-                ? 'Please Wait'
-                : 'Submit'}
+              {createTypeLoading || updateTypeLoading ? (
+                <ClockLoading className="h-6 w-6 text-gray-500 mx-auto" />
+              ) : (
+                'Submit'
+              )}
             </Submit>
 
             <button
@@ -286,11 +306,17 @@ const DefaultForm = ({
               <button
                 onClick={onDelete}
                 disabled={createTypeLoading || updateTypeLoading}
-                className="bg-gray-400 hover:bg-red-700 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base"
+                className={`${
+                  createTypeLoading || updateTypeLoading
+                    ? 'cursor-not-allowed'
+                    : ''
+                } bg-gray-400 hover:bg-red-700 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base`}
               >
-                {createTypeLoading || updateTypeLoading
-                  ? 'Please Wait'
-                  : 'Delete'}
+                {createTypeLoading || updateTypeLoading ? (
+                  <ClockLoading className="h-6 w-6 text-gray-500 mx-auto" />
+                ) : (
+                  'Delete'
+                )}
               </button>
             )}
           </div>

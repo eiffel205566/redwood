@@ -51,7 +51,12 @@ const AboutPage = () => {
         </section>
 
         <section className="features mt-10">
-          <p className="text-3xl">Features & Notes:</p>
+          <p className="text-3xl">How To & Notes:</p>
+          <div className="notesLine w-full flex h-12">
+            <div className="h-full flex flex-col justify-center">
+              <p className="text-md sm:text-xl"> - Go To Type Page</p>
+            </div>
+          </div>
           <div className="expLine w-full flex h-12">
             <div className="h-full my-auto flex flex-col justify-center">
               <p className="text-md sm:text-xl"> - Create Your Expense Type</p>
@@ -81,14 +86,10 @@ const AboutPage = () => {
               <BiTrophy className="h-8 w-8 sm:h-10 sm:w-10" />
             </div>
           </div>
-          <div className="tagLine w-full flex h-12">
+          <div className="notesLine w-full flex h-12">
             <div className="h-full flex flex-col justify-center">
-              <p className="text-md sm:text-xl">
-                {' '}
-                - Attach Your Customized Tags
-              </p>
+              <p className="text-md sm:text-xl"> - Go To Expense Page</p>
             </div>
-            <LandingPageTag content="My Tag" />
           </div>
           <div className="graphLine w-full flex h-12">
             <div className="h-full flex flex-col justify-center">
@@ -100,6 +101,15 @@ const AboutPage = () => {
             <div className="wrapper h-full flex flex-col justify-center">
               <FcInspection className="h-8 w-8 sm:h-10 sm:w-10" />
             </div>
+          </div>
+          <div className="tagLine w-full flex h-12">
+            <div className="h-full flex flex-col justify-center">
+              <p className="text-md sm:text-xl">
+                {' '}
+                - Attach Your Customized Tags
+              </p>
+            </div>
+            <LandingPageTag content="My Tag" />
           </div>
           <div className="graphLine w-full flex h-12">
             <div className="h-full flex flex-col justify-center">
@@ -124,6 +134,13 @@ const AboutPage = () => {
 
         <section className="incomingFeatures my-10 flex flex-col">
           <p className="text-3xl">Incoming Features:</p>
+          <div className="h-12">
+            <div className="h-full flex flex-col justify-center">
+              <p className="text-md sm:text-xl">
+                - Sorting, Searching on Expense Page
+              </p>
+            </div>
+          </div>
           <div className="h-12">
             <div className="h-full flex flex-col justify-center">
               <p className="text-md sm:text-xl">
@@ -153,10 +170,6 @@ const AboutPage = () => {
           </div>
         </section>
       </div>
-
-      {/*
-       */}
-      <Footer />
     </CommonLayout>
   )
 }
