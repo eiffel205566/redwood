@@ -10,17 +10,19 @@ export const truncate = (text, maxStringLength) => {
 export const Wrapper = ({ children, className, ...rest }) => {
   const { onClick, paddingLeft } = rest || {}
   return (
+    /*eslint-disable */
     <div
       onClick={onClick}
       onKeyDown={() => {}}
-      tabIndex="0"
-      role="button"
+      // tabIndex="0"
+      // role="button"
       className={`${className} flex flex-col justify-center ${
         paddingLeft ? 'paddingLeft' : 'pl-1'
       } text-xs sm:text-sm md:text-base`}
     >
       {children}
     </div>
+    /*eslint-enable*/
   )
 }
 
@@ -100,9 +102,10 @@ export const generateRandomColors = (n, r = 51, g = 204, b = 153) => {
 }
 
 export const LandingPageTag = ({ content, tagState, setTagState }) => {
+  /*eslint-disable*/
   return (
     <div
-      onClick={
+    onClick={
         setTagState
           ? () => {
               setTagState((state) => {
@@ -114,9 +117,9 @@ export const LandingPageTag = ({ content, tagState, setTagState }) => {
             }
           : () => {}
       }
-      className="flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-16 sm:w-32 h-12 select-none"
-      onKeyDown={() => {}}
-      role="button"
+      className="flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-16 sm:w-32 h-12 select-none cursor-pointer"
+      // onKeyDown={() => {}}
+      // role="button"
       tabIndex="0"
     >
       {tagState ? (
@@ -137,7 +140,7 @@ export const LandingPageTag = ({ content, tagState, setTagState }) => {
     </div>
   )
 }
-
+/*eslint-enable*/
 export const Letter = ({ letter, index, len, direction }) => {
   let ms
   let style

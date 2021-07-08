@@ -35,9 +35,9 @@ const CommonLayout = ({
     secondsTillTomorrow < 86400000 / 4
       ? 'Evening'
       : secondsTillTomorrow < 86400000 / 2
-      ? 'Morning'
-      : secondsTillTomorrow < (86400000 * 3) / 4
       ? 'Afternoon'
+      : secondsTillTomorrow < (86400000 * 3) / 4
+      ? 'Morning'
       : 'Evening'
 
   //* --
@@ -122,11 +122,14 @@ const CommonLayout = ({
                   <span>{`Good ${greetings}!`} </span>
                 </section>
               )}
-              <div className="navButtons flex flex-row justify-center headerGradient relative w-24">
+              <div className="navButtons border-none focus:border-none flex flex-row justify-center headerGradient relative w-24">
                 {/* logged-in status indicator */}
                 {isAuthenticated && (
                   <div className="logStatusIndicator absolute h-2 w-2 bg-green-300 top-3 right-8 border rounded-full z-1"></div>
                 )}
+                {/*
+                  eslint-disable
+                */}
                 <div
                   onClick={() => {
                     setBurgerState((state) => {
@@ -134,16 +137,16 @@ const CommonLayout = ({
                     })
                   }}
                   onKeyDown={() => {}}
-                  role="button"
-                  tabIndex="0"
-                  className="h-full w-full flex flex-col justify-center burgerlineContainer z-20 headerGradient"
+                  // role="button"
+                  // tabIndex="0"
+                  className="h-full w-full flex flex-col justify-center border-none burgerlineContainer z-20 headerGradient cursor-pointer"
                 >
                   <div
                     className={`burgerline ${burgerState ? 'open' : ''}`}
                   ></div>
                 </div>
-                {/*
-                 */}
+                {/*eslint-enable */}
+
                 <div
                   className={`h-${
                     isAuthenticated ? '80' : '40'
@@ -167,6 +170,7 @@ const CommonLayout = ({
                       </Link>
                     )}
                   </div>
+                  {/*eslint-disable*/}
                   <div
                     className={`h-8 w-20 z-30 absolute top-16 right-2 bg-overlay z-20 text-center ${
                       burgerState ? '' : 'bg-opacity-0 -z-10'
@@ -174,8 +178,8 @@ const CommonLayout = ({
                   >
                     {burgerState && (
                       <div
-                        role="button"
-                        tabIndex="0"
+                        // role="button"
+                        // tabIndex="0"
                         onKeyDown={() => {}}
                         onClick={
                           isAuthenticated
@@ -194,6 +198,7 @@ const CommonLayout = ({
                       </div>
                     )}
                   </div>
+                  {/*eslint-enable*/}
                   <div
                     className={`h-8 w-20 z-30 absolute top-28 right-2 bg-overlay z-20 text-center ${
                       burgerState ? '' : 'bg-opacity-0 -z-10'
