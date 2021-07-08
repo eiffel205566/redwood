@@ -212,7 +212,7 @@ const Summary = ({
                     }
                   />
                 </Wrapper>
-
+                {/*eslint-disable*/}
                 <Wrapper>
                   <div
                     onClick={() => {
@@ -225,10 +225,11 @@ const Summary = ({
                       document.body.classList.add('overflow-hidden')
                     }}
                     onKeyDown={() => {}}
-                    tabIndex="0"
-                    role="button"
+                    // tabIndex="0"
+                    // role="button"
                     className="rank m-2 h-full w-60 border border-gray-500 pointer-default"
                   >
+                  {/*eslint-enable*/}
                     <div
                       className={`rankBarContent transform transition-all duration-500 hover:bg-green-300 cursor-pointer ease-in-out w-${calculateWidth(
                         Math.abs(oneType._sum.amount),

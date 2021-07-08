@@ -276,27 +276,27 @@ const LandingPage = () => {
           >
             <li
               className={`flex flex-col pictureContainer_1${
-                [0, 1].includes(frontPageCarousel.translateX) ? '' : 'noshow'
+                [0, 1].includes(frontPageCarousel.translateX) ? '' : ''
               } h-screen w-full `}
             ></li>
             <li
               className={`flex flex-col pictureContainer_2${
-                [1, 2].includes(frontPageCarousel.translateX) ? '' : 'noshow'
+                [1, 2].includes(frontPageCarousel.translateX) ? '' : ''
               } h-screen w-full `}
             ></li>
             <li
               className={`flex flex-col pictureContainer_3${
-                [2, 3].includes(frontPageCarousel.translateX) ? '' : 'noshow'
+                [2, 3].includes(frontPageCarousel.translateX) ? '' : ''
               } h-screen w-full `}
             ></li>
             <li
               className={`flex flex-col pictureContainer_4${
-                [3, 4].includes(frontPageCarousel.translateX) ? '' : 'noshow'
+                [3, 4].includes(frontPageCarousel.translateX) ? '' : ''
               } h-screen w-full `}
             ></li>
             <li
               className={`flex flex-col pictureContainer_1${
-                [0, 4].includes(frontPageCarousel.translateX) ? '' : 'noshow'
+                [0, 4].includes(frontPageCarousel.translateX) ? '' : ''
               } h-screen w-full `}
             ></li>
             {/*
@@ -317,16 +317,20 @@ const LandingPage = () => {
             </h3>
 
             <div className="buttonsContainer w-full flex">
+              {/*eslint-disable*/}
+              <div className="h-full flex flex-col justify-center">
+
               <div
                 onClick={() => {
                   logIn()
                 }}
                 onKeyDown={() => {}}
-                tabIndex="0"
-                role="button"
-                className="love border cursor-pointer hover:text-black font-semibold text-white rounded-lg fontGrad italic loginButton h-10 w-40 text-4xl text-black text-center transform transition-all duration-500 ease-in-out"
+                // tabIndex="0"
+                // role="button"
+                className="love border whitespace-nowrap cursor-pointer hover:text-black font-semibold text-white rounded-lg fontGrad italic loginButton w-40  text-2xl sm:text-4xl text-black text-center transform transition-all duration-500 ease-in-out"
               >
                 Starts Here...
+              </div>
               </div>
               <div
                 onClick={() => {
@@ -338,9 +342,9 @@ const LandingPage = () => {
                   })
                 }}
                 onKeyDown={() => {}}
-                role="button"
-                tabIndex="0"
-                className="ml-1 relative w-10 h-full flex flex-col justify-center text-white hover:text-green-300 "
+                // role="button"
+                // tabIndex="0"
+                className="ml-1 relative w-10 h-full flex flex-col justify-center text-white hover:text-green-300 cursor-pointer"
               >
                 {frontPageCarousel.stopAnimation ? (
                   <AiOutlineRight className="w-full h-full" />
@@ -348,6 +352,7 @@ const LandingPage = () => {
                   <AiOutlinePause className="w-full h-full" />
                 )}
               </div>
+            {/*eslint-enable*/}
             </div>
           </div>
 

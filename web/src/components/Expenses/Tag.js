@@ -91,6 +91,7 @@ export const Tag = ({
   }
 
   return (
+    /*eslint-disable*/
     <div
       onKeyDown={() => {}}
       tabIndex="0"
@@ -104,6 +105,7 @@ export const Tag = ({
         content ? '' : 'text-displayOnly'
       } cursor-pointer flex flex-col justify-center text-xs sm:text-sm md:text-base pl-1 text-center w-16 sm:w-32 h-12 select-none`}
     >
+    {/*eslint-enable*/}
       <span
         className={`whitespace-nowrap rounded-full py-1 px-2 ${
           isChosenTag
