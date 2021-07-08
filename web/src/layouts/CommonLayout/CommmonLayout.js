@@ -125,7 +125,7 @@ const CommonLayout = ({
               <div className="navButtons flex flex-row justify-center headerGradient relative w-24">
                 {/* logged-in status indicator */}
                 {isAuthenticated && (
-                  <div className="logStatusIndicator absolute h-2 w-2 bg-green-300 top-3 right-8 border rounded-full"></div>
+                  <div className="logStatusIndicator absolute h-2 w-2 bg-green-300 top-3 right-8 border rounded-full z-1"></div>
                 )}
                 <div
                   onClick={() => {

@@ -315,7 +315,7 @@ const SingleExpense = ({
           />
         </Wrapper>
 
-        <div className="tagTitle-chevron-corousel flex-grow flex flex-row justify-center">
+        <div className="tagTitle-chevron-corousel flex flex-row justify-center">
           {/*
             <Wrapper>
               <span>{'Tags: '}</span>

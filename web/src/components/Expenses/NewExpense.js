@@ -678,7 +678,7 @@ const NewExpense = ({
             <div className="amount text-white">
               <div className="twoH3Parent w-full flex flex-col">
                 <h3 className="text-sm sm:text-base m-1">
-                  How much you spend?
+                  What Is The Amount?
                 </h3>
                 <Wrapper className="flex-grow" paddingLeft="pl-0">
                   <input
@@ -698,7 +698,7 @@ const NewExpense = ({
               {newExpenseState.expenseToEdit ? (
                 <div className="twoInput flex flex-col justify-between">
                   <h3 className="text-sm sm:text-base m-1">
-                    When did you spend?
+                    When did you spend/earn?
                   </h3>
                   <Wrapper className="flex-grow" paddingLeft="pl-0">
                     <input

@@ -78,7 +78,7 @@ canvas {
 }
 
 .logStatusIndicator {
-  z-index: 99;
+  z-index: 30;
 }
 
 .chevronright {
@@ -607,7 +607,7 @@ img {
 }
 
 .expensePageContainer {
-  min-height: calc(100vh - 3.5rem);
+  min-height: calc(100vh - 7rem);
 }
 
 @keyframes arrowAnimaiton {

@@ -116,9 +116,6 @@ const ExpensesList = ({
           ></Plus>
           <p className="text-white hidden sm:block">Add New Entry</p>
         </div>
-        {/*
-
-        */}
         <PagenatiedExpenses count={count} />
       </div>
     </div>
