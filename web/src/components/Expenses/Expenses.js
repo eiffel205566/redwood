@@ -3,6 +3,11 @@ import { toast } from '@redwoodjs/web/toast'
 import { Link, routes } from '@redwoodjs/router'
 import { useAuth } from '@redwoodjs/auth'
 import { QUERY } from 'src/components/ExpensesCell'
+import SingleExpense from './SingleExpense'
+import { iconTypes } from 'src/components/DefaultType/Static'
+import { ClockLoading, Plus } from '../Misc/svg'
+import PagenatiedExpenses from './PagenatiedExpenses'
+import { TiArrowRightOutline } from 'react-icons/ti'
 
 const DELETE_EXPENSE_MUTATION = gql`
   mutation DeleteExpenseMutation($id: Int!) {
@@ -26,10 +31,10 @@ const jsonTruncate = (obj) => {
   return truncate(JSON.stringify(obj, null, 2))
 }
 
-const timeTag = (datetime) => {
+export const timeTag = (datetime) => {
   return (
     <time dateTime={datetime} title={datetime}>
-      {new Date(datetime).toUTCString()}
+      {new Date(datetime).toDateString()}
     </time>
   )
 }
@@ -38,16 +43,22 @@ const checkboxInputTag = (checked) => {
   return <input type="checkbox" checked={checked} disabled />
 }
 
-const ExpensesList = ({ expenses }) => {
-  const { currentUser } = useAuth()
-  const { email } = currentUser || { email: 'fakeuser.expinsight@gmail.com' }
+const ExpensesList = ({
+  myExpenses,
+  tagEditState,
+  setTagEditState,
+  user,
+  setNewExpenseState,
+  count,
+  page,
+  setGrandMasterLoadingState,
+}) => {
+  //page state
+
   const [deleteExpense] = useMutation(DELETE_EXPENSE_MUTATION, {
     onCompleted: () => {
       toast.success('Expense deleted')
     },
-    // This refetches the query on the list page. Read more about other ways to
-    // update the cache over here:
-    // https://www.apollographql.com/docs/react/data/mutations/#making-all-other-cache-updates
     refetchQueries: [{ query: QUERY }],
     awaitRefetchQueries: true,
   })
@@ -59,56 +70,54 @@ const ExpensesList = ({ expenses }) => {
   }
 
   return (
-    <div className="rw-segment rw-table-wrapper-responsive">
-      <table className="rw-table">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Amount</th>
-            <th>Type</th>
-            <th>User</th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          {expenses
-            .filter((expense) => expense.user === email)
-            .map((expense) => (
-              <tr key={expense.id}>
-                <td>{truncate(expense.id)}</td>
-                <td>{truncate(expense.amount)}</td>
-                <td>{truncate(expense.type)}</td>
-                <td>{truncate(expense.user)}</td>
-                <td>
-                  <nav className="rw-table-actions">
-                    <Link
-                      to={routes.expense({ id: expense.id })}
-                      title={'Show expense ' + expense.id + ' detail'}
-                      className="rw-button rw-button-small"
-                    >
-                      Show
-                    </Link>
-                    <Link
-                      to={routes.editExpense({ id: expense.id })}
-                      title={'Edit expense ' + expense.id}
-                      className="rw-button rw-button-small rw-button-blue"
-                    >
-                      Edit
-                    </Link>
-                    <a
-                      href="#"
-                      title={'Delete expense ' + expense.id}
-                      className="rw-button rw-button-small rw-button-red"
-                      onClick={() => onDeleteClick(expense.id)}
-                    >
-                      Delete
-                    </a>
-                  </nav>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+    <div className="expensePageContainer w-full flex flex-col h-full justify-between select-none pb-5">
+      <div className="h-full flex flex-col mx-2 sm:mx-0">
+        <h1
+          className={`${
+            count ? 'text-white' : 'text-green-300'
+          } text-base sm:text-xl`}
+        >
+          {count ? timeTag(new Date()) : 'Add New Entry To Start Tracking!!'}
+        </h1>
+        {myExpenses.map((singleExpense) => {
+          return (
+            <SingleExpense
+              key={singleExpense.id}
+              singleExpense={singleExpense}
+              iconTypes={iconTypes}
+              tagEditState={tagEditState}
+              setTagEditState={setTagEditState}
+              myExpenses={myExpenses}
+              user={user}
+              setNewExpenseState={setNewExpenseState}
+              setGrandMasterLoadingState={setGrandMasterLoadingState}
+            />
+          )
+        })}
+      </div>
+      <div className="relative flex flex-row">
+        <div className="mx-auto flex flex-row">
+          {!count && (
+            <TiArrowRightOutline className="h-6 w-6 animatedArrow left-1/3 text-green-500" />
+          )}
+          <Plus
+            onClick={() => {
+              setTagEditState((state) => {
+                return {
+                  ...state,
+                  id: null,
+                  editState: false,
+                  newTagState: true,
+                }
+              })
+              document.body.classList.add('overflow-hidden')
+            }}
+            className="h-6 w-6 text-white hover:text-green-300 cursor-pointer"
+          ></Plus>
+          <p className="text-white hidden sm:block">Add New Entry</p>
+        </div>
+        <PagenatiedExpenses count={count} />
+      </div>
     </div>
   )
 }

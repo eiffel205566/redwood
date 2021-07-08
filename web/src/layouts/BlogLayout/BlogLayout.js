@@ -12,7 +12,7 @@ const BlogLayout = ({
 
   return (
     <>
-      <header className="relative flex justify-between items-center py-4 px-8 bg-gray-700 text-white">
+      <header className="relative flex justify-between items-center py-4 px-8 bg-gray-500 text-white">
         <h1 className="text-3xl font-semibold tracking-tight">
           <Link
             className="hover:text-gray-300 transition duration-100"

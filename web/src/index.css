@@ -16,6 +16,18 @@ button, input, label, textarea {
   outline: none;
 }
 
+body {
+  overflow-x: hidden !important;
+}
+#redwood-app {
+  overflow-x: hidden !important;
+  min-height: 100vh;
+}
+
+main {
+  min-height: calc(100vh - 7rem);
+}
+
 label {
   margin-top: 1rem;
 }
@@ -43,12 +55,17 @@ input.error, textarea.error {
 }
 
 canvas {
-  margin: auto;
+  width: 100% !important;
+  height: 100% !important;
 }
 
-.chart-container {
-  height: 40vh;
+.backgroundOverlay {
+  position: fixed !important;
 }
+
+/* .chart-container {
+  height: 40vh;
+} */
 
 #btn:hover span {
   color: transparent;
@@ -58,6 +75,10 @@ canvas {
   position: relative;
   top: 45vh;
   transform: translateY(-50%);
+}
+
+.logStatusIndicator {
+  z-index: 30;
 }
 
 .chevronright {
@@ -73,4 +94,541 @@ canvas {
 #btn:hover .chevronright:nth-child(1) {
   color: #808080;
   animation: moveRight 1s infinite;
+}
+
+#money {
+  transition: all 0.6s;
+  color: gold;
+  animation: spinning 1s infinite;
+}
+
+@keyframes spinning {
+  from {transform: rotateY(0deg)}
+  to {transform: rotateY(360deg)}
+}
+
+.love {
+  font-family: 'Bilbo', cursive;
+}
+
+.carousel {
+  width: 385px;
+}
+
+.smallCarousel {
+  width: 96px;
+}
+
+.allTags {
+  width: 9999px;
+}
+
+@media (max-width: 640px) {
+  .carousel {
+    width: 134px;
+  }
+}
+
+aside {
+  z-index: 10;
+}
+
+.headerGradient {
+  background-image: linear-gradient(to bottom, #aaaaaa, #8c8c8c, #6f6f6f, #545454, #3a3a3a);
+}
+
+.footerGradient {
+  background-image: linear-gradient(to top, #8c8c8c, #6f6f6f, #545454, #3a3a3a);
+}
+
+.pageNumber {
+  width: 24px;
+}
+
+.rankBarContent {
+  background: #10B981;
+  background-image: radial-gradient(black 1px, transparent 0);
+  background-size: 4px 4px;
+  /* background-position: -19px -19px; */
+  background-repeat: repeat;
+}
+
+
+/* .testingGroup {
+  transform: scale(2) translate(-7.45%, -9.5%);
+} */
+
+/* @keyframes raising {
+  from {opacity: 0; transform: translateY(50%)}
+  to {opacity: 1; transform: translateY(0%)}
+} */
+/* @keyframes raising {
+  0% {opacity: 0; transform: translateY(50%)}
+  40% {opacity: 1; transform: translateY(0%)}
+  50% {transform: scale(1)}
+  60% {transform: scale(1)}
+  70% {transform: scale(1)}
+  100% {transform: scale(1)}
+ }
+
+.testingGroup {
+  animation: raising 6s infinite;
+ } */
+
+ .theCircle {
+  stroke: #0074d9;
+  stroke-width: 100;
+  stroke-dasharray: 0 200;
+  transition: stroke-dasharray 2s ease;
+  animation: chartFill 24s infinite;
+ }
+
+.theCircle2 {
+  stroke: red;
+  stroke-width: 100;
+  stroke-dasharray: 100 200;
+  transition: stroke-dasharray 2s ease;
+  animation: chartFill2 24s infinite;
+  transform-origin: 630px 10px;
+  transform: rotate(120deg);
+ }
+
+ .theCircle3 {
+  stroke: yellow;
+  stroke-width: 100;
+  stroke-dasharray: 100 200;
+  transition: stroke-dasharray 2s ease;
+  animation: chartFill3 24s infinite;
+  transform-origin: 630px 10px;
+  transform: rotate(240deg);
+ }
+
+ /* 1st circle */
+@keyframes chartFill {
+  0% { stroke-dasharray: 0 314 }
+  50% { stroke-dasharray: 0 314 }
+  55% { stroke-dasharray: 105 314 }
+  100% { stroke-dasharray: 105 314 }
+}
+
+/* 2nd circle */
+@keyframes chartFill2 {
+  0% { stroke-dasharray: 0 314 }
+  55% { stroke-dasharray: 0 314 }
+  60% { stroke-dasharray: 105 314 }
+  70% { stroke-dasharray: 105 314 }
+  100% { stroke-dasharray: 105 314 }
+}
+
+/* 3rd cirle */
+@keyframes chartFill3 {
+  0% { stroke-dasharray: 0 314 }
+  60% { stroke-dasharray: 0 314 }
+  65% { stroke-dasharray: 105 314 }
+  70% { stroke-dasharray: 105 314 }
+  100% { stroke-dasharray: 105 314 }
+}
+
+
+ .circleGroup {
+   transform-origin: 630px 140px;
+   transform: rotate(-90deg);
+ }
+
+
+@keyframes raising_1 {
+  0% {opacity: 0; transform: translateY(25%)}
+  5% {opacity: 1; transform: translateY(0%)}
+  50% {transform: scale(1)}
+  60% {transform: scale(1)}
+  70% {transform: scale(1)}
+  100% {transform: scale(1)}
+ }
+
+ .raising_1 {
+  animation: raising_1 24s infinite;
+ }
+
+
+@keyframes raising_2 {
+  0% {opacity: 0; transform: translateY(25%)}
+  15% {opacity: 0; transform: translateY(25%)}
+  20% {opacity: 1; transform: translateY(0%)}
+  60% {transform: scale(1)}
+  70% {transform: scale(1)}
+  100% {transform: scale(1)}
+ }
+
+ .raising_2 {
+  animation: raising_2 24s infinite;
+ }
+
+ @keyframes raising_3 {
+  0% {opacity: 0; transform: translateY(25%)}
+  30% {opacity: 0; transform: translateY(25%)}
+  35% {opacity: 1; transform: translateY(0%)}
+  60% {transform: scale(1)}
+  70% {transform: scale(1)}
+  100% {transform: scale(1)}
+ }
+
+ .raising_3 {
+  animation: raising_3 24s infinite;
+ }
+
+ @keyframes wiggle_2 {
+  0% {transform: rotate(0deg)}
+  10% {transform: rotate(0deg)}
+  15% {transform: rotate(0deg)}
+  20% {transform: rotate(0deg)}
+  21% {transform: rotate(-10deg)}
+  21.5% {transform: rotate(10deg)}
+  22% {transform: rotate(-10deg)}
+  22.5% {transform: rotate(10deg)}
+  23% {transform: rotate(0deg)}
+  30% {transform: rotate(0deg)}
+  40% {transform: rotate(0deg)}
+  50% {transform: rotate(0deg)}
+  60% {transform: rotate(0deg)}
+  70% {transform: rotate(0deg)}
+  80% {transform: rotate(0deg)}
+  90% {transform: rotate(0deg)}
+  100% {transform: rotate(0deg)}
+
+
+ }
+
+.wiggle_2 {
+  transform-origin: 130px 130px;
+  animation: wiggle_2 24s infinite;
+}
+
+@keyframes wiggle_1 {
+  0% {transform: rotate(0deg)}
+  5% {transform: rotate(0deg)}
+  6% {transform: rotate(-10deg)}
+  6.5% {transform: rotate(10deg)}
+  7% {transform: rotate(-10deg)}
+  7.5% {transform: rotate(10deg)}
+  8% {transform: rotate(0deg)}
+  23% {transform: rotate(0deg)}
+  30% {transform: rotate(0deg)}
+  40% {transform: rotate(0deg)}
+  50% {transform: rotate(0deg)}
+  60% {transform: rotate(0deg)}
+  70% {transform: rotate(0deg)}
+  80% {transform: rotate(0deg)}
+  90% {transform: rotate(0deg)}
+  100% {transform: rotate(0deg)}
+
+
+ }
+
+.wiggle_1 {
+  transform-origin: 130px 70px;
+  animation: wiggle_1 24s infinite;
+}
+
+@keyframes wiggle_3 {
+  0% {transform: rotate(0deg)}
+  35% {transform: rotate(0deg)}
+  36% {transform: rotate(-10deg)}
+  36.5% {transform: rotate(10deg)}
+  37% {transform: rotate(-10deg)}
+  37.5% {transform: rotate(10deg)}
+  38% {transform: rotate(0deg)}
+  30% {transform: rotate(0deg)}
+  40% {transform: rotate(0deg)}
+  50% {transform: rotate(0deg)}
+  60% {transform: rotate(0deg)}
+  70% {transform: rotate(0deg)}
+  80% {transform: rotate(0deg)}
+  90% {transform: rotate(0deg)}
+  100% {transform: rotate(0deg)}
+
+
+ }
+
+.wiggle_3 {
+  transform-origin: 130px 190px;
+  animation: wiggle_3 24s infinite;
+}
+
+/* ! testing*/
+/* .testClass {
+  fill: #0074d9 !important;
+} */
+
+
+/* * testing*/
+
+img {
+  max-width: none !important;
+}
+
+.pictures {
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+.pictureContainer_2 {
+  background-image: url("./pages/TestPage/pic_2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.pictureContainer_1 {
+  background-image: url("./pages/TestPage/pic_1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.pictureContainer_3 {
+  background-image: url("./pages/TestPage/pic_3.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.pictureContainer_4 {
+  background-image: url("./pages/TestPage/pic_4.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+}
+
+.pictureContainer_5 {
+  background-image: url("./pages/TestPage/pic_5.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+  clip-path: polygon(60% 0%, 100% 0%, 100% 100%, 45% 100%);
+  transform: translateY(0vh);
+  opacity: 1;
+}
+
+.pictureContainer_5_not_visible {
+  transform: translateY(-20vh) translateX(3vw);
+  opacity: 0;
+}
+
+.pictureContainer_6 {
+  background-image: url("./pages/TestPage/pic_6.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+  clip-path: polygon(0 0, 60% 0, 45% 100%, 0 100%);
+  transform: translateY(0vh);
+  opacity: 1;
+}
+
+.pictureContainer_6_not_visible {
+  transform: translateY(20vh) translateX(-3vw);
+  opacity: 0;
+}
+
+
+.frontPageCarousel {
+  width: 500%;
+}
+
+.animationContainer_visible {
+  opacity: 1;
+  transform: translateX(0vw);
+  visibility: visible;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.animationContainer {
+  opacity: 0;
+  transform: translateX(-20vw);
+  visibility: visible;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  will-change: opacity, visibility;
+}
+
+
+.chartContainer_visible {
+  opacity: 1;
+  transform: translateX(0vw);
+  visibility: visible;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.chartContainer {
+  opacity: 0;
+  transform: translateX(20vw);
+  visibility: visible;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  will-change: opacity, visibility;
+}
+
+.frontPageCarousel {
+  transition-property: translate, transform;
+}
+
+.textContainer_visible {
+  opacity: 1;
+  transform: translateX(0vw);
+  visibility: visible;
+  /* transition: opacity 0.5s ease-out, transform 0.5s ease-out; */
+}
+
+.textContainer_visible:nth-child(1) {
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.textContainer_visible:nth-child(2) {
+  transition: opacity 0.5s ease-out 0.1s, transform 0.5s ease-out 0.1s;
+}
+
+.textContainer_visible:nth-child(3) {
+  transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s;
+}
+
+.textContainer_visible:nth-child(4) {
+  transition: opacity 0.5s ease-out 0.3s, transform 0.5s ease-out 0.3s;
+}
+
+.textContainer {
+  opacity: 0;
+  transform: translateX(20vw);
+  visibility: visible;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  will-change: opacity, visibility;
+}
+
+
+.expenseContainer_visible {
+  opacity: 1;
+  transform: translateX(0vw);
+  visibility: visible;
+}
+
+.expenseContainer_visible:nth-child(1) {
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.expenseContainer_visible:nth-child(2) {
+  transition: opacity 0.5s ease-out 0.1s, transform 0.5s ease-out 0.1s;
+}
+
+.expenseContainer_visible:nth-child(3) {
+  transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s;
+}
+
+.expenseContainer_visible:nth-child(4) {
+  transition: opacity 0.5s ease-out 0.3s, transform 0.5s ease-out 0.3s;
+}
+
+.expenseContainer_visible:nth-child(5) {
+  transition: opacity 0.5s ease-out 0.3s, transform 0.5s ease-out 0.4s;
+}
+
+.expenseContainer {
+  opacity: 0;
+  transform: translateX(-20vw);
+  visibility: visible;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  will-change: opacity, visibility;
+}
+
+@keyframes letterOpacity {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* backward */
+@keyframes letterOpacityBack {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.burgerline {
+  display: block;
+  position: relative;
+  top: 0%;
+  width: 30px;
+  background: #fff;
+  margin: auto;
+  height: 2px;
+  transition: 1s ease;
+  opacity: 1;
+}
+
+.burgerline::before {
+  content:'';
+  display: block;
+  position: relative;
+  width: 30px;
+  height:2px;
+  margin:auto;
+  background: #fff;
+  top:10px;
+  left:0px;
+  transition: 0.5s ease;
+}
+
+.burgerline::after {
+  content:'';
+  display: block;
+  position: relative;
+  width: 30px;
+  height:2px;
+  margin:auto;
+  background: #fff;
+  top:-12px;
+  left:0px;
+  transition: 0.5s ease;
+}
+
+.burgerline.open {
+  transform: rotate(180deg);
+  background: transparent
+}
+
+.burgerline.open::before {
+  transform: translateY(-10px) rotate(45deg);
+}
+
+.burgerline.open::after {
+  transform: translateY(10px) rotate(-45deg);
+}
+
+.expensePageContainer {
+  min-height: calc(100vh - 7rem);
+}
+
+@keyframes arrowAnimaiton {
+  from {transform: translateX(-2.5rem);}
+  to {transform: translateX(0rem);}
+}
+
+.animatedArrow {
+  transition: all 0.6s;
+  animation: arrowAnimaiton 1s infinite;
+}
+
+
+@media (max-width: 640px) {
+  input:placeholder-shown {
+    font-size: x-small;
+  }
+}
+
+@media (min-width: 640px) {
+  input:placeholder-shown {
+    font-size: small;
+  }
 }

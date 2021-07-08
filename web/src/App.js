@@ -9,13 +9,14 @@ import Routes from 'src/Routes'
 
 import './scaffold.css'
 import './index.css'
+import cache from './cache'
 
 isBrowser && netlifyIdentity.init()
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={netlifyIdentity} type="netlify">
-      <RedwoodApolloProvider>
+      <RedwoodApolloProvider graphQLClientConfig={{ cache }}>
         <Routes />
       </RedwoodApolloProvider>
     </AuthProvider>
