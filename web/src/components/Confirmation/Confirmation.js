@@ -58,7 +58,8 @@ const Confirmation = ({
         return { ...state, typePageDescription: '' }
       })
     } catch (error) {
-      console.log(error)
+      // console.log(error)
+      document.body.classList.remove('overflow-hidden')
       setTypePageErrorState((state) => {
         return {
           ...state,
@@ -85,10 +86,11 @@ const Confirmation = ({
     setTypePageFormDesc((state) => {
       return { ...state, typePageDescription: '' }
     })
+    document.body.classList.remove('overflow-hidden')
   }
 
   return (
-    <div className="background bg-gray-100 absolute min-h-full min-w-full z-30 bg-opacity-50">
+    <div className="background bg-gray-100 fixed h-screen min-w-full z-30 bg-opacity-50">
       <Form
         onSubmit={onDelete}
         className="flex flex-col justify-end p-2 border rounded-lg h-40 w-60 absolute background bg-gray-300 inset-1/2 transform -translate-x-1/2 -translate-y-full"

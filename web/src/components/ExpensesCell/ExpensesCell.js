@@ -27,8 +27,8 @@ import Expenses from 'src/components/Expenses'
 //   }
 // `
 export const QUERY = gql`
-  query PAGINATED_EXPENSES($page: Int, $user: String!) {
-    expensePage(page: $page, user: $user) {
+  query PAGINATED_EXPENSES($page: Int, $user: String!, $keyword: String) {
+    expensePage(page: $page, user: $user, keyword: $keyword) {
       myExpenses {
         id
         amount
@@ -70,10 +70,14 @@ export const Empty = () => {
   )
 }
 
-export const beforeQuery = ({ user, page }) => {
+export const beforeQuery = ({ user, page, keywordState }) => {
   page = page ? parseInt(page, 10) : 1
+  const { keyword } = keywordState
+  const variables = keyword ? { user, page, keyword } : { user, page }
+
   return {
-    variables: { user, page },
+    variables,
+    // variables: { user, page },
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first',
   }
@@ -88,6 +92,8 @@ export const Success = ({
   setNewExpenseState,
   page,
   setGrandMasterLoadingState,
+  keywordState,
+  setKeywordState,
 }) => {
   return (
     <Expenses
@@ -99,6 +105,8 @@ export const Success = ({
       count={expensePage.count}
       page={page}
       setGrandMasterLoadingState={setGrandMasterLoadingState}
+      keywordState={keywordState}
+      setKeywordState={setKeywordState}
     />
   )
 }

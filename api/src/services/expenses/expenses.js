@@ -2,12 +2,33 @@ import { db } from 'src/lib/db'
 const EXPENSENS_PER_PAGE = 10
 // import { EXPENSENS_PER_PAGE } from 'web/src/components/Misc/Constant'
 
-export const expensePage = ({ page = 1, user }) => {
+export const expensePage = ({ page = 1, user, keyword = '' }) => {
   const offset = (page - 1) * EXPENSENS_PER_PAGE
+
+  const where = keyword
+    ? {
+        user,
+        expenseType: {
+          newName: {
+            contains: keyword,
+          },
+        },
+      }
+    : {
+        user,
+      }
 
   return {
     myExpenses: db.expense.findMany({
-      where: { user },
+      where,
+      // where: {
+      //   user,
+      //   expenseType: {
+      //     newName: {
+      //       startsWith: 'v',
+      //     },
+      //   },
+      // },
       take: EXPENSENS_PER_PAGE,
       skip: offset,
       orderBy: { createdAt: 'desc' },
@@ -21,9 +42,10 @@ export const expensePage = ({ page = 1, user }) => {
       },
     }),
     count: db.expense.count({
-      where: {
-        user,
-      },
+      where,
+      // where: {
+      //   user,
+      // },
     }),
   }
 }

@@ -72,6 +72,7 @@ const DefaultForm = ({
     setNeedConfirm((state) => {
       return { ...state, confirmNeeded: true }
     })
+    document.body.classList.add('overflow-hidden')
   }
 
   //create new user type
@@ -228,7 +229,7 @@ const DefaultForm = ({
           onSubmit={onSubmit}
           validation={{ mode: 'onBlur' }}
           formMethods={formMethods}
-          className="ml-5"
+          className="ml-3 sm:ml-5"
         >
           <FormError
             wrapperStyle={{ color: 'red', backgroundColor: 'lavenderblush' }}
@@ -272,20 +273,20 @@ const DefaultForm = ({
           {currentType ? (
             <FieldError
               name="newName"
-              className="error text-xs sm:text-sm md:text-base"
+              className="error text-xs sm:text-sm whitespace-nowrap"
             />
           ) : null}
           {/*
 
             */}
 
-          <div className="flex flex-col">
+          <div className="typePageButtons flex flex-col">
             <Submit
               className={`${
                 createTypeLoading || updateTypeLoading
                   ? 'cursor-not-allowed'
                   : ''
-              } bg-gray-400 hover:bg-green-300 text-gray py-2 sm:px-4 rounded w-28 mt-5 min-w-full max-w-full text-xs sm:text-sm md:text-base`}
+              } bg-gray-400 hover:bg-green-300 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base`}
               disabled={createTypeLoading || updateTypeLoading}
             >
               {createTypeLoading || updateTypeLoading ? (
@@ -295,31 +296,34 @@ const DefaultForm = ({
               )}
             </Submit>
 
-            <button
+            {/*eslint-disable*/}
+            <div
               onClick={onClick}
               disabled={createTypeLoading || updateTypeLoading}
-              className="bg-gray-400 hover:bg-red-300 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base"
+              className="bg-gray-400 hover:bg-red-300 text-gray py-2 sm:px-4 rounded border-transparent text-center w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base cursor-pointer"
             >
               Cancel
-            </button>
+            </div>
+
             {currentName && (
-              <button
+              <div
                 onClick={onDelete}
                 disabled={createTypeLoading || updateTypeLoading}
                 className={`${
                   createTypeLoading || updateTypeLoading
                     ? 'cursor-not-allowed'
                     : ''
-                } bg-gray-400 hover:bg-red-700 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base`}
+                } bg-gray-400 hover:bg-red-700 text-gray py-2 sm:px-4 rounded w-28 mt-2 min-w-full max-w-full text-xs sm:text-sm md:text-base text-center cursor-pointer`}
               >
                 {createTypeLoading || updateTypeLoading ? (
                   <ClockLoading className="h-6 w-6 text-gray-500 mx-auto" />
                 ) : (
                   'Delete'
                 )}
-              </button>
+              </div>
             )}
           </div>
+          {/*eslint-enable*/}
         </Form>
       </div>
       <DefaultTypes

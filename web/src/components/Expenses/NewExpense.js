@@ -166,6 +166,7 @@ const NewExpense = ({
     const test = /^\d{1,}(\.(\d){0,2})?/g
     if (e.target.value) {
       //user did enter something in input
+
       if (e.target.value.toString().match(test)) {
         //if formatted input exist
         const formatedInput = e.target.value.toString().match(test)[0]
@@ -685,12 +686,14 @@ const NewExpense = ({
                 <Wrapper className="flex-grow" paddingLeft="pl-0">
                   <input
                     onChange={onChange}
-                    className="h-8 m-1 bg-gray-500 text-white max-w-xs pl-1"
+                    className="h-8 m-1 bg-gray-500 text-white max-w-xs pl-1 w-1/2"
                     placeholder="Spending"
                     type="text"
                     value={
                       newExpenseState.amount
-                        ? Math.abs(newExpenseState.amount)
+                        ? newExpenseState.amount < 0
+                          ? newExpenseState.amount * -1
+                          : newExpenseState.amount
                         : ''
                     }
                   />
@@ -704,7 +707,7 @@ const NewExpense = ({
                   </h3>
                   <Wrapper className="flex-grow" paddingLeft="pl-0">
                     <input
-                      className="h-8 m-1 bg-gray-500 text-white max-w-xs pl-1"
+                      className="h-8 m-1 bg-gray-500 text-white max-w-xs pl-1 w-1/2"
                       type="date"
                       value={newExpenseState.date ? newExpenseState.date : ''}
                       onChange={onDateChange}
