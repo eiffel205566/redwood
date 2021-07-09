@@ -12,6 +12,7 @@ import { FrontPageAnimation } from 'src/components/Misc/svgExtra'
 import MonitorLarge from '../TestPage/monitorLarge.png'
 
 import { AiOutlineDollarCircle } from 'react-icons/ai'
+import { FiArrowUpCircle } from 'react-icons/fi'
 import {
   FcCalculator,
   FcBarChart,
@@ -263,6 +264,30 @@ const LandingPage = () => {
         isAuthenticated={isAuthenticated}
         currentUser={currentUser}
       >
+        <div className="scrollUpContainer z-50 fixed w-screen h-8 bottom-10 overflow-x-hidden flex justify-center">
+          <div className="max-w-5xl h-8 fixed z-50 bottom-10 overflow-x-hidden flex">
+            <div className="w-screen h-full z-50">
+              {/*eslint-disable*/}
+              {(!frontPageCarousel.animationX || !frontPageCarousel.textAnimationX || !frontPageCarousel.expenseX || !frontPageCarousel.chartX || frontPageCarousel.bigTextFirstX || frontPageCarousel.bigTextSecondX) &&
+                <div onClick={()=> {
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                  })
+                }} className="cursor-pointer h-8 w-8 text-white hover:text-green-300 z-50 absolute right-0 mr-8">
+                  <FiArrowUpCircle className="h-full w-full z-50" />
+                </div>
+              }
+              {/*eslint-enable*/}
+            </div>
+          </div>
+        </div>
+        {/*
+          <div className="scrollUpContainer fixed max-w-5xl h-8 z-50 border border-yellow-300 bottom-10 overflow-x-hidden">
+            <div className="w-screen h-full"></div>
+          </div>
+
+      */}
         <div className="section_1 carouselPictureContainer absolute top-0 left-0 -z-10 w-screen overflow-x-hidden select-none">
           {/*
             >
