@@ -36,6 +36,11 @@ const ExpensesPage = ({ page = 1 }) => {
   const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
 
   const { email: user } = currentUser
+
+  const [keywordState, setKeywordState] = useState({
+    keyword: null,
+    keywordTwo: null,
+  })
   //--
 
   //state to handle tag edit state
@@ -122,6 +127,8 @@ const ExpensesPage = ({ page = 1 }) => {
           setNewExpenseState={setNewExpenseState}
           page={page}
           setGrandMasterLoadingState={setGrandMasterLoadingState}
+          keywordState={keywordState}
+          setKeywordState={setKeywordState}
         />
       </CommonLayout>
     </Fragment>

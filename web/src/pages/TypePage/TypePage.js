@@ -176,7 +176,7 @@ const TypePage = () => {
               allUserLoading={allUserLoading}
               checkState={checkState}
             />
-            <section className="helpfulText text-white h-8 max-w-5xl mx-10 flex justify-between"></section>
+            <section className="helpfulText text-white h-1 sm:h-8 max-w-5xl mx-10 flex justify-between"></section>
             <DefaultForm
               currentType={currentType}
               id={id}

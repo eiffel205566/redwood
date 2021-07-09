@@ -312,6 +312,7 @@ export type QueryExpenseCountArgs = {
 export type QueryExpensePageArgs = {
   page?: Maybe<Scalars['Int']>;
   user: Scalars['String'];
+  keyword?: Maybe<Scalars['String']>;
 };
 
 

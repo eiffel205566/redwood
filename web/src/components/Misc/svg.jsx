@@ -176,11 +176,19 @@ export const Customize = ({ className }) => {
   )
 }
 
-export const Spin = ({ className, onMouseOver, onClick }) => {
+export const Spin = ({
+  className,
+  onMouseOver,
+  onClick,
+  onMouseEnter,
+  onMouseLeave,
+}) => {
   return (
     <svg
       onClick={onClick}
       onMouseOver={onMouseOver}
+      onMouseLeave={onMouseLeave}
+      onMouseEnter={onMouseEnter}
       className={className}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
