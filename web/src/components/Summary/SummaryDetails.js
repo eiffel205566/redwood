@@ -88,7 +88,7 @@ export const SummaryDetails = ({ typeCategoryState, user }) => {
   return (
     <section
       onScroll={onHandleScroll}
-      className="h-full scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-400 overflow-y-scroll pr-3"
+      className="h-full scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-custom-bar overflow-y-scroll pr-3"
     >
       {/* -- for testing
       <ManyMany />

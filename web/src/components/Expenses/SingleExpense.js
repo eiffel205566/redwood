@@ -397,7 +397,7 @@ const SingleExpense = ({
       </div>
 
       <Wrapper className="hidden sm:block">
-        {timeTag(new Date(createdAt.replace('-', '/')))}
+        {timeTag(new Date(createdAt))}
       </Wrapper>
     </div>
   )
@@ -405,29 +405,17 @@ const SingleExpense = ({
 
 //utility
 const timeTag = (datetime) => {
-  return (
-    <Fragment>
-      <div className="h-full text-xs md:text-sm flex flex-col justify-center text-displayOnly px-0.5 sm:px-1 md:px-2">
-        <time>
-          {new Date(datetime).toDateString().split(' ').slice(1).join(' ')}
-        </time>
-      </div>
-    </Fragment>
-  )
-}
-
-const ShortTimeTag = (datetime) => {
-  const timeString = new Date(datetime)
+  const correctDatetime = datetime
     .toDateString()
+    .replace('-', '/')
     .split(' ')
     .slice(1)
     .join(' ')
-  const shortString = timeString.substr(0, timeString.length - 5)
 
   return (
     <Fragment>
-      <div className="text-xs sm:text-sm md:text-base flex flex-col justify-center text-displayOnly px-0.5 sm:px-1 md:px-2">
-        <time>{shortString}</time>
+      <div className="h-full text-xs md:text-sm flex flex-col justify-center text-displayOnly px-0.5 sm:px-1 md:px-2">
+        <time>{correctDatetime}</time>
       </div>
     </Fragment>
   )
