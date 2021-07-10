@@ -458,7 +458,7 @@ const NewExpense = ({
         onSubmit={() => console.log(newExpenseState)}
         className="flex flex-col justify-end p-2 border border-transparent rounded-lg h-full xs:h-5/6 sm:w-1/2 w-80 absolute background bg-overlay inset-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-y-hidden"
       >
-        <section className="h-full overflow-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+        <section className="h-full overflow-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-custom-bar">
           <div className="topSection flex-grow flex flex-col select-none">
             <div className="flex justify-between">
               <Wrapper>
@@ -480,7 +480,7 @@ const NewExpense = ({
               </div>
             </div>
 
-            <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+            <div className="types w-full flex flex-wrap h-40 overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-custom-bar">
               {userTypes ? (
                 userTypes.map((oneType) => (
                   <SingleType
@@ -631,7 +631,7 @@ const NewExpense = ({
               </div>
             </div>
 
-            <div className="tagsList border-b w-full flex flex-wrap h-24 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+            <div className="tagsList border-b w-full flex flex-wrap h-24 overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-custom-bar">
               {newExpenseState.isAddingTag || newExpenseState.isDeletingTag ? (
                 <Fragment>
                   {!newExpenseState.isDeletingTag && (

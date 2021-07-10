@@ -220,7 +220,7 @@ const SummarySettings = ({
           </div>
 
           {/* the type icon  */}
-          {!displayState.displayExpenses && <div className={`types w-full flex flex-wrap ${Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) ? 'h-0 border-none' : 'h-16 md:h-24'} overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300`}>
+          {!displayState.displayExpenses && <div className={`types w-full flex flex-wrap ${Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) ? 'h-0 border-none' : 'h-16 md:h-24'} overflow-y-scroll overflow-x-hidden border-t border-b scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-custom-bar`}>
             {typeCategoryState.types &&
               typeCategoryState.types.length &&
               typeCategoryState.types.map((oneType) => {
@@ -256,7 +256,7 @@ const SummarySettings = ({
             </div>
           </div>}
 
-          {!displayState.displayExpenses && <div className={`tagsList border-b w-full flex flex-wrap ${!Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) ? "h-24" : "h-0"} overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300`}>
+          {!displayState.displayExpenses && <div className={`tagsList border-b w-full flex flex-wrap ${!Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) ? "h-24" : "h-0"} overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-custom-bar`}>
             {typeCategoryState.typeToEdit && !Object.keys(typeCategoryState.typeToEdit).includes(CALENDER) //when SummarySetting showed up by user click Calender, typeToEdit is {} with no props
               ? _.find(typeCategoryState.types, function (o) {
                   return o.id === typeCategoryState.typeToEdit.expenseTypeId

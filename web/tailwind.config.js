@@ -19,6 +19,12 @@ module.exports = {
       minHeight: {
         '1/2': '50%',
       },
+      colors: {
+        custom: {
+          bar: '#3a3a3a',
+          dark: '#252525',
+        },
+      },
       zIndex: {
         1: '1',
         2: '2',
